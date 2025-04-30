@@ -17,11 +17,10 @@ rootProject.name = 'easip'
 include (
     'modules',
     'modules:client',
-    'modules:client:subscription-data-extractor',
     
     'subs-app',
     
     'storage',
-    'storage:rdb'
+    'storage:rdb',
+    'storage:rdb:subscription'
 )
-include 'storage:rdb:subscription'
