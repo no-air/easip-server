@@ -1,4 +1,4 @@
-package com.noair;
+package com.noair.subsapp;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
