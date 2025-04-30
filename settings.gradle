@@ -1,1 +1,27 @@
+pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'org.springframework.boot') {
+                useVersion springBootVersion as String
+            }
+
+            if (requested.id.id == 'io.spring.dependency-management') {
+                useVersion springDependencyManagementVersion as String
+            }
+        }
+    }
+}
+
 rootProject.name = 'easip'
+
+include (
+    'modules',
+    'modules:client',
+    'modules:client:subscription-data-extractor',
+    
+    'subs-app',
+    
+    'storage',
+    'storage:rdb'
+)
+include 'storage:rdb:subscription'
