@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ExtractDataService {
-    private final SubscriptionDataEx
-    tractor extractor = new ChatgptSubscriptionDataExtractor();
+    private final SubscriptionDataExtractor extractor = new ChatgptSubscriptionDataExtractor();
 
     public void foo() {
 
