@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: easip-was
+  datasource:
+    url: jdbc:h2:mem:easip;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  flyway:
+    enabled: false
+
+app:
+  web:
+    versionFilterEnabled: true
+    version-check-whitelists:
+      - /actuator/**
+      - /swagger-ui.html
+      - /swagger-ui/**
+      - /v3/api-docs/**
+      - /v3/api-docs
+      - /error
+      - /v1/links/**
+    url-no-logging:
+      - /swagger-ui.html
+      - /swagger-ui/**
+      - /v3/api-docs/**
+      - /v3/api-docs
+      - /actuator/**
+    header-names:
+      proxy-forward-header: X-FORWARDED-FOR
+      app-version-header: X-APP-VERSION
+      platform-header: X-USER-PLATFORM
+      appkey-header: X-APP-KEY
+
+server:
+  shutdown: graceful
+  tomcat:
+    threads:
+      min-spare: 15
+      max: 200
+    accept-count: 200
+  compression:
+    enabled: true
+    mime-types: text/html,text/plain,text/css,application/javascript,application/json
+    min-response-size: 1024
+
+logging:
+  pattern:
+    console: "- %X{requestId} %clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd'T'HH:mm:ss.SSSXXX}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+  level:
+    com.noair: DEBUG
+
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha
+    tags-sorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
