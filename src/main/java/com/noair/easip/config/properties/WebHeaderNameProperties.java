@@ -5,7 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesBindin
 @ConfigurationPropertiesBinding
 public record WebHeaderNameProperties(
         String accessToken,
-        String proxyForwardHeader,
         String appVersionHeader,
         String platformHeader,
         String userIdHeader,
@@ -13,6 +12,5 @@ public record WebHeaderNameProperties(
 ) {
     public WebHeaderNameProperties {
         if (accessToken == null) throw new IllegalArgumentException("accessToken cannot be null");
-        if (proxyForwardHeader == null) throw new IllegalArgumentException("proxyForwardHeader cannot be null");
     }
 }

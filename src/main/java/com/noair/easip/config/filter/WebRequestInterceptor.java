@@ -41,8 +41,7 @@ public class WebRequestInterceptor implements HandlerInterceptor {
         String appVersionValue = request.getHeader(webProperties.headerNames().appVersionHeader());
         String platformValue = request.getHeader(webProperties.headerNames().platformHeader());
         String userIdValue = request.getHeader(webProperties.headerNames().userIdHeader());
-        String forwardedIp = request.getHeader(webProperties.headerNames().proxyForwardHeader());
-        String originIp = forwardedIp != null ? forwardedIp : request.getRemoteAddr();
+        String originIp = request.getRemoteAddr();
 
         String appVersion =
                 String.format("[%s]", appVersionValue != null ? appVersionValue : "UNKNOWN VERSION");
