@@ -1,4 +1,4 @@
-package com.noair.easip.config;
+package com.noair.easip.util;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

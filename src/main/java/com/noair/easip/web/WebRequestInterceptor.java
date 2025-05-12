@@ -1,6 +1,5 @@
-package com.noair.easip.config.filter;
+package com.noair.easip.web;
 
-import com.noair.easip.config.properties.WebProperties;
 import com.noair.easip.util.StringGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

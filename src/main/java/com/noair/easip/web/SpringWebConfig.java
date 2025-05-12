@@ -1,6 +1,5 @@
-package com.noair.easip.config;
+package com.noair.easip.web;
 
-import com.noair.easip.config.filter.WebRequestInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
