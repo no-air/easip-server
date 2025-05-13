@@ -23,7 +23,8 @@ spring:
 
 app:
   external-urls:
-    discord-webhook: https://www.naver.com # Must Be Replaced
+    dev-alert-discord-webhook: https://www.naver.com # Must Be Replaced
+    prod-alert-discord-webhook: https://www.naver.com # Must Be Replaced
   token:
     secret-key: thisiskeyfortestpurpose0101010101010thisiskeyfortestpurpose0101010101010
     expiration:
