@@ -1,4 +1,4 @@
-package com.noair.easip.web;
+package com.noair.easip.web.config;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

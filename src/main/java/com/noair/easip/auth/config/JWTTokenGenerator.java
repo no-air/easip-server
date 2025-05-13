@@ -1,8 +1,8 @@
-package com.noair.easip.auth;
+package com.noair.easip.auth.config;
 
 import com.noair.easip.auth.exception.TokenExpiredException;
 import com.noair.easip.auth.exception.TokenNotValidException;
-import com.noair.easip.auth.properties.*;
+import com.noair.easip.auth.config.properties.*;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 

@@ -1,9 +1,9 @@
-package com.noair.easip.web;
+package com.noair.easip.web.config;
 
-import com.noair.easip.auth.JWTAccessDeniedHandler;
-import com.noair.easip.auth.JWTAuthenticationEntryPoint;
-import com.noair.easip.auth.JWTAuthenticationHandler;
-import com.noair.easip.web.properties.WebProperties;
+import com.noair.easip.auth.config.JWTAccessDeniedHandler;
+import com.noair.easip.auth.config.JWTAuthenticationEntryPoint;
+import com.noair.easip.auth.config.JWTAuthenticationHandler;
+import com.noair.easip.web.config.properties.WebProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

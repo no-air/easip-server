@@ -1,9 +1,9 @@
-package com.noair.easip.auth;
+package com.noair.easip.auth.config;
 
 import com.noair.easip.auth.exception.TokenNotValidException;
-import com.noair.easip.auth.properties.SocialLoginProvider;
-import com.noair.easip.auth.properties.Token;
-import com.noair.easip.auth.properties.TokenPair;
+import com.noair.easip.auth.config.properties.SocialLoginProvider;
+import com.noair.easip.auth.config.properties.Token;
+import com.noair.easip.auth.config.properties.TokenPair;
 
 public interface TokenGenerator {
     /**

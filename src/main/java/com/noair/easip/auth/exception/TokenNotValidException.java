@@ -1,6 +1,6 @@
 package com.noair.easip.auth.exception;
 
-import com.noair.easip.web.ErrorCode;
+import com.noair.easip.web.config.ErrorCode;
 import lombok.Getter;
 import org.springframework.security.core.AuthenticationException;
 

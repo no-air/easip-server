@@ -1,8 +1,8 @@
-package com.noair.easip.auth;
+package com.noair.easip.auth.config;
 
-import com.noair.easip.auth.properties.Token;
-import com.noair.easip.auth.properties.TokenType;
-import com.noair.easip.web.properties.WebProperties;
+import com.noair.easip.auth.config.properties.Token;
+import com.noair.easip.auth.config.properties.TokenType;
+import com.noair.easip.web.config.properties.WebProperties;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

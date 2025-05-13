@@ -32,24 +32,28 @@ app:
   web:
     versionFilterEnabled: false
     url-whitelists:
+      - /swagger-ui/**
+      - /v3/api-docs/**
+      - /v3/api-docs
       - /actuator/**
-      - /swagger-ui.html
+      - /error
       - /v1/auth/social/**
       - /v1/auth/refresh
-      - /v1/auth/force-token
-      - /swagger-ui/**
-      - /error
+      - /v1/auth/fake-token
       - /v1/links/*
       - /v1/me/app-version
     version-check-whitelists:
-      - /actuator/**
       - /swagger-ui.html
       - /swagger-ui/**
+      - /v3/api-docs/**
+      - /v3/api-docs
+      - /actuator/**
       - /error
       - /v1/links/**
     url-no-logging:
-      - /swagger-ui.html
       - /swagger-ui/**
+      - /v3/api-docs/**
+      - /v3/api-docs
       - /actuator/**
     header-names:
       access-token: X-AUTH-TOKEN

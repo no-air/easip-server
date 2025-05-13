@@ -1,4 +1,4 @@
-package com.noair.easip.auth.properties;
+package com.noair.easip.auth.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 

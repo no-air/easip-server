@@ -1,4 +1,4 @@
-package com.noair.easip.web.dto;
+package com.noair.easip.web.controller.dto;
 
 public enum ErrorType {
     ALERT,

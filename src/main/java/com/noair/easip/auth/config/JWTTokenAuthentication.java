@@ -1,6 +1,6 @@
-package com.noair.easip.auth;
+package com.noair.easip.auth.config;
 
-import com.noair.easip.auth.properties.Token;
+import com.noair.easip.auth.config.properties.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

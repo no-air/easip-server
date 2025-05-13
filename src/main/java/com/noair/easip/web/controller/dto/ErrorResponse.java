@@ -1,6 +1,6 @@
-package com.noair.easip.web.dto;
+package com.noair.easip.web.controller.dto;
 
-import com.noair.easip.web.ErrorCode;
+import com.noair.easip.web.config.ErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "에러 응답")
@@ -11,22 +11,22 @@ public record ErrorResponse(
         @Schema(description = "에러 메시지", example = "인증에 실패했습니다.")
         String message,
 
-        @Schema(description = "에러 종류 (에러 메시지를 노출할 수단을 제안, 기본값 NONE이며 디버그용)", example = "ALERT, TOAST, NONE")
-        String type
+        @Schema(description = "에러 종류 (에러 메시지를 노출할 수단을 제안, 기본값 NONE이며 디버그용)", example = "ALERT")
+        ErrorType type
 ) {
     public static ErrorResponse of(String code, String message) {
-        return new ErrorResponse(code, message, "NONE");
+        return new ErrorResponse(code, message, ErrorType.NONE);
     }
 
     public static ErrorResponse of(String code, String message, String type) {
-        return new ErrorResponse(code, message, type);
+        return new ErrorResponse(code, message, ErrorType.valueOf(type));
     }
 
     public static ErrorResponse of(ErrorCode errorCode) {
-        return new ErrorResponse(errorCode.getCode(), errorCode.getMessage(), "NONE");
+        return new ErrorResponse(errorCode.getCode(), errorCode.getMessage(), ErrorType.NONE);
     }
 
     public static ErrorResponse of(ErrorCode errorCode, ErrorType errorType) {
-        return new ErrorResponse(errorCode.getCode(), errorCode.getMessage(), errorType.name());
+        return new ErrorResponse(errorCode.getCode(), errorCode.getMessage(), errorType);
     }
 }

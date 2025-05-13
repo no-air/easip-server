@@ -1,4 +1,4 @@
-package com.noair.easip.web;
+package com.noair.easip.web.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
