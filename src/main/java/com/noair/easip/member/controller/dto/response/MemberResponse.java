@@ -46,7 +46,7 @@ public record MemberResponse(
         public static MemberResponse of(
             String memberId,
             String name,
-            String age,
+            Integer age,
             String likingPostCount,
             List<String> likingCityNames,
             String livingCityName,
