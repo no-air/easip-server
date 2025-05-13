@@ -2,6 +2,7 @@ package com.noair.easip.auth.config;
 
 import com.noair.easip.auth.config.properties.Token;
 import com.noair.easip.auth.config.properties.TokenType;
+import com.noair.easip.auth.exception.TokenNotValidException;
 import com.noair.easip.web.config.properties.WebProperties;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +24,7 @@ public class JWTAuthenticationHandler extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, TokenNotValidException {
         String accessToken = request.getHeader(webProperties.headerNames().accessToken());
         if (accessToken == null) {
             filterChain.doFilter(request, response);

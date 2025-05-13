@@ -40,7 +40,7 @@ public class JWTTokenGenerator implements TokenGenerator {
     }
 
     @Override
-    public Token extractTokenData(String token) {
+    public Token extractTokenData(String token) throws TokenNotValidException {
         try {
             Jws<Claims> tokenClaim = Jwts.parserBuilder().setSigningKey(signKey).build().parseClaimsJws(token);
 

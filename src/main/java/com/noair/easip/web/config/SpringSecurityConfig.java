@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -44,7 +45,7 @@ public class SpringSecurityConfig {
                             .requestMatchers(whitelistedMatchers).permitAll()
                             .anyRequest().authenticated();
                 })
-                .addFilterBefore(authenticationHandler, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationHandler, AuthorizationFilter.class)
 //                .addFilterBefore(appVersionFilter, JwtAuthenticationHandler.class)
                 .exceptionHandling(exceptionHandlerManagement ->
                         exceptionHandlerManagement
