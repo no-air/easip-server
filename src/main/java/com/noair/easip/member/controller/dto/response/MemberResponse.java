@@ -13,7 +13,7 @@ public record MemberResponse(
         String name,
 
         @Schema(description = "회원 나이", example = "30")
-        String age,
+        Integer age,
 
         @Schema(description = "관심공고 수", example = "42")
         String likingPostCount,
