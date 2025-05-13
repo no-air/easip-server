@@ -5,15 +5,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
 
-@Entity(name = "member")
-@Getter
-@Builder
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = false)
+@Builder
+@Getter
 public class Member extends DeletableBaseEntity {
 
     @Id
-    @Column
+    @Column(length = 26, columnDefinition = "CHAR(26)")
     private String id;
+
+    @Column(nullable = false)
+    private String name;
 }

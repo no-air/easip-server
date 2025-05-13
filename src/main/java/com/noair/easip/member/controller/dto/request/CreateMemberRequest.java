@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Schema(description = "사용자 회원가입 요청")
-public record CreateNewMemberRequest(
+public record CreateMemberRequest(
         @NotBlank
         @Size(min = 1)
         @Schema(description = "회원 이름", example = "나나미")

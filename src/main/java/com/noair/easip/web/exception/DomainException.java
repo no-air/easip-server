@@ -10,4 +10,8 @@ import lombok.RequiredArgsConstructor;
 public class DomainException extends RuntimeException {
     private final ErrorCode errorCode;
     private final ErrorType errorType;
+
+    public DomainException(ErrorCode errorCode) {
+        this(errorCode, ErrorType.NONE);
+    }
 }

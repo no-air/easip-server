@@ -27,8 +27,15 @@ public enum ErrorCode {
     AUTHORIZATION_FAILED("AU0003", "권한이 없습니다."),
     TOKEN_INVALID("AU0004", "유효하지 않은 토큰입니다."),
     TOKEN_EXPIRED("AU0005", "토큰이 만료됐습니다."),
+    REFRESH_TOKEN_INVALID("AU0006", "유효하지 않은 리프레쉬 토큰입니다."),
 
+    /**
+     * Member Related Errors
+     */
+    MEMBER_NOT_FOUND("MB0001", "찾을 수 없는 회원입니다."),
+    MEMBER_ALREADY_EXISTS("MB0002", "이미 존재하는 회원입니다."),
     ;
+
 
     private final String code;
     private final String message;

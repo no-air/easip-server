@@ -1,5 +1,6 @@
 package com.noair.easip.util;
 
+import com.github.f4b6a3.ulid.UlidCreator;
 import lombok.NoArgsConstructor;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,5 +17,9 @@ public class StringGenerator {
                 .limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    public static String generateUlid() {
+        return UlidCreator.getMonotonicUlid().toString();
     }
 }
