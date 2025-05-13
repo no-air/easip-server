@@ -21,8 +21,7 @@ public class DevController {
     AuthResultResponse generateFakeToken(
             @RequestParam String memberId
     ) {
-        throw new RuntimeException();
-//        TokenPair tokenPair = tokenGenerator.generateTokenPair(memberId);
-//        return AuthResultResponse.of(tokenPair, false);
+        TokenPair tokenPair = tokenGenerator.generateTokenPair(memberId);
+        return AuthResultResponse.of(tokenPair, false);
     }
 }

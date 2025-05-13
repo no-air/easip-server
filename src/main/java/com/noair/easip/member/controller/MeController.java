@@ -1,5 +1,6 @@
-package com.noair.easip.auth.controller;
+package com.noair.easip.member.controller;
 
+import com.noair.easip.auth.controller.LoginMemberId;
 import com.noair.easip.member.controller.dto.response.MemberResponse;
 import com.noair.easip.member.domain.Position;
 import io.swagger.v3.oas.annotations.Operation;
