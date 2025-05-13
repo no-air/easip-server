@@ -3,7 +3,7 @@ package com.noair.easip.web.controller.dto;
 import com.noair.easip.web.config.ErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "에러 응답")
+@Schema(name = "ErrorResponse", description = "공통 에러 응답 DTO")
 public record ErrorResponse(
         @Schema(description = "에러 코드", example = "AU0001")
         String code,
