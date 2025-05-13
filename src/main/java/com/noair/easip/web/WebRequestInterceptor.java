@@ -1,6 +1,7 @@
 package com.noair.easip.web;
 
 import com.noair.easip.util.StringGenerator;
+import com.noair.easip.web.properties.WebProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

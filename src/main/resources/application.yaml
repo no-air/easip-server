@@ -28,7 +28,7 @@ app:
     secret-key: thisiskeyfortestpurpose0101010101010thisiskeyfortestpurpose0101010101010
     expiration:
       access-token: 86400000
-      refresh-token: 384000000
+      refresh-token: 2419200000
   web:
     versionFilterEnabled: false
     url-whitelists:

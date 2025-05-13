@@ -1,4 +1,4 @@
-package com.noair.easip.web;
+package com.noair.easip.web.properties;
 
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 
