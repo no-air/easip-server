@@ -31,7 +31,7 @@ public class MeController {
         return MemberResponse.of(
                 loginMemberId,
                 "나나미",
-                "30",
+                30,
                 "42",
                 List.of("강서구", "영등포구"),
                 "영등포구",

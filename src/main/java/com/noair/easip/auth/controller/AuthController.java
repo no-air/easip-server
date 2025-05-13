@@ -6,6 +6,7 @@ import com.noair.easip.auth.config.properties.TokenPair;
 import com.noair.easip.auth.controller.dto.AuthResultResponse;
 import com.noair.easip.auth.controller.dto.NativeSocialLoginRequest;
 import com.noair.easip.auth.controller.dto.RefreshAccessTokenRequest;
+import com.noair.easip.auth.service.AuthService;
 import com.noair.easip.member.controller.dto.request.CreateNewMemberRequest;
 import com.noair.easip.web.controller.dto.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
         mediaType = "application/json",
         schema = @Schema(implementation = ErrorResponse.class)))
 public class AuthController {
-//    private final AuthService authService;
+    private final AuthService authService;
 //    private final MemberService memberService;
     private final TokenGenerator tokenGenerator;
 

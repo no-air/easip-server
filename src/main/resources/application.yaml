@@ -22,6 +22,8 @@ spring:
     enabled: false
 
 app:
+  oauth:
+    google-client-id: ${GOOGLE_CLIENT_ID} # Must Be Replaced
   external-urls:
     dev-alert-discord-webhook: https://www.naver.com # Must Be Replaced
     prod-alert-discord-webhook: https://www.naver.com # Must Be Replaced

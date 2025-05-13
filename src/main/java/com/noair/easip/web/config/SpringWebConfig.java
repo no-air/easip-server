@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Configuration
+@RequiredArgsConstructor
 public class SpringWebConfig implements WebMvcConfigurer {
     final WebRequestInterceptor webRequestInterceptor;
     // final AppKeyResolver appKeyResolver;
