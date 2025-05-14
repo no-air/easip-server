@@ -10,7 +10,7 @@ on:
         required: true
       SSH_PORT:
         required: true
-      DISCORD_WEBHOOK_URL:
+      DISCORD_WEBHOOK:
         required: true
     inputs:
       environment:
@@ -85,7 +85,7 @@ jobs:
                       },
                       {
                         "name": "Workflow 링크",
-                        "value": "${{ github.event.workflow_run.workflow_url }}",
+                        "value": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                         "inline": true
                       },
                 ]
@@ -117,7 +117,7 @@ jobs:
                   },
                   {
                     "name": "Workflow 링크",
-                    "value": "${{ github.event.workflow_run.workflow_url }}",
+                    "value": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                     "inline": true
                   },
                 ]
