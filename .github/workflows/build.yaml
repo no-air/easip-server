@@ -89,12 +89,12 @@ jobs:
                     "name": "Workflow 링크",
                     "value": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                     "inline": true
-                  },
+                  }
                 ]
               }
             ]
         with:
-          args: 'args?'
+          args: ''
 
       - name: 빌드 실패 디스코드 알림
         if: failure()
@@ -121,9 +121,9 @@ jobs:
                     "name": "Workflow 링크",
                     "value": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                     "inline": true
-                  },
+                  }
                 ]
               }
             ]
         with:
-          args: 'args?'
+          args: ''
