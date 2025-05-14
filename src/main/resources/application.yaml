@@ -13,6 +13,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+#        dialect: org.hibernate.dialect.MySQL8Dialect
   h2:
     console:
       enabled: true
@@ -35,6 +36,7 @@ app:
   web:
     versionFilterEnabled: false
     url-whitelists:
+      - /h2-console/**
       - /swagger-ui/**
       - /v3/api-docs/**
       - /v3/api-docs
@@ -46,6 +48,7 @@ app:
       - /v1/links/*
       - /v1/me/app-version
     version-check-whitelists:
+      - /h2-console/**
       - /swagger-ui.html
       - /swagger-ui/**
       - /v3/api-docs/**
@@ -54,6 +57,7 @@ app:
       - /error
       - /v1/links/**
     url-no-logging:
+      - /h2-console/**
       - /swagger-ui/**
       - /v3/api-docs/**
       - /v3/api-docs

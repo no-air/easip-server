@@ -1,5 +1,8 @@
 spring:
   datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
     hikari:
       auto-commit: false
       minimum-idle: 15
