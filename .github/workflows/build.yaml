@@ -63,3 +63,71 @@ jobs:
             ${{ inputs.image-tag }} \
             ${{ inputs.environment }} &&
           echo "image-url=${{ inputs.image-name }}:${{ inputs.image-tag }}" >> $GITHUB_OUTPUT
+
+      - name: 빌드 성공 디스코드 알림
+        if: success()
+        uses: Ilshidur/action-discord@0.3.2
+        with:
+            args: 'args?'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: |
+            [
+              {
+                "title": "# ⛴️ ${{ inputs.environment }} 스프링 컨테이너 빌드 완료!",
+                "color": 5896036,
+                "fields": [
+                  {
+                    "title":  "# 🌊 ${{ inputs.environment }} 스프링 컨테이너 빌드 실패!",
+                    "color": 13238309,
+                    "fields": [
+                      {
+                        "name": "배포 환경",
+                        "value": "${{ inputs.environment }}",
+                        "inline": true
+                      },
+                      {
+                        "name": "배포자",
+                        "value": "${{ github.event.sender.login }}",
+                        "inline": true
+                      },
+                      {
+                        "name": "Workflow 링크",
+                        "value": "${{ github.event.workflow_run.html_url }}",
+                        "inline": true
+                      },
+                ]
+              }
+            ]
+
+      - name: 빌드 실패 디스코드 알림
+        if: failure()
+        uses: Ilshidur/action-discord@0.3.2
+        with:
+          args: 'args?'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: |
+            [
+              {
+                "title":  "# 🌊 ${{ inputs.environment }} 스프링 컨테이너 빌드 실패!",
+                "color": 13238309,
+                "fields": [
+                  {
+                    "name": "배포 환경",
+                    "value": "${{ inputs.environment }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "배포자",
+                    "value": "${{ github.event.sender.login }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Workflow 링크",
+                    "value": "${{ github.event.workflow_run.html_url }}",
+                    "inline": true
+                  },
+                ]
+              }
+            ]
