@@ -61,8 +61,6 @@ jobs:
       - name: 빌드 성공 디스코드 알림
         if: success()
         uses: Ilshidur/action-discord@0.3.2
-        with:
-          args: 'args?'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_EMBEDS: |
@@ -87,19 +85,18 @@ jobs:
                       },
                       {
                         "name": "Workflow 링크",
-                        "value": "${{ github.event.workflow_run.html_url }}",
+                        "value": "${{ github.event.workflow_run.workflow_url }}",
                         "inline": true
                       },
                 ]
               }
             ]
-
+        with:
+          args: 'args?'
 
       - name: 빌드 실패 디스코드 알림
         if: failure()
         uses: Ilshidur/action-discord@0.3.2
-        with:
-          args: 'args?'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_EMBEDS: |
@@ -120,9 +117,11 @@ jobs:
                   },
                   {
                     "name": "Workflow 링크",
-                    "value": "${{ github.event.workflow_run.html_url }}",
+                    "value": "${{ github.event.workflow_run.workflow_url }}",
                     "inline": true
                   },
                 ]
               }
             ]
+        with:
+          args: 'args?'
