@@ -76,24 +76,20 @@ jobs:
                 "color": 5896036,
                 "fields": [
                   {
-                    "title":  "# 🌊 ${{ inputs.environment }} 스프링 컨테이너 빌드 실패!",
-                    "color": 13238309,
-                    "fields": [
-                      {
-                        "name": "배포 환경",
-                        "value": "${{ inputs.environment }}",
-                        "inline": true
-                      },
-                      {
-                        "name": "배포자",
-                        "value": "${{ github.event.sender.login }}",
-                        "inline": true
-                      },
-                      {
-                        "name": "Workflow 링크",
-                        "value": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-                        "inline": true
-                      },
+                    "name": "배포 환경",
+                    "value": "${{ inputs.environment }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "배포자",
+                    "value": "${{ github.event.sender.login }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Workflow 링크",
+                    "value": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                    "inline": true
+                  },
                 ]
               }
             ]
