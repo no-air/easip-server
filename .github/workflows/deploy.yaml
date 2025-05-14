@@ -48,13 +48,6 @@ jobs:
       - name: GitHub 에서 레포 받아오기
         uses: actions/checkout@v3
 
-      - name: Docker Hub 로그인하기
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-
       - name: 배포 스크립트 실행
         uses: appleboy/ssh-action@master
         with:
@@ -64,6 +57,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/easip/server
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker login -u <DOCKER_HUB_USERNAME> -p <DOCKER_HUB_TOKEN>
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker rm -f $(sudo docker ps -aq --filter "ancestor=${{ inputs.image-name }}")
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker pull ${{ inputs.image-name }}:latest
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker compose --env-file .env.${{ inputs.environment }} up -d
