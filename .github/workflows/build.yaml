@@ -66,48 +66,30 @@ jobs:
 
       - name: 빌드 성공 디스코드 알림
         if: success()
-        uses: rguillaume/discord-action-embed@v1.0.2
+        uses: tsickert/discord-webhook@v7.0.0
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: "# ⛴️ ${{ inputs.environment }} 스프링 컨테이너 빌드 완료!"
-          embed: '[
-                    { 
-                      "color": 5896036,
-                      "title": "배포 환경",
-                      "description": "${process.env.ENVIRONMENT}",
-                    },
-                    { 
-                      "color": 5896036,
-                      "title": "배포자",
-                      "description": "${process.env.AS_AUTHOR}",
-                    },
-                    { 
-                      "color": 5896036,
-                      "title": "워크플로 링크",
-                      "description": "${process.env.AS_WORKFLOW_RUN}",
-                    }
-                  ]'
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          content: "# ⛴️ ${{ inputs.environment }} 스프링 컨테이너 빌드 완료!"
+          embed-description: |
+            배포 환경
+            ${process.env.ENVIRONMENT}
+            배포자
+            ${process.env.AS_AUTHOR}
+            워크플로 링크
+            ${process.env.AS_WORKFLOW_RUN}
+          embed-color: 5896036
 
       - name: 빌드 실패 디스코드 알림
         if: failure()
-        uses: rguillaume/discord-action-embed@v1.0.2
+        uses: tsickert/discord-webhook@v7.0.0
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: "# 🌊 ${{ inputs.environment }} 스프링 컨테이너 빌드 실패!"
-          embed: '[
-                    { 
-                      "color": 13238309,
-                      "title": "배포 환경",
-                      "description": "${process.env.ENVIRONMENT}",
-                    },
-                    { 
-                      "color": 13238309,
-                      "title": "배포자",
-                      "description": "${process.env.AS_AUTHOR}",
-                    },
-                    { 
-                      "color": 13238309,
-                      "title": "워크플로 링크",
-                      "description": "${process.env.AS_WORKFLOW_RUN}",
-                    }
-                  ]'
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          content: "# 🌊 ${{ inputs.environment }} 스프링 컨테이너 빌드 실패!"
+          embed-description: |
+            배포 환경
+            ${process.env.ENVIRONMENT}
+            배포자
+            ${process.env.AS_AUTHOR}
+            워크플로 링크
+            ${process.env.AS_WORKFLOW_RUN}
+          embed-color: 5896036
