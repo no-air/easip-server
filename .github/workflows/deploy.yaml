@@ -53,10 +53,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/easip/server
-            sudo docker rm -f $(sudo docker ps -aq --filter "ancestor=${{ inputs.image-name }}")
-            sudo docker pull ${{ inputs.image-name }}:latest
-            sudo docker compose --env-file .env.${{ inputs.environment }} up -d
-            sudo docker image prune -f
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker rm -f $(sudo docker ps -aq --filter "ancestor=${{ inputs.image-name }}")
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker pull ${{ inputs.image-name }}:latest
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker compose --env-file .env.${{ inputs.environment }} up -d
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker image prune -f
 
       - name: 빌드 성공 디스코드 알림
         if: success()
