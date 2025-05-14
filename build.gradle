@@ -67,7 +67,7 @@ jib {
 	def activeProfile = System.getenv("ACTIVE_PROFILE")
 	def imageName = System.getenv("IMAGE_NAME")
 	from {
-		image = 'amazoncorretto:17-alpine3.17-jdk'
+		image = 'eclipse-temurin:21-jdk'
 	}
 	to {
 		image = imageName + ':latest'
