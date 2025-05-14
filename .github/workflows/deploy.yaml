@@ -66,11 +66,11 @@ jobs:
           content: "# 🏃‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 완료!"
           embed-description: |
             *배포 환경*
-            ${{process.env.ENVIRONMENT}}
+            `${process.env.ENVIRONMENT}`
             *배포자*
-            ${{process.env.AS_AUTHOR}}
+            `${process.env.AS_AUTHOR}`
             *워크플로 링크*
-            ${{process.env.AS_WORKFLOW_RUN}}
+            `${process.env.AS_WORKFLOW_RUN}`
           embed-color: 5896036
 
 
@@ -82,9 +82,9 @@ jobs:
           content: "# 🧎‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 실패!"
           embed-description: |
             *배포 환경*
-            ${{process.env.ENVIRONMENT}}
+            `${process.env.ENVIRONMENT}`
             *배포자*
-            ${{process.env.AS_AUTHOR}}
+            `${process.env.AS_AUTHOR}`
             *워크플로 링크*
-            ${{process.env.AS_WORKFLOW_RUN}}
+            `${process.env.AS_WORKFLOW_RUN}`
           embed-color: 5896036
