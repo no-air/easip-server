@@ -44,6 +44,13 @@ jobs:
       - name: GitHub 에서 레포 받아오기
         uses: actions/checkout@v3
 
+      - name: Docker Hub 로그인하기
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+
       - name: 배포 스크립트 실행
         uses: appleboy/ssh-action@master
         with:
@@ -66,7 +73,7 @@ jobs:
           DISCORD_EMBEDS: |
             [
               {
-                "title": "# 🏃‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 완료!",
+                "title": "🏃‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 완료!",
                 "color": 5896036,
                 "fields": [
                   {
@@ -98,7 +105,7 @@ jobs:
           DISCORD_EMBEDS: |
             [
               {
-                "title":  "# 🧎‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 실패!",
+                "title":  "🧎‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 실패!",
                 "color": 13238309,
                 "fields": [
                   {
