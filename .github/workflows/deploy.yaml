@@ -57,34 +57,3 @@ jobs:
             sudo docker pull ${{ inputs.image-name }}:latest
             sudo docker compose --env-file .env.${{ inputs.environment }} up -d
             sudo docker image prune -f
-
-      - name: 빌드 성공 디스코드 알림
-        if: success()
-        uses: tsickert/discord-webhook@v7.0.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          content: "# 🏃‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 완료!"
-          embed-description: |
-            *배포 환경*
-            `${process.env.ENVIRONMENT}`
-            *배포자*
-            `${process.env.AS_AUTHOR}`
-            *워크플로 링크*
-            `${process.env.AS_WORKFLOW_RUN}`
-          embed-color: 5896036
-
-
-      - name: 빌드 실패 디스코드 알림
-        if: failure()
-        uses: tsickert/discord-webhook@v7.0.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          content: "# 🧎‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 실패!"
-          embed-description: |
-            *배포 환경*
-            `${process.env.ENVIRONMENT}`
-            *배포자*
-            `${process.env.AS_AUTHOR}`
-            *워크플로 링크*
-            `${process.env.AS_WORKFLOW_RUN}`
-          embed-color: 5896036

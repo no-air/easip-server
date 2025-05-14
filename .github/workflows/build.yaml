@@ -63,33 +63,3 @@ jobs:
             ${{ inputs.image-tag }} \
             ${{ inputs.environment }} &&
           echo "image-url=${{ inputs.image-name }}:${{ inputs.image-tag }}" >> $GITHUB_OUTPUT
-
-      - name: 빌드 성공 디스코드 알림
-        if: success()
-        uses: tsickert/discord-webhook@v7.0.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          content: "# ⛴️ ${{ inputs.environment }} 스프링 컨테이너 빌드 완료!"
-          embed-description: |
-            *배포 환경*
-            `${process.env.ENVIRONMENT}`
-            *배포자*
-            `${process.env.AS_AUTHOR}`
-            *워크플로 링크*
-            `${process.env.AS_WORKFLOW_RUN}`
-          embed-color: 5896036
-
-      - name: 빌드 실패 디스코드 알림
-        if: failure()
-        uses: tsickert/discord-webhook@v7.0.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          content: "# 🌊 ${{ inputs.environment }} 스프링 컨테이너 빌드 실패!"
-          embed-description: |
-            *배포 환경*
-            `${process.env.ENVIRONMENT}`
-            *배포자*
-            `${process.env.AS_AUTHOR}`
-            *워크플로 링크*
-            `${process.env.AS_WORKFLOW_RUN}`
-          embed-color: 5896036
