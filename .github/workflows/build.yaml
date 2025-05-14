@@ -1,0 +1,113 @@
+name: 이미지 빌드 & 푸쉬
+on:
+  workflow_call:
+    outputs:
+      image-url:
+        value: ${{ jobs.build.outputs.image-url }}
+    inputs:
+      image-name:
+        required: true
+        type: string
+      image-tag:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+    secrets:
+      DOCKER_HUB_USERNAME:
+        required: true
+      DOCKER_HUB_TOKEN:
+        required: true
+      DISCORD_WEBHOOK_URL:
+        required: true
+
+jobs:
+  build:
+    runs-on: [ ubuntu-latest ]
+    name: 도커 이미지 빌드
+
+    outputs:
+      image-url: ${{ steps.build-image.outputs.image-url }}
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: GitHub 에서 레포 받아오기
+        uses: actions/checkout@v3
+
+      - name: JDK21 준비하기
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Docker Hub 로그인하기
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Gradle 준비하기
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: 이미지 빌드하고 푸쉬하기
+        id: build-image
+        run: |
+          chmod +x ./.github/jib.sh &&
+          chmod +x ./gradlew &&
+          /bin/bash ./.github/jib.sh \
+            ${{ inputs.image-name }} \
+            ${{ inputs.image-tag }} \
+            ${{ inputs.environment }} &&
+          echo "image-url=${{ inputs.image-name }}:${{ inputs.image-tag }}" >> $GITHUB_OUTPUT
+
+      - name: 빌드 성공 디스코드 알림
+        if: success()
+        uses: rguillaume/discord-action-embed@v1.0.2
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: "# ⛴️ ${{ inputs.environment }} 스프링 컨테이너 빌드 완료!"
+          embed: '[
+                    { 
+                      "color": 5896036,
+                      "title": "배포 환경",
+                      "description": "${process.env.ENVIRONMENT}",
+                    },
+                    { 
+                      "color": 5896036,
+                      "title": "배포자",
+                      "description": "${process.env.AS_AUTHOR}",
+                    },
+                    { 
+                      "color": 5896036,
+                      "title": "워크플로 링크",
+                      "description": "${process.env.AS_WORKFLOW_RUN}",
+                    }
+                  ]'
+
+      - name: 빌드 실패 디스코드 알림
+        if: failure()
+        uses: rguillaume/discord-action-embed@v1.0.2
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: "# 🌊 ${{ inputs.environment }} 스프링 컨테이너 빌드 실패!"
+          embed: '[
+                    { 
+                      "color": 13238309,
+                      "title": "배포 환경",
+                      "description": "${process.env.ENVIRONMENT}",
+                    },
+                    { 
+                      "color": 13238309,
+                      "title": "배포자",
+                      "description": "${process.env.AS_AUTHOR}",
+                    },
+                    { 
+                      "color": 13238309,
+                      "title": "워크플로 링크",
+                      "description": "${process.env.AS_WORKFLOW_RUN}",
+                    }
+                  ]'

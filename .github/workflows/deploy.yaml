@@ -1,0 +1,107 @@
+name: 개발 서비스 배포
+on:
+  workflow_call:
+    secrets:
+      SSH_HOST:
+        required: true
+      SSH_USERNAME:
+        required: true
+      SSH_PASSWORD:
+        required: true
+      SSH_PORT:
+        required: true
+      DISCORD_WEBHOOK_URL:
+        required: true
+    inputs:
+      environment:
+        required: true
+        type: string
+      image-tag:
+        required: true
+        type: string
+      image-name:
+        required: true
+        type: string
+      service-name:
+        required: true
+        type: string
+
+env:
+  IMAGE_TAG: 'latest'
+  ENVIRONMENT: ${{ inputs.environment || 'local' }}
+
+jobs:
+  deploy:
+    runs-on: [ ubuntu-latest ]
+    name: 서비스 배포
+    environment: ${{ inputs.environment }}
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: GitHub 에서 레포 받아오기
+        uses: actions/checkout@v3
+
+      - name: 배포 스크립트 실행
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/easip/server
+            sudo docker rm -f $(sudo docker ps -aq --filter "ancestor=${{ inputs.image-name }}")
+            sudo docker pull ${{ inputs.image-name }}:latest
+            sudo docker compose --env-file .env.${{ inputs.environment }} up -d
+            sudo docker image prune -f
+
+      - name: 빌드 성공 디스코드 알림
+        if: success()
+        uses: rguillaume/discord-action-embed@v1.0.2
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: "# 🏃‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 완료!"
+          embed: '[
+                    { 
+                      "color": 5896036,
+                      "title": "배포 환경",
+                      "description": "${process.env.ENVIRONMENT}",
+                    },
+                    { 
+                      "color": 5896036,
+                      "title": "배포자",
+                      "description": "${process.env.AS_AUTHOR}",
+                    },
+                    { 
+                      "color": 5896036,
+                      "title": "워크플로 링크",
+                      "description": "${process.env.AS_WORKFLOW_RUN}",
+                    }
+                  ]'
+
+      - name: 빌드 실패 디스코드 알림
+        if: failure()
+        uses: rguillaume/discord-action-embed@v1.0.2
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: "# 🧎‍♂️‍➡️ ${{ inputs.environment }} 스프링 배포 진행 실패!"
+          embed: '[
+                    { 
+                      "color": 13238309,
+                      "title": "배포 환경",
+                      "description": "${process.env.ENVIRONMENT}",
+                    },
+                    { 
+                      "color": 13238309,
+                      "title": "배포자",
+                      "description": "${process.env.AS_AUTHOR}",
+                    },
+                    { 
+                      "color": 13238309,
+                      "title": "워크플로 링크",
+                      "description": "${process.env.AS_WORKFLOW_RUN}",
+                    }
+                  ]'

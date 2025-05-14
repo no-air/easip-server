@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.1'
 	id 'io.spring.dependency-management' version '1.1.5'
+	id 'com.google.cloud.tools.jib' version '3.4.0'
 }
 
 group = 'com.noair'
@@ -59,3 +60,35 @@ tasks.named('test') {
 clean {
 	delete file('src/main/generated')
 }
+
+jib {
+	def imageTag = System.getenv("IMAGE_TAG")
+	def serverPort = "8080"
+	def activeProfile = System.getenv("ACTIVE_PROFILE")
+	def imageName = System.getenv("IMAGE_NAME")
+	from {
+		image = 'amazoncorretto:17-alpine3.17-jdk'
+	}
+	to {
+		image = imageName + ':latest'
+		tags = ['latest', imageTag]
+	}
+	container {
+		jvmFlags = [
+				'-Dspring.profiles.active=' + activeProfile,
+				'-Dserver.port=' + serverPort,
+				'-Xms3400M',
+				'-Xmx3400M',
+				'-XX:+UseG1GC',
+				'-XX:+UseContainerSupport',
+				'-XX:MaxGCPauseMillis=400',
+				'-XX:+DisableExplicitGC',
+				'-XX:+AlwaysPreTouch', //미리 영역 채우기
+				'-Duser.timezone=Asia/Seoul', //타임존
+				'-Dfile.encoding=UTF-8',
+				'-server'
+		]
+		ports = [serverPort]
+	}
+}
+
