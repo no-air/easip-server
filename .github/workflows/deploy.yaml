@@ -10,6 +10,10 @@ on:
         required: true
       SSH_PORT:
         required: true
+      DOCKER_HUB_USERNAME:
+        required: true
+      DOCKER_HUB_TOKEN:
+        required: true
       DISCORD_WEBHOOK:
         required: true
     inputs:
