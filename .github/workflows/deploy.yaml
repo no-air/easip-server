@@ -57,7 +57,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/easip/server
-            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker rm -f $(sudo docker ps -aq --filter "ancestor=${{ inputs.image-name }}")
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker rm -f $(sudo docker ps -aq --filter "ancestor=${{ inputs.image-name }}:latest")
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker pull ${{ inputs.image-name }}:latest
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker compose -f docker-compose-${{ inputs.environment }}.yml --env-file .env.${{ inputs.environment }} up -d
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker image prune -f
