@@ -26,12 +26,12 @@ public record CreateMemberRequest(
         @Schema(description = "생년월일 yyyy-MM-dd", example = "2001-01-25")
         LocalDate dayOfBirth,
 
-        @Schema(description = "선호 도시 ID목록", example = "[\"01HGW2N7EHJVJ4CJ999RRS2E\",\"01HGW2N7EHJVJ4CJ999RRS2E\"]")
-        List<String> likingCityIds,
+        @Schema(description = "선호구 ID목록", example = "[\"01HGW2N7EHJVJ4CJ999RRS2E\",\"01HGW2N7EHJVJ4CJ999RRS2E\"]")
+        List<String> likingDistrictIds,
 
         @NotBlank
-        @Schema(description = "거주 도시 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E")
-        String livingCityId,
+        @Schema(description = "거주구 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E")
+        String livingDistrictId,
 
         @Min(0)
         @Schema(description = "월소득 (KRW)", example = "5000000")

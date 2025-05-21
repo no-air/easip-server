@@ -1,0 +1,22 @@
+package com.noair.easip.house.controller.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "주택 핵심 정보")
+public record HouseSummaryResponse(
+        @Schema(description = "주택 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
+        String houseId,
+
+        @Schema(description = "주택 사진 URL")
+        String houseThumbnailUrl,
+
+        @Schema(description = "주택 이름", example = "신당역 신당큐브스테이트오피스텔")
+        String houseName,
+
+        @Schema(description = "청약 상태", example = "청약예정")
+        String subscriptionState,
+
+        @Schema(description = "구", example = "중구")
+        String districtName
+) {
+}
