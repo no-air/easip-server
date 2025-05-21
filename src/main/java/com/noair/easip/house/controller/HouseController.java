@@ -1,17 +1,13 @@
 package com.noair.easip.house.controller;
 
-import com.noair.easip.house.controller.dto.HouseDetailResponse;
 import com.noair.easip.house.controller.dto.HouseSummaryResponse;
-import com.noair.easip.util.PaginationDto;
-import com.noair.easip.util.PaginationResponse;
+import com.noair.easip.util.ArrayResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,13 +44,12 @@ public class HouseController {
             List.of(
                 HouseSummaryResponse.of(
                     "01HGW2N7EHJVJ4CJ999RRS2E97",
-                        "https://soco.seoul.go.kr/cohome/cmmn/file/fileDown.do?atchFileId=356f0ab9e20e42f88b4c06e1c18e46ad&fileSn=12",
-                        "KRX한국거래소",
-                        "청약예정",
-                        "영등포구",
-                        37.522875991257024,
-                        126.92803891060132
-                    )
+                    "https://soco.seoul.go.kr/cohome/cmmn/file/fileDown.do?atchFileId=356f0ab9e20e42f88b4c06e1c18e46ad&fileSn=12",
+                    "KRX한국거래소",
+                    "청약예정",
+                    "영등포구",
+                    37.522875991257024,
+                    126.92803891060132
                 ),
                 HouseSummaryResponse.of(
                     "01HGW2N7EHJVJ4CJ999RRS2E91",
