@@ -17,6 +17,12 @@ public record HouseSummaryResponse(
         String subscriptionState,
 
         @Schema(description = "구", example = "중구")
-        String districtName
+        String districtName,
+
+        @Schema(description = "위도", example = "37.5665")
+        Double latitude,
+
+        @Schema(description = "경도", example = "126.978")
+        Double longitude
 ) {
 }
