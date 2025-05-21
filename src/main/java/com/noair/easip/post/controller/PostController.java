@@ -73,6 +73,5 @@ List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto
                 page,
                 size
         );
-
     }
 }

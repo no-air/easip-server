@@ -48,35 +48,33 @@ public record MemberResponse(
         @Schema(description = "총자산가액 (KRW)", example = "150000000")
         Long assetPrice
 ) {
-    public static MemberResponse of(
-            String name,
-            WorkType workType,
-            LocalDate dayOfBirth,
-            List<String> likingCityIds,
-            String livingCityId,
-            Long myMonthlySalary,
-            Long familyMemberMonthlySalary,
-            Integer allFamilyMemberCount,
-            Position position,
-            Boolean hasCar,
-            Long carPrice,
-            Boolean hasHouse,
-            Long assetPrice
-    ) {
-        return new MemberResponse(
-                name,
-                workType,
-                dayOfBirth,
-                likingCityIds,
-                livingCityId,
-                myMonthlySalary,
-                familyMemberMonthlySalary,
-                allFamilyMemberCount,
-                position,
-                hasCar,
-                carPrice,
-                hasHouse,
-                assetPrice
-        );
-    }
+        public static MemberResponse of(
+                        String name,
+                        WorkType workType,
+                        LocalDate dayOfBirth,
+                        List<String> likingCityIds,
+                        String livingCityId,
+                        Long myMonthlySalary,
+                        Long familyMemberMonthlySalary,
+                        Integer allFamilyMemberCount,
+                        Position position,
+                        Boolean hasCar,
+                        Long carPrice,
+                        Boolean hasHouse,
+                        Long assetPrice) {
+                return new MemberResponse(
+                                name,
+                                workType,
+                                dayOfBirth,
+                                likingCityIds,
+                                livingCityId,
+                                myMonthlySalary,
+                                familyMemberMonthlySalary,
+                                allFamilyMemberCount,
+                                position,
+                                hasCar,
+                                carPrice,
+                                hasHouse,
+                                assetPrice);
+        }
 }
