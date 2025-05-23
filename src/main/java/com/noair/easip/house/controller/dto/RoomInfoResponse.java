@@ -7,8 +7,8 @@ public record RoomInfoResponse(
     @Schema(description = "방 타입", example = "원룸")
     String type,
 
-    @Schema(description = "공급면적", example = "52.23")
-    Double supplyArea,
+    @Schema(description = "전용면적", example = "52.23")
+    Double exclusiveArea,
 
     @Schema(description = "신청자격", example = "청년")
     String applicationEligibility,
@@ -17,26 +17,26 @@ public record RoomInfoResponse(
     Integer totalRoomCount,
 
     @Schema(description = "보증금", example = "100000000")
-    Integer deposit,
+    Double deposit,
 
     @Schema(description = "월세", example = "100000000")
-    Integer monthlyRent,
+    Double monthlyRent,
 
     @Schema(description = "(예상)관리비", example = "100000000")
-    Integer maintenanceFee
+    Double maintenanceFee
 ) {
     public static RoomInfoResponse of(
         String type,
-        Double supplyArea,
+        Double exclusiveArea,
         String applicationEligibility,
         Integer totalRoomCount,
-        Integer deposit,
-        Integer monthlyRent,
-        Integer maintenanceFee
+        Double deposit,
+        Double monthlyRent,
+        Double maintenanceFee
     ) {
         return new RoomInfoResponse(
             type,
-            supplyArea,
+            exclusiveArea,
             applicationEligibility,
             totalRoomCount,
             deposit,

@@ -16,4 +16,7 @@ public record ScheduleDto(
                                 "- 일정이 기간이 아닌 일시인 경우, end 값은 Null", example = "2023-12-06T12:00:00")
         String end
 ) {
+        public static ScheduleDto of(String title, String start, String end) {
+                return new ScheduleDto(title, start, end);
+        }
 }

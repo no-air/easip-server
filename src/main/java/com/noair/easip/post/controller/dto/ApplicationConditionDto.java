@@ -10,4 +10,7 @@ public record ApplicationConditionDto(
         @Schema(description = "해당 여부", example = "true")
         boolean isApplicable
 ) {
+        public static ApplicationConditionDto of(String content, boolean isApplicable) {
+                return new ApplicationConditionDto(content, isApplicable);
+        }
 }
