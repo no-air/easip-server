@@ -28,6 +28,7 @@ public enum ErrorCode {
     TOKEN_INVALID("AU0004", "유효하지 않은 토큰입니다."),
     TOKEN_EXPIRED("AU0005", "토큰이 만료됐습니다."),
     REFRESH_TOKEN_INVALID("AU0006", "유효하지 않은 리프레쉬 토큰입니다."),
+    TOKEN_REQUIRED("AU0007", "토큰이 필요합니다."),
 
     /**
      * Member Related Errors
