@@ -12,10 +12,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
@@ -23,6 +25,12 @@ public class JWTAuthenticationHandler extends OncePerRequestFilter {
     final WebProperties webProperties;
     final TokenGenerator tokenGenerator;
 
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return Arrays.stream(webProperties.urlWhitelists())
+                .map(AntPathRequestMatcher::new)
+                .anyMatch(matcher -> matcher.matches(request));
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, TokenNotValidException {
