@@ -28,7 +28,15 @@ public class SpringWebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "https://kwon-server.cc", "https://easip.kwon-server.cc", "https://dev.api.easip.kwon-server.cc", "https://prod.api.easip.kwon-server.cc", "https://link.easip.kwon-server.cc")
+                .allowedOrigins(
+                    "http://localhost:3000",
+                    "https://kwon-server.cc",
+                    "https://easip.kwon-server.cc",
+                    "https://dev.api.easip.kwon-server.cc",
+                    "https://prod.api.easip.kwon-server.cc",
+                    "https://link.easip.kwon-server.cc",
+                    "https://easip-web.pages.dev"
+                )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowCredentials(true)
                 .maxAge(3600);
