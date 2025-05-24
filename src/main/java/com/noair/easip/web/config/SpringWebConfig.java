@@ -30,6 +30,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                     "http://localhost:3000",
+                    "http://localhost:5173",
                     "https://kwon-server.cc",
                     "https://easip.kwon-server.cc",
                     "https://dev.api.easip.kwon-server.cc",
