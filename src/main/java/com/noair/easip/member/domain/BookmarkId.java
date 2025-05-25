@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookmarkId {
-    @Column(name = "MEMBER_ID")
+    @Column(name = "MEMBER_ID", columnDefinition = "CHAR(26)")
     private String memberId;
 
-    @Column(name = "HOUSE_ID")
+    @Column(name = "HOUSE_ID", columnDefinition = "CHAR(26)")
     private String houseId;
 } 

@@ -28,7 +28,7 @@ public class PostHouse extends BaseEntity {
     private PostHouseId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_ID")
+    @JoinColumn(name = "POST_ID", columnDefinition = "CHAR(26)")
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)

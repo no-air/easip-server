@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PostSchedule extends DeletableBaseEntity {
     @Id
-    @Column(name = "POST_SCHEDULE_ID")
+    @Column(name = "POST_SCHEDULE_ID", columnDefinition = "CHAR(26)")
     private String id;
 
     @Column(name = "ORDERING", nullable = false)

@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class HouseImage extends DeletableBaseEntity {
     @Id
-    @Column(name = "HOUSE_IMAGE_ID")
+    @Column(name = "HOUSE_IMAGE_ID", columnDefinition = "CHAR(26)")
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)

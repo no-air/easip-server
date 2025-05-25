@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostScheduleNotificationId {
-    @Column(name = "POST_SCHEDULE_ID")
+    @Column(name = "POST_SCHEDULE_ID", columnDefinition = "CHAR(26)")
     private String postScheduleId;
 
-    @Column(name = "MEMBER_ID")
+    @Column(name = "MEMBER_ID", columnDefinition = "CHAR(26)")
     private String memberId;
 } 

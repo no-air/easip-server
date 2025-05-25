@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class RoomRentalCondition extends BaseEntity {
     @Id
-    @Column(name = "RENTAL_CONDITION_ID")
+    @Column(name = "RENTAL_CONDITION_ID", columnDefinition = "CHAR(26)")
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)

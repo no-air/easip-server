@@ -21,7 +21,7 @@ import com.noair.easip.util.DeletableBaseEntity;
 @Getter
 public class Badge extends DeletableBaseEntity {
     @Id
-    @Column(name = "BADGE_ID")
+    @Column(name = "BADGE_ID", columnDefinition = "CHAR(26)")
     private String id;
 
     @Column(name = "NAME", nullable = false)

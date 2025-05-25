@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Post extends DeletableBaseEntity {
     @Id
-    @Column(name = "POST_ID")
+    @Column(name = "POST_ID", columnDefinition = "CHAR(26)")
     private String id;
 
     @Column(name = "TITLE", nullable = false)

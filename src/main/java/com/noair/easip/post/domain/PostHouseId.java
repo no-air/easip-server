@@ -9,18 +9,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostHouseId {
-    @Column(name = "HOUSE_ID")
+    @Column(name = "HOUSE_ID", nullable = false, columnDefinition = "CHAR(26)")
     private String houseId;
 
-    @Column(name = "SUPPLY_TYPE")
+    @Column(name = "SUPPLY_TYPE", nullable = false, columnDefinition = "VARCHAR(100)")
     private String supplyType;
 
-    @Column(name = "LIVING_TYPE")
+    @Column(name = "LIVING_TYPE", nullable = false, columnDefinition = "VARCHAR(100)")
     private String livingType;
 
-    @Column(name = "DEPOSIT")
+    @Column(name = "DEPOSIT", nullable = false)
     private Double deposit;
 
-    @Column(name = "MONTHLY_RENT")
+    @Column(name = "MONTHLY_RENT", nullable = false)
     private Double monthlyRent;
 } 

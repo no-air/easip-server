@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class House extends DeletableBaseEntity {
     @Id
-    @Column(name = "HOUSE_ID")
+    @Column(name = "HOUSE_ID", columnDefinition = "CHAR(26)")
     private String id;
 
     @Column(name = "NAME", nullable = false)

@@ -21,7 +21,7 @@ import com.noair.easip.util.DeletableBaseEntity;
 @Getter
 public class District extends DeletableBaseEntity {
     @Id
-    @Column(name = "DISTRICT_ID")
+    @Column(name = "DISTRICT_ID", columnDefinition = "CHAR(26)")
     private String id;
 
     @Column(name = "NAME", nullable = false)
