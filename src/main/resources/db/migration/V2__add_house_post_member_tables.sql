@@ -283,4 +283,4 @@ ALTER TABLE social_auth
     ADD CONSTRAINT fk_social_auth_member FOREIGN KEY (member_id) REFERENCES member(id);
 
 -- 인덱스 생성
-CREATE INDEX IF NOT EXISTS idx_post_schedule_start_date ON post_schedule (start_date);
+CREATE INDEX idx_post_schedule_start_date ON post_schedule (start_date);
