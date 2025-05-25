@@ -1,262 +1,286 @@
--- HOUSE 테이블 생성
-create table house (
-    house_id varchar(255) not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    deleted_at timestamp(6),
-    name varchar(255) not null,
-    address varchar(255) not null,
-    near_station varchar(255),
-    developer_name varchar(255),
-    constructor_name varchar(255),
-    first_recruitment_date varchar(255),
-    move_in_date varchar(255),
-    general_supply_count varchar(255) not null,
-    special_supply_count varchar(255) not null,
-    latitude varchar(255) not null,
-    longitude varchar(255) not null,
-    primary key (house_id)
+-- 연결 테이블 먼저 삭제
+DROP TABLE IF EXISTS POST_SCHEDULE_NOTIFICATION;
+DROP TABLE IF EXISTS POST_HOUSE;
+DROP TABLE IF EXISTS POST_BADGE;
+DROP TABLE IF EXISTS HOUSE_BADGE;
+DROP TABLE IF EXISTS HOUSE_DISTRICT;
+DROP TABLE IF EXISTS MEMBER_DISTRICT;
+DROP TABLE IF EXISTS BOOKMARK;
+DROP TABLE IF EXISTS MEMBER_DEVICE;
+
+-- 기본 테이블 삭제
+DROP TABLE IF EXISTS POST_SCHEDULE;
+DROP TABLE IF EXISTS ROOM_RENTAL_CONDITION;
+DROP TABLE IF EXISTS HOUSE_IMAGE;
+DROP TABLE IF EXISTS SOCIAL_AUTH;
+DROP TABLE IF EXISTS POST;
+DROP TABLE IF EXISTS HOUSE;
+DROP TABLE IF EXISTS BADGE;
+DROP TABLE IF EXISTS DISTRICT;
+DROP TABLE IF EXISTS MEMBER;
+
+-- badge 테이블
+CREATE TABLE IF NOT EXISTS badge (
+    badge_id CHAR(26) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    deleted_at TIMESTAMP(6),
+    is_deleted BOOLEAN NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (badge_id)
 );
 
--- HOUSE_IMAGE 테이블 생성
-create table house_image (
-    house_image_id varchar(255) not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    deleted_at timestamp(6),
-    house_id varchar(255) not null,
-    url varchar(255) not null,
-    house_image_type varchar(255) not null,
-    ordering varchar(255) not null,
-    primary key (house_image_id)
+-- bookmark 테이블
+CREATE TABLE IF NOT EXISTS bookmark (
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    house_id VARCHAR(255) NOT NULL,
+    member_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (house_id, member_id)
 );
 
--- ROOM_RENTAL_CONDITION 테이블 생성
-create table room_rental_condition (
-    rental_condition_id varchar(255) not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    house_id varchar(255) not null,
-    supply_type varchar(255) not null,
-    room_type varchar(255) not null,
-    exclusive_area double precision not null,
-    application_eligibility varchar(255) not null,
-    total_room_count integer not null,
-    deposit double precision not null,
-    monthly_rent double precision not null,
-    maintenance_fee double precision not null,
-    primary key (rental_condition_id)
+-- district 테이블
+CREATE TABLE IF NOT EXISTS district (
+    district_id CHAR(26) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    deleted_at TIMESTAMP(6),
+    is_deleted BOOLEAN NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (district_id)
 );
 
--- BADGE 테이블 생성
-create table badge (
-    badge_id varchar(255) not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    deleted_at timestamp(6),
-    name varchar(255) not null,
-    primary key (badge_id)
+-- house 테이블
+CREATE TABLE IF NOT EXISTS house (
+    house_id CHAR(26) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    deleted_at TIMESTAMP(6),
+    is_deleted BOOLEAN NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    constructor_name VARCHAR(255),
+    developer_name VARCHAR(255),
+    first_recruitment_date VARCHAR(255),
+    general_supply_count VARCHAR(255) NOT NULL,
+    latitude VARCHAR(255) NOT NULL,
+    longitude VARCHAR(255) NOT NULL,
+    move_in_date VARCHAR(255),
+    name VARCHAR(255) NOT NULL,
+    near_station VARCHAR(255),
+    special_supply_count VARCHAR(255) NOT NULL,
+    PRIMARY KEY (house_id)
 );
 
--- DISTRICT 테이블 생성
-create table district (
-    district_id varchar(255) not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    deleted_at timestamp(6),
-    name varchar(255) not null,
-    primary key (district_id)
+-- house_badge 테이블
+CREATE TABLE IF NOT EXISTS house_badge (
+    house_id CHAR(26) NOT NULL,
+    badge_id CHAR(26) NOT NULL,
+    PRIMARY KEY (house_id, badge_id)
 );
 
--- POST 테이블 생성
-create table post (
-    post_id varchar(255) not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    deleted_at timestamp(6),
-    title varchar(255) not null,
-    primary key (post_id)
+-- house_district 테이블
+CREATE TABLE IF NOT EXISTS house_district (
+    house_id CHAR(26) NOT NULL,
+    district_id CHAR(26) NOT NULL,
+    PRIMARY KEY (house_id, district_id)
 );
 
--- POST_SCHEDULE 테이블 생성
-create table post_schedule (
-    post_schedule_id varchar(255) not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    deleted_at timestamp(6),
-    ordering integer not null,
-    title varchar(255) not null,
-    start_date date,
-    start_datetime varchar(255),
-    start_note varchar(255),
-    end_datetime varchar(255),
-    end_note varchar(255),
-    post_id varchar(255) not null,
-    primary key (post_schedule_id)
+-- house_image 테이블
+CREATE TABLE IF NOT EXISTS house_image (
+    house_image_id CHAR(26) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    deleted_at TIMESTAMP(6),
+    is_deleted BOOLEAN NOT NULL,
+    house_image_type TINYINT NOT NULL CHECK (house_image_type BETWEEN 0 AND 1),
+    ordering VARCHAR(255) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    house_id CHAR(26) NOT NULL,
+    PRIMARY KEY (house_image_id)
 );
 
--- POST_HOUSE 테이블 생성
-create table post_house (
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    deleted_at timestamp(6),
-    house_id varchar(255) not null,
-    supply_type varchar(255) not null,
-    living_type varchar(255) not null,
-    deposit double precision,
-    monthly_rent double precision,
-    post_id varchar(255),
-    supply_room_count integer not null,
-    primary key (house_id, supply_type, living_type, deposit, monthly_rent)
+-- member 테이블
+CREATE TABLE IF NOT EXISTS member (
+    id CHAR(26) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    deleted_at TIMESTAMP(6),
+    is_deleted BOOLEAN NOT NULL,
+    all_family_member_count INT NOT NULL,
+    asset_price DOUBLE,
+    car_price BIGINT,
+    date_of_birth DATE NOT NULL,
+    family_member_monthly_salary DOUBLE NOT NULL,
+    has_car BOOLEAN NOT NULL,
+    my_mothly_salary DOUBLE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    position TINYINT NOT NULL CHECK (position BETWEEN 0 AND 2),
+    living_district_id CHAR(26) NOT NULL,
+    PRIMARY KEY (id)
 );
 
--- POST_SCHEDULE_NOTIFICATION 테이블 생성
-create table post_schedule_notification (
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    deleted_at timestamp(6),
-    post_schedule_id varchar(255) not null,
-    member_id varchar(255) not null,
-    primary key (post_schedule_id, member_id)
+-- member_district 테이블
+CREATE TABLE IF NOT EXISTS member_district (
+    member_id CHAR(26) NOT NULL,
+    district_id CHAR(26) NOT NULL,
+    PRIMARY KEY (member_id, district_id)
 );
 
--- BOOKMARK 테이블 생성
-create table bookmark (
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    deleted_at timestamp(6),
-    member_id varchar(255) not null,
-    house_id varchar(255) not null,
-    primary key (member_id, house_id)
+-- member_device 테이블
+CREATE TABLE IF NOT EXISTS member_device (
+    fcm_token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    member_id CHAR(26) NOT NULL,
+    PRIMARY KEY (fcm_token)
 );
 
--- MEMBER_DEVICE 테이블 생성
-create table member_device (
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    fcm_token varchar(255) not null,
-    member_id varchar(255) not null,
-    primary key (fcm_token)
+-- post 테이블
+CREATE TABLE IF NOT EXISTS post (
+    post_id CHAR(26) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    deleted_at TIMESTAMP(6),
+    is_deleted BOOLEAN NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    PRIMARY KEY (post_id)
 );
 
--- HOUSE_DISTRICT 연결 테이블 생성
-create table house_district (
-    house_id varchar(255) not null,
-    district_id varchar(255) not null,
-    primary key (house_id, district_id)
+-- post_badge 테이블
+CREATE TABLE IF NOT EXISTS post_badge (
+    post_id CHAR(26) NOT NULL,
+    badge_id CHAR(26) NOT NULL,
+    PRIMARY KEY (post_id, badge_id)
 );
 
--- HOUSE_BADGE 연결 테이블 생성
-create table house_badge (
-    house_id varchar(255) not null,
-    badge_id varchar(255) not null,
-    primary key (house_id, badge_id)
+-- post_house 테이블
+CREATE TABLE IF NOT EXISTS post_house (
+    deposit DOUBLE NOT NULL,
+    living_type VARCHAR(100) NOT NULL,
+    monthly_rent DOUBLE NOT NULL,
+    supply_type VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    supply_room_count INT NOT NULL,
+    house_id VARCHAR(255) NOT NULL,
+    post_id CHAR(26),
+    PRIMARY KEY (deposit, house_id, living_type, monthly_rent, supply_type)
 );
 
--- POST_BADGE 연결 테이블 생성
-create table post_badge (
-    post_id varchar(255) not null,
-    badge_id varchar(255) not null,
-    primary key (post_id, badge_id)
+-- post_schedule 테이블
+CREATE TABLE IF NOT EXISTS post_schedule (
+    post_schedule_id CHAR(26) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    deleted_at TIMESTAMP(6),
+    is_deleted BOOLEAN NOT NULL,
+    end_datetime VARCHAR(255),
+    end_note VARCHAR(255),
+    ordering INT NOT NULL,
+    start_date DATE,
+    start_datetime VARCHAR(255),
+    start_note VARCHAR(255),
+    title VARCHAR(255) NOT NULL,
+    post_id CHAR(26) NOT NULL,
+    PRIMARY KEY (post_schedule_id)
 );
 
--- MEMBER_DISTRICT 연결 테이블 생성
-create table member_district (
-    member_id varchar(255) not null,
-    district_id varchar(255) not null,
-    primary key (member_id, district_id)
+-- post_schedule_notification 테이블
+CREATE TABLE IF NOT EXISTS post_schedule_notification (
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    member_id VARCHAR(255) NOT NULL,
+    post_schedule_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (member_id, post_schedule_id)
 );
 
--- 외래 키 제약 조건 추가
-alter table house_image
-    add constraint fk_house_image_house
-    foreign key (house_id)
-    references house(house_id);
+-- room_rental_condition 테이블
+CREATE TABLE IF NOT EXISTS room_rental_condition (
+    rental_condition_id CHAR(26) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    application_eligibility ENUM('NEWLY_MARRIED_COUPLE','PRE_NEWLY_MARRIED_COUPLE','YOUNG_MAN') NOT NULL,
+    deposit DOUBLE NOT NULL,
+    exclusive_area DOUBLE NOT NULL,
+    maintenance_fee DOUBLE NOT NULL,
+    monthly_rent DOUBLE NOT NULL,
+    room_type VARCHAR(255) NOT NULL,
+    supply_type VARCHAR(255) NOT NULL,
+    total_room_count INT NOT NULL,
+    house_id CHAR(26) NOT NULL,
+    PRIMARY KEY (rental_condition_id)
+);
 
-alter table room_rental_condition
-    add constraint fk_room_rental_condition_house
-    foreign key (house_id)
-    references house(house_id);
+-- social_auth 테이블
+CREATE TABLE IF NOT EXISTS social_auth (
+    identifier VARCHAR(255) NOT NULL,
+    provider TINYINT NOT NULL CHECK (provider BETWEEN 0 AND 1),
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
+    member_id CHAR(26) NOT NULL,
+    PRIMARY KEY (identifier, provider)
+);
 
-alter table post_schedule
-    add constraint fk_post_schedule_post
-    foreign key (post_id)
-    references post(post_id);
+-- 외래 키 제약조건
+ALTER TABLE IF EXISTS member
+    ADD CONSTRAINT fk_member_living_district FOREIGN KEY (living_district_id) REFERENCES district(district_id);
 
-alter table post_house
-    add constraint fk_post_house_post
-    foreign key (post_id)
-    references post(post_id);
+ALTER TABLE IF EXISTS member_device
+    ADD CONSTRAINT fk_member_device_member FOREIGN KEY (member_id) REFERENCES member(id);
 
-alter table post_house
-    add constraint fk_post_house_house
-    foreign key (house_id)
-    references house(house_id);
+ALTER TABLE IF EXISTS bookmark
+    ADD CONSTRAINT fk_bookmark_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-alter table post_schedule_notification
-    add constraint fk_post_schedule_notification_post_schedule
-    foreign key (post_schedule_id)
-    references post_schedule(post_schedule_id);
+ALTER TABLE IF EXISTS bookmark
+    ADD CONSTRAINT fk_bookmark_member FOREIGN KEY (member_id) REFERENCES member(id);
 
-alter table post_schedule_notification
-    add constraint fk_post_schedule_notification_member
-    foreign key (member_id)
-    references member(id);
+ALTER TABLE IF EXISTS house_badge
+    ADD CONSTRAINT fk_house_badge_badge FOREIGN KEY (badge_id) REFERENCES badge(badge_id);
 
-alter table bookmark
-    add constraint fk_bookmark_member
-    foreign key (member_id)
-    references member(id);
+ALTER TABLE IF EXISTS house_badge
+    ADD CONSTRAINT fk_house_badge_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-alter table bookmark
-    add constraint fk_bookmark_house
-    foreign key (house_id)
-    references house(house_id);
+ALTER TABLE IF EXISTS house_district
+    ADD CONSTRAINT fk_house_district_district FOREIGN KEY (district_id) REFERENCES district(district_id);
 
-alter table member_device
-    add constraint fk_member_device_member
-    foreign key (member_id)
-    references member(id);
+ALTER TABLE IF EXISTS house_district
+    ADD CONSTRAINT fk_house_district_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-alter table house_district
-    add constraint fk_house_district_house
-    foreign key (house_id)
-    references house(house_id);
+ALTER TABLE IF EXISTS house_image
+    ADD CONSTRAINT fk_house_image_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-alter table house_district
-    add constraint fk_house_district_district
-    foreign key (district_id)
-    references district(district_id);
+ALTER TABLE IF EXISTS member_district
+    ADD CONSTRAINT fk_member_district_district FOREIGN KEY (district_id) REFERENCES district(district_id);
 
-alter table house_badge
-    add constraint fk_house_badge_house
-    foreign key (house_id)
-    references house(house_id);
+ALTER TABLE IF EXISTS member_district
+    ADD CONSTRAINT fk_member_district_member FOREIGN KEY (member_id) REFERENCES member(id);
 
-alter table house_badge
-    add constraint fk_house_badge_badge
-    foreign key (badge_id)
-    references badge(badge_id);
+ALTER TABLE IF EXISTS post_badge
+    ADD CONSTRAINT fk_post_badge_badge FOREIGN KEY (badge_id) REFERENCES badge(badge_id);
 
-alter table post_badge
-    add constraint fk_post_badge_post
-    foreign key (post_id)
-    references post(post_id);
+ALTER TABLE IF EXISTS post_badge
+    ADD CONSTRAINT fk_post_badge_post FOREIGN KEY (post_id) REFERENCES post(post_id);
 
-alter table post_badge
-    add constraint fk_post_badge_badge
-    foreign key (badge_id)
-    references badge(badge_id);
+ALTER TABLE IF EXISTS post_house
+    ADD CONSTRAINT fk_post_house_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-alter table member_district
-    add constraint fk_member_district_member
-    foreign key (member_id)
-    references member(id);
+ALTER TABLE IF EXISTS post_house
+    ADD CONSTRAINT fk_post_house_post FOREIGN KEY (post_id) REFERENCES post(post_id);
 
-alter table member_district
-    add constraint fk_member_district_district
-    foreign key (district_id)
-    references district(district_id);
+ALTER TABLE IF EXISTS post_schedule
+    ADD CONSTRAINT fk_post_schedule_post FOREIGN KEY (post_id) REFERENCES post(post_id);
+
+ALTER TABLE IF EXISTS post_schedule_notification
+    ADD CONSTRAINT fk_post_schedule_notification_member FOREIGN KEY (member_id) REFERENCES member(id);
+
+ALTER TABLE IF EXISTS post_schedule_notification
+    ADD CONSTRAINT fk_post_schedule_notification_post_schedule FOREIGN KEY (post_schedule_id) REFERENCES post_schedule(post_schedule_id);
+
+ALTER TABLE IF EXISTS room_rental_condition
+    ADD CONSTRAINT fk_room_rental_condition_house FOREIGN KEY (house_id) REFERENCES house(house_id);
+
+ALTER TABLE IF EXISTS social_auth
+    ADD CONSTRAINT fk_social_auth_member FOREIGN KEY (member_id) REFERENCES member(id);
 
 -- 인덱스 생성
-create index idx_post_schedule_start_date on post_schedule(start_date); 
+CREATE INDEX IF NOT EXISTS idx_post_schedule_start_date ON post_schedule (start_date);
