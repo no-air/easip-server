@@ -222,64 +222,64 @@ CREATE TABLE IF NOT EXISTS social_auth (
 );
 
 -- 외래 키 제약조건
-ALTER TABLE IF EXISTS member
+ALTER TABLE member
     ADD CONSTRAINT fk_member_living_district FOREIGN KEY (living_district_id) REFERENCES district(district_id);
 
-ALTER TABLE IF EXISTS member_device
+ALTER TABLE member_device
     ADD CONSTRAINT fk_member_device_member FOREIGN KEY (member_id) REFERENCES member(id);
 
-ALTER TABLE IF EXISTS bookmark
+ALTER TABLE bookmark
     ADD CONSTRAINT fk_bookmark_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-ALTER TABLE IF EXISTS bookmark
+ALTER TABLE bookmark
     ADD CONSTRAINT fk_bookmark_member FOREIGN KEY (member_id) REFERENCES member(id);
 
-ALTER TABLE IF EXISTS house_badge
+ALTER TABLE house_badge
     ADD CONSTRAINT fk_house_badge_badge FOREIGN KEY (badge_id) REFERENCES badge(badge_id);
 
-ALTER TABLE IF EXISTS house_badge
+ALTER TABLE house_badge
     ADD CONSTRAINT fk_house_badge_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-ALTER TABLE IF EXISTS house_district
+ALTER TABLE house_district
     ADD CONSTRAINT fk_house_district_district FOREIGN KEY (district_id) REFERENCES district(district_id);
 
-ALTER TABLE IF EXISTS house_district
+ALTER TABLE house_district
     ADD CONSTRAINT fk_house_district_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-ALTER TABLE IF EXISTS house_image
+ALTER TABLE house_image
     ADD CONSTRAINT fk_house_image_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-ALTER TABLE IF EXISTS member_district
+ALTER TABLE member_district
     ADD CONSTRAINT fk_member_district_district FOREIGN KEY (district_id) REFERENCES district(district_id);
 
-ALTER TABLE IF EXISTS member_district
+ALTER TABLE member_district
     ADD CONSTRAINT fk_member_district_member FOREIGN KEY (member_id) REFERENCES member(id);
 
-ALTER TABLE IF EXISTS post_badge
+ALTER TABLE post_badge
     ADD CONSTRAINT fk_post_badge_badge FOREIGN KEY (badge_id) REFERENCES badge(badge_id);
 
-ALTER TABLE IF EXISTS post_badge
+ALTER TABLE post_badge
     ADD CONSTRAINT fk_post_badge_post FOREIGN KEY (post_id) REFERENCES post(post_id);
 
-ALTER TABLE IF EXISTS post_house
+ALTER TABLE post_house
     ADD CONSTRAINT fk_post_house_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-ALTER TABLE IF EXISTS post_house
+ALTER TABLE post_house
     ADD CONSTRAINT fk_post_house_post FOREIGN KEY (post_id) REFERENCES post(post_id);
 
-ALTER TABLE IF EXISTS post_schedule
+ALTER TABLE post_schedule
     ADD CONSTRAINT fk_post_schedule_post FOREIGN KEY (post_id) REFERENCES post(post_id);
 
-ALTER TABLE IF EXISTS post_schedule_notification
+ALTER TABLE post_schedule_notification
     ADD CONSTRAINT fk_post_schedule_notification_member FOREIGN KEY (member_id) REFERENCES member(id);
 
-ALTER TABLE IF EXISTS post_schedule_notification
+ALTER TABLE post_schedule_notification
     ADD CONSTRAINT fk_post_schedule_notification_post_schedule FOREIGN KEY (post_schedule_id) REFERENCES post_schedule(post_schedule_id);
 
-ALTER TABLE IF EXISTS room_rental_condition
+ALTER TABLE room_rental_condition
     ADD CONSTRAINT fk_room_rental_condition_house FOREIGN KEY (house_id) REFERENCES house(house_id);
 
-ALTER TABLE IF EXISTS social_auth
+ALTER TABLE social_auth
     ADD CONSTRAINT fk_social_auth_member FOREIGN KEY (member_id) REFERENCES member(id);
 
 -- 인덱스 생성
