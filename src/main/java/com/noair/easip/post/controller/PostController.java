@@ -152,6 +152,7 @@ public class PostController {
                     ),
                     List.of(
                         RoomRentalConditionResponse.of(
+                            "청년",
                             "A타입 일반공급",
                             52.23,
                             50,
@@ -161,6 +162,7 @@ public class PostController {
                             1500000.0
                         ),
                         RoomRentalConditionResponse.of(
+                            "청년",
                             "B타입 일반공급",
                             72.45,
                             50,
@@ -170,6 +172,7 @@ public class PostController {
                             2000000.0
                         ),
                         RoomRentalConditionResponse.of(
+                            "청년,신혼부부",
                             "A타입 특별공급",
                             52.23,
                             25,
@@ -179,6 +182,7 @@ public class PostController {
                             1500000.0
                         ),
                         RoomRentalConditionResponse.of(
+                            "청년,신혼부부",
                             "B타입 특별공급",
                             72.45,
                             25,
@@ -213,6 +217,7 @@ public class PostController {
                     ),
                     List.of(
                         RoomRentalConditionResponse.of(
+                            "청년",
                             "A타입 일반공급",
                             54.23,
                             50,
@@ -222,6 +227,7 @@ public class PostController {
                             150000.0
                         ),
                         RoomRentalConditionResponse.of(
+                            "청년",
                             "B타입 일반공급",
                             74.45,
                             50,
@@ -231,6 +237,7 @@ public class PostController {
                             200000.0
                         ),
                         RoomRentalConditionResponse.of(
+                            "청년,신혼부부",
                             "A타입 특별공급",
                             54.23,
                             25,
@@ -240,6 +247,7 @@ public class PostController {
                             150000.0
                         ),
                         RoomRentalConditionResponse.of(
+                            "청년,신혼부부",
                             "B타입 특별공급",
                             74.45,
                             25,
