@@ -57,7 +57,7 @@ public class AuthController {
     ) {
         // oAuth 로그인 검증 (Apple 등)
         String identifier = authService.getIdentifierFromSocialToken(provider, request.socialToken());
-        Optional<Member> member = memberService.getMemberBySocialAuthKey(provider, identifier);
+        Optional<Member> member = memberService.getMemberBySocialAuthId(provider, identifier);
         if (member.isEmpty()) { // 회원가입이 안된 경우 임시 토큰 발행
             TokenPair temporaryTokenPair = tokenGenerator.generateTemporaryTokenPair(provider, identifier);
             return AuthResultResponse.of(temporaryTokenPair, true);
@@ -101,7 +101,7 @@ public class AuthController {
         ) && tokenType == TokenType.TEMPORARY) {
             // identifier로 이미 있는 사용자인지 확인
             SocialLoginProvider socialLoginProvider = SocialLoginProvider.fromString(provider);
-            Optional<Member> preExistsMember = memberService.getMemberBySocialAuthKey(socialLoginProvider, userId);
+            Optional<Member> preExistsMember = memberService.getMemberBySocialAuthId(socialLoginProvider, userId);
             if (preExistsMember.isPresent()) {
                 throw new MemberAlreadyExistsException();
             }

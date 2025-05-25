@@ -3,7 +3,6 @@ package com.noair.easip.member.controller;
 import com.noair.easip.auth.controller.LoginMemberId;
 import com.noair.easip.member.controller.dto.response.MemberResponse;
 import com.noair.easip.member.domain.Position;
-import com.noair.easip.member.domain.WorkType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,7 +28,6 @@ public class MeController {
             @Parameter(hidden = true) @LoginMemberId String loginMemberId) {
         return MemberResponse.of(
                 "나나미",
-                WorkType.UNIVERSITY_STUDENT,
                 LocalDate.of(2001, 1, 25),
                 List.of("01HGW2N7EHJVJ4CJ999RRS2E", "01HGW2N7EHJVJ4CJ999RRS2E"),
                 "01HGW2N7EHJVJ4CJ999RRS2E",
@@ -39,7 +37,6 @@ public class MeController {
                 Position.YOUNG_MAN,
                 false,
                 30000000L,
-                false,
                 150000000L);
     }
 }

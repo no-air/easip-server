@@ -4,7 +4,8 @@ import com.noair.easip.auth.config.properties.SocialLoginProvider;
 import com.noair.easip.member.controller.dto.CreateUserDto;
 import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.domain.SocialAuth;
-import com.noair.easip.member.domain.SocialAuthKey;
+import com.noair.easip.member.domain.SocialAuthId;
+import com.noair.easip.member.domain.SocialAuthId;
 import com.noair.easip.member.repository.MemberRepository;
 import com.noair.easip.member.repository.SocialAuthRepository;
 import com.noair.easip.util.StringGenerator;
@@ -31,16 +32,15 @@ public class MemberService {
 
         //사용자 소셜 로그인 정보 링크
         SocialAuth socialMember = new SocialAuth(
-                createUserDto.provider(),
-                createUserDto.identifier(),
+                new SocialAuthId(createUserDto.provider(), createUserDto.identifier()),
                 member);
         socialAuthRepository.save(socialMember);
 
         return member;
     }
 
-    public Optional<Member> getMemberBySocialAuthKey(SocialLoginProvider provider, String identifier) {
-        SocialAuthKey key = new SocialAuthKey(provider, identifier);
+    public Optional<Member> getMemberBySocialAuthId(SocialLoginProvider provider, String identifier) {
+        SocialAuthId key = new SocialAuthId(provider, identifier);
         return socialAuthRepository
                 .findById(key)
                 .map(SocialAuth::getMember);

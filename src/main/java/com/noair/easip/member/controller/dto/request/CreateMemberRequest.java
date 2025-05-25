@@ -1,7 +1,6 @@
 package com.noair.easip.member.controller.dto.request;
 
 import com.noair.easip.member.domain.Position;
-import com.noair.easip.member.domain.WorkType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -17,10 +16,6 @@ public record CreateMemberRequest(
         @Size(min = 1)
         @Schema(description = "회원 이름", example = "나나미")
         String name,
-
-        @NotNull
-        @Schema(description = "근무 상태", example = "UNIVERSITY_STUDENT")
-        WorkType workType,
 
         @NotNull
         @Schema(description = "생년월일 yyyy-MM-dd", example = "2001-01-25")

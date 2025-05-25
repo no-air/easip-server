@@ -1,24 +1,19 @@
 package com.noair.easip.member.domain;
 
-import com.noair.easip.auth.config.properties.SocialLoginProvider;
+import com.noair.easip.util.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@IdClass(SocialAuthKey.class)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(callSuper = false)
+@Table(name = "SOCIAL_AUTH")
 @AllArgsConstructor
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
+@EqualsAndHashCode(callSuper = false)
+@Builder
 @Getter
 public class SocialAuth extends BaseEntity {
-    @Id
-    @Enumerated(EnumType.STRING)
-    @Column(name = "provider")
-    private SocialLoginProvider provider;
-
-    @Id
-    @Column(name = "identifier")
-    private String identifier;
+    @EmbeddedId
+    private SocialAuthId id;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)

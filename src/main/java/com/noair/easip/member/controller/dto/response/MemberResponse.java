@@ -1,7 +1,6 @@
 package com.noair.easip.member.controller.dto.response;
 
 import com.noair.easip.member.domain.Position;
-import com.noair.easip.member.domain.WorkType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
@@ -11,9 +10,6 @@ import java.util.List;
 public record MemberResponse(
         @Schema(description = "회원 이름", example = "나나미")
         String name,
-
-        @Schema(description = "근무 상태", example = "UNIVERSITY_STUDENT")
-        WorkType workType,
 
         @Schema(description = "생년월일 yyyy-MM-dd", example = "2001-01-25")
         LocalDate dayOfBirth,
@@ -42,39 +38,32 @@ public record MemberResponse(
         @Schema(description = "자동차가액 (KRW)", example = "30000000")
         Long carPrice,
 
-        @Schema(description = "주택 보유 여부", example = "false")
-        Boolean hasHouse,
-
         @Schema(description = "총자산가액 (KRW)", example = "150000000")
         Long assetPrice
 ) {
         public static MemberResponse of(
-                        String name,
-                        WorkType workType,
-                        LocalDate dayOfBirth,
-                        List<String> likingCityIds,
-                        String livingCityId,
-                        Long myMonthlySalary,
-                        Long familyMemberMonthlySalary,
-                        Integer allFamilyMemberCount,
-                        Position position,
-                        Boolean hasCar,
-                        Long carPrice,
-                        Boolean hasHouse,
-                        Long assetPrice) {
-                return new MemberResponse(
-                                name,
-                                workType,
-                                dayOfBirth,
-                                likingCityIds,
-                                livingCityId,
-                                myMonthlySalary,
-                                familyMemberMonthlySalary,
-                                allFamilyMemberCount,
-                                position,
-                                hasCar,
-                                carPrice,
-                                hasHouse,
-                                assetPrice);
+                String name,
+                LocalDate dayOfBirth,
+                List<String> likingCityIds,
+                String livingCityId,
+                Long myMonthlySalary,
+                Long familyMemberMonthlySalary,
+                Integer allFamilyMemberCount,
+                Position position,
+                Boolean hasCar,
+                Long carPrice,
+                Long assetPrice) {
+        return new MemberResponse(
+                        name,
+                        dayOfBirth,
+                        likingCityIds,
+                        livingCityId,
+                        myMonthlySalary,
+                        familyMemberMonthlySalary,
+                        allFamilyMemberCount,
+                        position,
+                        hasCar,
+                        carPrice,
+                        assetPrice);
         }
 }

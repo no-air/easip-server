@@ -1,4 +1,4 @@
-package com.noair.easip.member.domain;
+package com.noair.easip.util;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
