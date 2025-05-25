@@ -59,11 +59,6 @@ public record CreateMemberRequest(
         @Schema(description = "자동차가액 (KRW)", example = "30000000")
         Long carPrice,
 
-
-        @NotNull
-        @Schema(description = "주택 보유 여부", example = "false")
-        Boolean hasHouse,
-
         @NotNull
         @Min(1)
         @Schema(description = "총자산가액 (KRW)", example = "150000000")
