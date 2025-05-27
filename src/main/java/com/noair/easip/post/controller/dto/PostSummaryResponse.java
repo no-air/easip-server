@@ -17,14 +17,8 @@ public record PostSummaryResponse(
         @Schema(description = "공고 태그", example = "강서구, 민감임대, 청약중")
         List<String> tags,
 
-        @Schema(description = "지원조건 목록", example = "[\"개인무주택\", \"소득기준 2억원 이내(1인가구 기준)\"]")
-        List<ApplicationConditionDto> applicationConditionDtos,
-
         @Schema(description = "주택 요약 정보")
         List<HouseSummaryResponse> houseSummaryResponses,
-
-        @Schema(description = "집세 목록")
-        List<RentDto> rentDtos,
 
         @Schema(description = "공급 일정 목록")
         List<ScheduleDto> scheduleDtos
@@ -33,18 +27,14 @@ public record PostSummaryResponse(
             String postId,
             String title,
             List<String> tags,
-            List<ApplicationConditionDto> applicationConditionDtos,
             List<HouseSummaryResponse> houseSummaryResponses,
-            List<RentDto> rentDtos,
             List<ScheduleDto> scheduleDtos
     ) {
         return new PostSummaryResponse(
                 postId,
                 title,
                 tags,
-                applicationConditionDtos,
                 houseSummaryResponses,
-                rentDtos,
                 scheduleDtos
         );
     }

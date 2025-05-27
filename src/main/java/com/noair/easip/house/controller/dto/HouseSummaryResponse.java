@@ -1,6 +1,9 @@
 package com.noair.easip.house.controller.dto;
 
+import com.noair.easip.post.controller.dto.ApplicationConditionDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
 
 @Schema(description = "주택 핵심 정보")
 public record HouseSummaryResponse(
@@ -15,6 +18,12 @@ public record HouseSummaryResponse(
 
         @Schema(description = "청약 상태", example = "청약예정")
         String subscriptionState,
+
+        @Schema(description = "지원조건 목록", example = "[\"개인무주택\", \"소득기준 2억원 이내(1인가구 기준)\"]")
+        List<ApplicationConditionDto> applicationConditionDtos,
+
+        @Schema(description = "집세 목록")
+        List<RentDto> rentDtos,
 
         @Schema(description = "구", example = "중구")
         String districtName,
