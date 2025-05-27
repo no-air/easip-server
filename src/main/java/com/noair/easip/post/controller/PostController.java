@@ -57,27 +57,21 @@ public class PostController {
                         "01HGW2N7EHJVJ4CJ999RRS2E97",
                         "[민간임대] 신당역 신당큐브스테이트오피스텔 추가모집공고",
                         List.of("민간임대", "청약예정", "중구"),
-                        List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)),
-                        List.of(new HouseSummaryResponse("01HGW2N7EHJVJ4CJ999RRS2E97", "https://soco.seoul.go.kr/cohome/cmmn/file/fileDown.do?atchFileId=356f0ab9e20e42f88b4c06e1c18e46ad&fileSn=12", "신당역 신당큐브스테이트오피스텔", "청약예정", "중구", 37.5665, 126.978)),
-                        List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)),
+                        List.of(new HouseSummaryResponse("01HGW2N7EHJVJ4CJ999RRS2E97", "https://soco.seoul.go.kr/cohome/cmmn/file/fileDown.do?atchFileId=356f0ab9e20e42f88b4c06e1c18e46ad&fileSn=12", "신당역 신당큐브스테이트오피스텔", "청약예정", List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)), List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)), "중구", 37.5665, 126.978)),
                         List.of(new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E97", "모집공고", "2025-05-07", null, false), new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E98", "청약신청", "2025-05-12T09:00:00", "2025-05-18T24:00:00", false), new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E99", "예비번호 발표", "2025-05-19T17:00:00", null, false), new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E10", "계약체결", "공실 발생시 순차적으로 연락", null, false))
                     ),
                     PostSummaryResponse.of(
                         "01HGW2N7EHJVJ4CJ999RRS2E98",
                         "[민간임대] 영등포역 영등포큐브스테이트오피스텔 추가모집공고",
-                            List.of("민간임대", "청약예정", "중구"),
-                        List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)),
-                        List.of(new HouseSummaryResponse("01HGW2N7EHJVJ4CJ999RRS2E97", "https://soco.seoul.go.kr/cohome/cmmn/file/fileDown.do?atchFileId=356f0ab9e20e42f88b4c06e1c18e46ad&fileSn=12", "신당역 신당큐브스테이트오피스텔", "청약예정", "중구", 37.5665, 126.978)),
-                        List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)),
+                        List.of("민간임대", "청약예정", "중구"),
+                        List.of(new HouseSummaryResponse("01HGW2N7EHJVJ4CJ999RRS2E97", "https://soco.seoul.go.kr/cohome/cmmn/file/fileDown.do?atchFileId=356f0ab9e20e42f88b4c06e1c18e46ad&fileSn=12", "신당역 신당큐브스테이트오피스텔", "청약예정", List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)), List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)), "중구", 37.5665, 126.978)),
                         List.of(new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E11", "모집공고", "2025-05-07", null, false), new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E33", "청약신청", "2025-05-12T09:00:00", "2025-05-18T24:00:00", false), new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E99", "예비번호 발표", "2025-05-19T17:00:00", null, false), new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E10", "계약체결", "공실 발생시 순차적으로 연락", null, false))
                     ),
                     PostSummaryResponse.of(
                         "01HGW2N7EHJVJ4CJ999RRS2E99",
                         "[민간임대] 마곡역 마곡큐브스테이트오피스텔 추가모집공고",
-                            List.of("민간임대", "청약예정", "중구"),
-                        List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)),
-                        List.of(new HouseSummaryResponse("01HGW2N7EHJVJ4CJ999RRS2E97", "https://soco.seoul.go.kr/cohome/cmmn/file/fileDown.do?atchFileId=356f0ab9e20e42f88b4c06e1c18e46ad&fileSn=12", "신당역 신당큐브스테이트오피스텔", "청약예정", "중구", 37.5665, 126.978)),
-                        List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)),
+                        List.of("민간임대", "청약예정", "중구"),
+                        List.of(new HouseSummaryResponse("01HGW2N7EHJVJ4CJ999RRS2E97", "https://soco.seoul.go.kr/cohome/cmmn/file/fileDown.do?atchFileId=356f0ab9e20e42f88b4c06e1c18e46ad&fileSn=12", "신당역 신당큐브스테이트오피스텔", "청약예정", List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)), List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)), "중구", 37.5665, 126.978)),
                         List.of(new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E22", "모집공고", "2025-05-07", null, false), new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E44", "청약신청", "2025-05-12T09:00:00", "2025-05-18T24:00:00", false), new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E99", "예비번호 발표", "2025-05-19T17:00:00", null, false), new ScheduleDto("01HGW2N7EHJVJ4CJ999RRS2E10", "계약체결", "공실 발생시 순차적으로 연락", null, false))
                     )
                 )

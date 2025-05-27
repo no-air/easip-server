@@ -2,7 +2,9 @@ package com.noair.easip.house.controller;
 
 import com.noair.easip.house.controller.dto.HouseDetailResponse;
 import com.noair.easip.house.controller.dto.HouseSummaryResponse;
+import com.noair.easip.house.controller.dto.RentDto;
 import com.noair.easip.house.controller.dto.RoomInfoResponse;
+import com.noair.easip.post.controller.dto.ApplicationConditionDto;
 import com.noair.easip.util.ArrayResponse;
 import com.noair.easip.util.DefaultResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,6 +55,8 @@ public class HouseController {
                     "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
                     "KRX한국거래소",
                     "청약예정",
+                    List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)),
+                    List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)),
                     "영등포구",
                     37.522875991257024,
                     126.92803891060132
@@ -62,6 +66,8 @@ public class HouseController {
                     "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
                     "코스콤 신사옥",
                     "청약예정",
+                    List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)),
+                    List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)),
                     "영등포구",
                     37.52166435840751,
                     126.92839358143895
@@ -71,6 +77,8 @@ public class HouseController {
                     "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
                     "더현대 서울",
                     "청약예정",
+                    List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)),
+                    List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)),
                     "영등포구",
                     37.52588558605109,
                     126.92844611120303

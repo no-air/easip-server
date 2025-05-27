@@ -34,7 +34,26 @@ public record HouseSummaryResponse(
         @Schema(description = "경도", example = "126.978")
         Double longitude
 ) {
-        public static HouseSummaryResponse of(String houseId, String houseThumbnailUrl, String houseName, String subscriptionState, String districtName, Double latitude, Double longitude) {
-                return new HouseSummaryResponse(houseId, houseThumbnailUrl, houseName, subscriptionState, districtName, latitude, longitude);
+        public static HouseSummaryResponse of(
+                String houseId,
+                String houseThumbnailUrl,
+                String houseName,
+                String subscriptionState,
+                List<ApplicationConditionDto> applicationConditionDtos,
+                List<RentDto> rentDtos,
+                String districtName,
+                Double latitude,
+                Double longitude
+        ) {
+                return new HouseSummaryResponse(houseId,
+                        houseThumbnailUrl,
+                        houseName,
+                        subscriptionState,
+                        applicationConditionDtos,
+                        rentDtos,
+                        districtName,
+                        latitude,
+                        longitude
+                );
         }
 }
