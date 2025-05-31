@@ -51,6 +51,7 @@ public class AuthService {
             return idToken.getPayload().getSubject();
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new DomainException(ErrorCode.AUTHENTICATION_FAILED, ErrorType.ALERT);
         }
     }
@@ -70,6 +71,7 @@ public class AuthService {
 
             return parseIdentifierFromAppleToken(matchedKey, appleToken);
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new DomainException(ErrorCode.AUTHENTICATION_FAILED, ErrorType.ALERT);
         }
     }
