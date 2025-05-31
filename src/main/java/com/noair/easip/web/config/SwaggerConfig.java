@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         servers = {
-                @Server(url = "https://dev.api.easip.kwon-server.cc/"),
+                @Server(url = "https://dev-api.easip.kwon-server.cc/"),
                 @Server(url = "http://localhost:8080/"),
         }
 )

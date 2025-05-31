@@ -33,8 +33,8 @@ public class SpringWebConfig implements WebMvcConfigurer {
                     "http://localhost:5173",
                     "https://kwon-server.cc",
                     "https://easip.kwon-server.cc",
-                    "https://dev.api.easip.kwon-server.cc",
-                    "https://prod.api.easip.kwon-server.cc",
+                    "https://dev-api.easip.kwon-server.cc",
+                    "https://prod-api.easip.kwon-server.cc",
                     "https://link.easip.kwon-server.cc",
                     "https://easip-web.pages.dev"
                 )
