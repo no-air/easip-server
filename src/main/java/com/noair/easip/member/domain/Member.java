@@ -3,6 +3,8 @@ package com.noair.easip.member.domain;
 import com.noair.easip.util.DeletableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -56,6 +58,7 @@ public class Member extends DeletableBaseEntity {
     private Double familyMemberMonthlySalary;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Position position;
 
     @Column(nullable = false)
