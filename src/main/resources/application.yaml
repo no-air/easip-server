@@ -19,8 +19,6 @@ spring:
       enabled: true
       settings:
         web-allow-others: true
-  flyway:
-    enabled: false
 
 app:
   oauth:
