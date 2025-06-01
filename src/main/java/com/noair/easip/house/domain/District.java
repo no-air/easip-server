@@ -1,5 +1,6 @@
 package com.noair.easip.house.domain;
 
+import com.noair.easip.util.DeletableBaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import com.noair.easip.member.domain.Member;
-import com.noair.easip.util.DeletableBaseEntity;
 
 @Entity
 @Table(name = "DISTRICT")

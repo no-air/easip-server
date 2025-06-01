@@ -64,6 +64,9 @@ public class House extends DeletableBaseEntity {
     @Column(name = "LONGITUDE", nullable = false)
     private String longitude;
 
+    @Column(name = "PAGE_URL", columnDefinition = "VARCHAR(2083)")
+    private String pageUrl;
+
     @OneToMany(mappedBy = "house")
     @Builder.Default
     private List<HouseImage> images = new ArrayList<>();

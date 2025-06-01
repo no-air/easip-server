@@ -1,5 +1,6 @@
 package com.noair.easip.member.domain;
 
+import com.noair.easip.util.DeletableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,7 +14,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import com.noair.easip.house.domain.District;
-import com.noair.easip.util.DeletableBaseEntity;
 
 @Entity
 @AllArgsConstructor

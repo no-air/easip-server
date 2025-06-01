@@ -1,5 +1,6 @@
 package com.noair.easip.house.domain;
 
+import com.noair.easip.util.DeletableBaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +11,6 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import com.noair.easip.post.domain.Post;
-import com.noair.easip.util.DeletableBaseEntity;
 
 @Entity
 @Table(name = "BADGE")
