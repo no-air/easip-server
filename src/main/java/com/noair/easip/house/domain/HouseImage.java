@@ -37,6 +37,6 @@ public class HouseImage extends DeletableBaseEntity {
     private HouseImageType houseImageType;
 
     @Column(name = "ORDERING", nullable = false)
-    private String ordering;
+    private Integer ordering;
 
 } 
