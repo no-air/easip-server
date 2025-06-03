@@ -68,7 +68,8 @@ app:
       platform-header: X-USER-PLATFORM
       userid-header: X-USER-ID
       appkey-header: X-APP-KEY
-
+fcm:
+  api-url: ${FCM_API_UR:https://fcm.googleapis.com/v1/projects/easip-2c0a1/messages:send}
 server:
   shutdown: graceful
   tomcat:
