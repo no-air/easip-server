@@ -35,6 +35,38 @@ jobs:
       contents: read
 
     steps:
+      - name: 워크플로우 시작 디스코드 알림
+        if: success()
+        uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_EMBEDS: |
+            [
+              {
+                "title": "🚀 ${{ inputs.environment }} 워크플로우 시작!",
+                "color": 5896036,
+                "fields": [
+                  {
+                    "name": "배포 환경",
+                    "value": "${{ inputs.environment }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "배포자",
+                    "value": "${{ github.event.sender.login }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Workflow 링크",
+                    "value": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                    "inline": true
+                  }
+                ]
+              }
+            ]
+        with:
+          args: ''
+
       - name: GitHub 에서 레포 받아오기
         uses: actions/checkout@v3
 
