@@ -1,5 +1,6 @@
 package com.noair.easip.web.config;
 
+import com.noair.easip.auth.config.LoginMemberIdArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SpringWebConfig implements WebMvcConfigurer {
     final WebRequestInterceptor webRequestInterceptor;
+    final LoginMemberIdArgumentResolver loginMemberIdArgumentResolver;
     // final AppKeyResolver appKeyResolver;
 
     @Override
@@ -23,6 +25,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         // resolvers.add(appKeyResolver);
+        resolvers.add(loginMemberIdArgumentResolver);
     }
 
     @Override

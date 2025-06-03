@@ -1,0 +1,9 @@
+package com.noair.easip.member.repository;
+
+import com.noair.easip.member.domain.PostScheduleNotification;
+import com.noair.easip.member.domain.PostScheduleNotificationId;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PostScheduleNotificationRepository extends JpaRepository<PostScheduleNotification, PostScheduleNotificationId> {
+    boolean existsByPostSchedule_IdAndMember_Id(String postScheduleId, String memberId);
+}

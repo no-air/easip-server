@@ -5,8 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Position {
     YOUNG_MAN("청년"),
-    NEWLY_MARRIED_COUPLE("신혼부부"),
-    PRE_NEWLY_MARRIED_COUPLE("예비 신혼부부"),
+    NEWLY_MARRIED_COUPLE("(예비)신혼부부"),
     ;
 
     private final String name;

@@ -52,10 +52,12 @@ public class Member extends DeletableBaseEntity {
     private Integer allFamilyMemberCount;
     
     @Column(nullable = false)
-    private Double myMothlySalary;
+    @Builder.Default
+    private Double myMonthlySalary = 0.0;
 
     @Column(nullable = false)
-    private Double familyMemberMonthlySalary;
+    @Builder.Default
+    private Double familyMemberMonthlySalary = 0.0;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -64,8 +66,10 @@ public class Member extends DeletableBaseEntity {
     @Column(nullable = false)
     private Boolean hasCar;
 
-    private Long carPrice;
+    @Builder.Default
+    private Long carPrice = 0L;
 
-    private Double assetPrice;
+    @Builder.Default
+    private Double assetPrice = 0.0;
 
 }

@@ -3,6 +3,7 @@ package com.noair.easip.post.domain;
 import java.util.ArrayList;
 import java.util.List;
 import com.noair.easip.house.domain.Badge;
+import com.noair.easip.post.exception.IncomeLimitPersonExceedException;
 import com.noair.easip.util.DeletableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,8 +32,25 @@ public class Post extends DeletableBaseEntity {
     @Column(name = "POST_ID", columnDefinition = "CHAR(26)")
     private String id;
 
-    @Column(name = "TITLE", nullable = false)
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
+    private Boolean isIncomeLimited;
+    private Double incomeLimit1Person;
+    private Double incomeLimit2Person;
+    private Double incomeLimit3Person;
+    private Double incomeLimit4Person;
+    private Double incomeLimit5Person;
+
+    @Column(nullable = false)
+    private Boolean isCarPriceLimited;
+    private Double carPriceLimit;
+
+    @Column(nullable = false)
+    private Boolean isAssetLimited;
+    private Double youngManAssetLimit;
+    private Double newlyMarriedCoupleAssetLimit;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -46,4 +64,15 @@ public class Post extends DeletableBaseEntity {
     @OneToMany(mappedBy = "post")
     @Builder.Default
     private List<PostSchedule> schedules = new ArrayList<>();
+
+    public double getIncomeLimit(int familyMemberCount) {
+        return switch (familyMemberCount) {
+            case 1 -> incomeLimit1Person;
+            case 2 -> incomeLimit2Person;
+            case 3 -> incomeLimit3Person;
+            case 4 -> incomeLimit4Person;
+            case 5 -> incomeLimit5Person;
+            default -> throw new IncomeLimitPersonExceedException();
+        };
+    }
 } 

@@ -33,8 +33,20 @@ public enum ErrorCode {
     /**
      * Member Related Errors
      */
-    MEMBER_NOT_FOUND("MB0001", "찾을 수 없는 회원입니다."),
+    MEMBER_NOT_FOUND("MB0001", "존재하지 않는 회원입니다."),
     MEMBER_ALREADY_EXISTS("MB0002", "이미 존재하는 회원입니다."),
+
+    /**
+     * House Related Errors
+     */
+    HOUSE_NOT_FOUND("HS0001", "존재하지 않는 주택입니다."),
+    HOUSE_IMAGE_NOT_FOUND("HS0002", "존재하지 않는 주택 이미지입니다."),
+
+    /**
+     * Post Related Errors
+     */
+    POST_NOT_FOUND("PT0001", "존재하지 않는 공고입니다."),
+    POST_INCOME_LIMIT_PERSON_EXCEEDED("PT0002", "공고에 등록된 소득기준 인원 수가 초과되었습니다."),
     ;
 
 

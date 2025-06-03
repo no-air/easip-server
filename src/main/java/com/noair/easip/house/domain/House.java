@@ -4,15 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.noair.easip.member.domain.Bookmark;
 import com.noair.easip.util.DeletableBaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -59,10 +51,10 @@ public class House extends DeletableBaseEntity {
     private String specialSupplyCount;
 
     @Column(name = "LATITUDE", nullable = false)
-    private String latitude;
+    private Double latitude;
 
     @Column(name = "LONGITUDE", nullable = false)
-    private String longitude;
+    private Double longitude;
 
     @Column(name = "PAGE_URL", columnDefinition = "VARCHAR(2083)")
     private String pageUrl;
@@ -75,14 +67,9 @@ public class House extends DeletableBaseEntity {
     @Builder.Default
     private List<RoomRentalCondition> roomRentalConditions = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "HOUSE_DISTRICT",
-        joinColumns = @JoinColumn(name = "HOUSE_ID"),
-        inverseJoinColumns = @JoinColumn(name = "DISTRICT_ID")
-    )
-    @Builder.Default
-    private List<District> districts = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DISTRICT_ID", nullable = false)
+    private District district;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

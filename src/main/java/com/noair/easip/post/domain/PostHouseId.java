@@ -1,7 +1,10 @@
 package com.noair.easip.post.domain;
 
+import com.noair.easip.member.domain.Position;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +16,8 @@ public class PostHouseId {
     private String houseId;
 
     @Column(name = "SUPPLY_TYPE", nullable = false, columnDefinition = "VARCHAR(100)")
-    private String supplyType;
+    @Enumerated(EnumType.STRING)
+    private Position supplyType;
 
     @Column(name = "LIVING_TYPE", nullable = false, columnDefinition = "VARCHAR(100)")
     private String livingType;

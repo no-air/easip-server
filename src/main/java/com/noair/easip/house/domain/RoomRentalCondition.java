@@ -34,17 +34,14 @@ public class RoomRentalCondition extends BaseEntity {
     private House house;
 
     @Column(name = "SUPPLY_TYPE", nullable = false)
-    private String supplyType;
+    @Enumerated(EnumType.STRING)
+    private Position supplyType;
 
     @Column(name = "ROOM_TYPE", nullable = false)
     private String roomType;
 
     @Column(name = "EXCLUSIVE_AREA", nullable = false)
     private Double exclusiveArea;
-
-    @Column(name = "APPLICATION_ELIGIBILITY", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Position applicationEligibility;
 
     @Column(name = "TOTAL_ROOM_COUNT", nullable = false)
     private Integer totalRoomCount;

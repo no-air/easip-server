@@ -6,6 +6,7 @@ import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.domain.SocialAuth;
 import com.noair.easip.member.domain.SocialAuthId;
 import com.noair.easip.member.domain.SocialAuthId;
+import com.noair.easip.member.exception.MemberNotFoundException;
 import com.noair.easip.member.repository.MemberRepository;
 import com.noair.easip.member.repository.SocialAuthRepository;
 import com.noair.easip.util.StringGenerator;
@@ -18,7 +19,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-
     private final MemberRepository memberRepository;
     private final SocialAuthRepository socialAuthRepository;
 
@@ -37,6 +37,11 @@ public class MemberService {
         socialAuthRepository.save(socialMember);
 
         return member;
+    }
+
+    public Member getMemberById(String memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
     }
 
     public Optional<Member> getMemberBySocialAuthId(SocialLoginProvider provider, String identifier) {

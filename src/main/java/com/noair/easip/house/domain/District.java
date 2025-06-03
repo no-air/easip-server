@@ -27,11 +27,7 @@ public class District extends DeletableBaseEntity {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "districts", fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<House> houses = new ArrayList<>();
-
     @ManyToMany(mappedBy = "likingDistricts", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Member> members = new ArrayList<>();
-} 
+}

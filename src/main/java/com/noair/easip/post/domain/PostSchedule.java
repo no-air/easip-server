@@ -1,6 +1,7 @@
 package com.noair.easip.post.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import com.noair.easip.member.domain.PostScheduleNotification;
@@ -43,14 +44,14 @@ public class PostSchedule extends DeletableBaseEntity {
     @Column(name = "START_DATE")
     private LocalDate startDate;
 
-    @Column(name = "START_DATETIME")
-    private String startDatetime;
+    @Column(name = "START_DATE_TIME")
+    private LocalDateTime startDateTime;
 
     @Column(name = "START_NOTE")
     private String startNote;
 
-    @Column(name = "END_DATETIME")
-    private String endDatetime;
+    @Column(name = "END_DATE_TIME")
+    private LocalDateTime endDateTime;
 
     @Column(name = "END_NOTE")
     private String endNote;

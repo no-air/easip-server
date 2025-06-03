@@ -40,3 +40,4 @@ out/
 generated/
 
 .env
+application-local.yaml
