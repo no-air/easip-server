@@ -5,13 +5,13 @@ public enum SUBSCRIPTION_STATE {
     ONGOING("청약중"),
     COMPLETED("청약완료");
 
-    private final String name;
+    private final String korName;
 
-    SUBSCRIPTION_STATE(String name) {
-        this.name = name;
+    SUBSCRIPTION_STATE(String korName) {
+        this.korName = korName;
     }
 
-    public String getName() {
-        return name;
+    public String getKorName() {
+        return korName;
     }
 }

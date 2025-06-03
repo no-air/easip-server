@@ -8,9 +8,9 @@ public enum Position {
     NEWLY_MARRIED_COUPLE("(예비)신혼부부"),
     ;
 
-    private final String name;
+    private final String korName;
 
-    Position(String name) {
-        this.name = name;
+    Position(String korName) {
+        this.korName = korName;
     }
 }

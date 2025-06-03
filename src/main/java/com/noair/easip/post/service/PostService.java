@@ -1,10 +1,8 @@
 package com.noair.easip.post.service;
 
 import com.noair.easip.house.controller.dto.HouseSummaryResponse;
-import com.noair.easip.house.controller.dto.RentDto;
 import com.noair.easip.house.domain.Badge;
 import com.noair.easip.house.domain.House;
-import com.noair.easip.house.repository.HouseRepository;
 import com.noair.easip.house.service.HouseImageService;
 import com.noair.easip.house.service.HouseService;
 import com.noair.easip.member.domain.Member;
@@ -18,11 +16,9 @@ import com.noair.easip.post.domain.Post;
 import com.noair.easip.post.domain.PostSchedule;
 import com.noair.easip.post.domain.SUBSCRIPTION_STATE;
 import com.noair.easip.post.exception.PostNotFoundException;
-import com.noair.easip.post.repository.PostHouseRepository;
 import com.noair.easip.post.repository.PostRepository;
 import com.noair.easip.post.repository.PostScheduleRepository;
 import com.noair.easip.util.PaginationDto;
-import com.noair.easip.util.PriceStringConvertor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,7 +28,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 import static com.noair.easip.util.PriceStringConvertor.*;
 
@@ -54,11 +49,11 @@ public class PostService {
 
     public String getSubscriptionState(String postId) {
         if (postScheduleRepository.existsByPost_IdAndStartDateTimeLessThan(postId, LocalDateTime.now())) {
-            return SUBSCRIPTION_STATE.SCHEDULED.name();
+            return SUBSCRIPTION_STATE.SCHEDULED.getKorName();
         } else if (postScheduleRepository.existsByPost_IdAndStartDateTimeGreaterThan(postId, LocalDateTime.now())) {
-            return SUBSCRIPTION_STATE.COMPLETED.name();
+            return SUBSCRIPTION_STATE.COMPLETED.getKorName();
         } else {
-            return SUBSCRIPTION_STATE.ONGOING.name();
+            return SUBSCRIPTION_STATE.ONGOING.getKorName();
         }
     }
 
@@ -113,7 +108,7 @@ public class PostService {
 
         postHouseService.getSupplyTypesByPostIdAndHouseHid(post.getId(), house.getId())
                 .forEach(position -> dto.add(ApplicationConditionDto.of(
-                        position.getName(),
+                        position.getKorName(),
                         loginMember.getPosition().equals(position)
                 )));
 
@@ -127,13 +122,10 @@ public class PostService {
         List<PostSummaryResponse> postSummaryResponses = new ArrayList<>();
         // 공고별 aggregation
         for (Post post : posts) {
-            // [ 1. 지원 조건 Dto ]
+            // [ 지원 조건 Dto ]
             List<ApplicationConditionDto> applicationConditionDtos = new ArrayList<>();
-            // 1-1. 소득 조건
             applicationConditionDtos.addAll(makeIncomeConditionDto(post, loginMember));
-            // 1-2. 자동차 가액 조건
             applicationConditionDtos.addAll(makeCarPriceConditionDto(post, loginMember));
-            // 1-3. 자산 조건
             applicationConditionDtos.addAll(makeAssetConditionDtos(post, loginMember));
 
 
@@ -143,16 +135,16 @@ public class PostService {
             for (String houseId : houseIds) {
                 House house = houseService.getHouseById(houseId);
 
-                // 1-4. 지원 자격 조건
                 applicationConditionDtos.addAll(makePositionConditionDtos(post, house, loginMember));
 
-
+                // [ 주택 요약 Dto ]
                 houseSummaryResponse.add(HouseSummaryResponse.of(
                         house.getId(),
                         houseImageService.getThumbnailUrl(houseId),
                         house.getName(),
                         getSubscriptionState(post.getId()),
                         applicationConditionDtos,
+                        // [ 집세 Dto ]
                         postHouseService.getRentDtosByPostIdAndHouseId(post.getId(), houseId),
                         house.getDistrict().getName(),
                         house.getLatitude(),
@@ -160,12 +152,14 @@ public class PostService {
                 ));
             }
 
+            // [ 공고 요약 Dto ]
             postSummaryResponses.add(
                     PostSummaryResponse.of(
                             post.getId(),
                             post.getTitle(),
                             post.getBadges().stream().map(Badge::getName).toList(),
                             houseSummaryResponse,
+                            // [ 공급 일정 Dto ]
                             post.getSchedules().stream()
                                     .sorted(Comparator.comparing(PostSchedule::getOrdering))
                                     .map(schedule -> ScheduleDto.of(
