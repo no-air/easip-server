@@ -1,10 +1,11 @@
 package com.noair.easip.member.service;
 
 import com.noair.easip.auth.config.properties.SocialLoginProvider;
-import com.noair.easip.member.controller.dto.CreateUserDto;
+import com.noair.easip.house.domain.District;
+import com.noair.easip.house.service.DistrictService;
+import com.noair.easip.member.controller.dto.request.CreateMemberRequest;
 import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.domain.SocialAuth;
-import com.noair.easip.member.domain.SocialAuthId;
 import com.noair.easip.member.domain.SocialAuthId;
 import com.noair.easip.member.exception.MemberNotFoundException;
 import com.noair.easip.member.repository.MemberRepository;
@@ -14,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,19 +23,34 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final SocialAuthRepository socialAuthRepository;
+    private final DistrictService districtService;
 
     @Transactional
-    public Member createMember(CreateUserDto createUserDto) {
+    public Member createMember(SocialLoginProvider provider, String identifier, CreateMemberRequest request) {
+        District livingDistrict = districtService.getDistrictById(request.livingDistrictId());
+        List<District> likingDistricts = request.likingDistrictIds().stream()
+                .map(districtService::getDistrictById)
+                .toList();
+
         //사용자 생성
         Member member = Member.builder()
                 .id(StringGenerator.generateUlid())
+                .name(request.name())
+                .dateOfBirth(request.dayOfBirth())
+                .livingDistrict(livingDistrict)
+                .likingDistricts(likingDistricts)
+                .allFamilyMemberCount(request.allFamilyMemberCount())
+                .myMonthlySalary(request.myMonthlySalary().doubleValue())
+                .familyMemberMonthlySalary(request.familyMemberMonthlySalary().doubleValue())
+                .position(request.position())
+                .hasCar(request.hasCar())
+                .carPrice(request.carPrice())
+                .assetPrice(request.assetPrice().doubleValue())
                 .build();
         memberRepository.save(member);
 
         //사용자 소셜 로그인 정보 링크
-        SocialAuth socialMember = new SocialAuth(
-                new SocialAuthId(createUserDto.provider(), createUserDto.identifier()),
-                member);
+        SocialAuth socialMember = new SocialAuth(new SocialAuthId(provider, identifier), member);
         socialAuthRepository.save(socialMember);
 
         return member;

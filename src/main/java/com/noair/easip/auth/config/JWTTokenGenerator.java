@@ -47,7 +47,7 @@ public class JWTTokenGenerator implements TokenGenerator {
             String tokenTypeStr = (String) tokenClaim.getHeader().get(TOKEN_TYPE_KEY_NAME);
             TokenType tokenType = TokenType.fromString(tokenTypeStr);
             String userId = tokenClaim.getBody().get(USER_ID_KEY_NAME, String.class);
-            String provider = (String) tokenClaim.getHeader().get(PROVIDER_KEY_NAME);
+            String provider = (String) tokenClaim.getBody().get(PROVIDER_KEY_NAME);
             return new Token(userId, tokenType, provider);
         } catch (ExpiredJwtException exception) {
             throw new TokenExpiredException();

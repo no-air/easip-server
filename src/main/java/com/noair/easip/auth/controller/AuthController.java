@@ -9,7 +9,6 @@ import com.noair.easip.auth.controller.dto.AuthResultResponse;
 import com.noair.easip.auth.controller.dto.NativeSocialLoginRequest;
 import com.noair.easip.auth.controller.dto.RefreshAccessTokenRequest;
 import com.noair.easip.auth.service.AuthService;
-import com.noair.easip.member.controller.dto.CreateUserDto;
 import com.noair.easip.member.controller.dto.request.CreateMemberRequest;
 import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.exception.MemberAlreadyExistsException;
@@ -106,13 +105,8 @@ public class AuthController {
                 throw new MemberAlreadyExistsException();
             }
 
-            // 사용자 회원가입
-            CreateUserDto createUserDto = new CreateUserDto(
-                    socialLoginProvider,
-                    userId,
-                    request.name()
-            );
-            Member member = memberService.createMember(createUserDto);
+            // 사용자 회원가입 (userId = social identifier)
+            Member member = memberService.createMember(socialLoginProvider, userId, request);
 
             //새 토큰 생성
             TokenPair tokenPair = tokenGenerator.generateTokenPair(member.getId());

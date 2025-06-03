@@ -28,10 +28,12 @@ public record CreateMemberRequest(
         @Schema(description = "거주구 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E")
         String livingDistrictId,
 
+        @NotNull
         @Min(0)
         @Schema(description = "월소득 (KRW)", example = "5000000")
         Long myMonthlySalary,
 
+        @NotNull
         @Min(0)
         @Schema(description = "본인 제외 가족 월소득 (KRW)", example = "5000000")
         Long familyMemberMonthlySalary,
@@ -50,12 +52,12 @@ public record CreateMemberRequest(
         Boolean hasCar,
 
         @NotNull
-        @Min(1)
+        @Min(0)
         @Schema(description = "자동차가액 (KRW)", example = "30000000")
         Long carPrice,
 
         @NotNull
-        @Min(1)
+        @Min(0)
         @Schema(description = "총자산가액 (KRW)", example = "150000000")
         Long assetPrice
 ) {

@@ -43,6 +43,11 @@ public enum ErrorCode {
     HOUSE_IMAGE_NOT_FOUND("HS0002", "존재하지 않는 주택 이미지입니다."),
 
     /**
+     * District Related Errors
+     */
+    DISTRICT_NOT_FOUND("DT0001", "존재하지 않는 자치구입니다."),
+
+    /**
      * Post Related Errors
      */
     POST_NOT_FOUND("PT0001", "존재하지 않는 공고입니다."),
