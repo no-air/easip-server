@@ -37,10 +37,15 @@ public class Post extends DeletableBaseEntity {
 
     @Column(nullable = false)
     private Boolean isIncomeLimited;
+    @Column(name = "INCOME_LIMIT_1_PERSON")
     private Double incomeLimit1Person;
+    @Column(name = "INCOME_LIMIT_2_PERSON")
     private Double incomeLimit2Person;
+    @Column(name = "INCOME_LIMIT_3_PERSON")
     private Double incomeLimit3Person;
+    @Column(name = "INCOME_LIMIT_4_PERSON")
     private Double incomeLimit4Person;
+    @Column(name = "INCOME_LIMIT_5_PERSON")
     private Double incomeLimit5Person;
 
     @Column(nullable = false)
