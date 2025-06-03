@@ -3,9 +3,6 @@ package com.noair.easip.fcm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.internal.FirebaseCustomAuthToken;
-import com.google.firebase.messaging.*;
 import com.noair.easip.auth.config.properties.FcmCredential;
 import com.noair.easip.fcm.dto.FcmMessageDto;
 import com.noair.easip.fcm.dto.FcmSendDto;
@@ -20,9 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -58,7 +53,7 @@ public class FcmMessagingService {
     }
 
     /**
-     * Firebase Admin SDK의 비공개 키를 참조하여 Bearer 토큰을 발급 받습니다.
+     * Firebase Admin SDK의 비공개 키를 참조하여 Bearer 토큰을 발급 받습니다. // Google Credential 버전
      * @return Bearer token
      */
     private String getAccessToken() throws IOException {
@@ -71,18 +66,6 @@ public class FcmMessagingService {
         googleCredentials.refreshIfExpired();
         return googleCredentials.getAccessToken().getTokenValue();
 //    }
-    }
-
-    /**
-     * Firebase Admin SDK의 비공개 키를 참조하여 Bearer 토큰을 발급 받습니다.
-     * @return Bearer token
-     */
-    private static String getFcmAccessToken() throws IOException {
-        GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new FileInputStream("service-account.json"))
-                .createScoped(List.of("<https://www.googleapis.com/auth/cloud-platform>"));
-        googleCredentials.refresh();
-        return googleCredentials.getAccessToken().getTokenValue();
     }
 
     /**

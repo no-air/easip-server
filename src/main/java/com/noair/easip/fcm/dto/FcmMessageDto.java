@@ -6,7 +6,6 @@ import lombok.Getter;
 
 /**
  * FCM 전송 Format DTO
- * @fileName : FcmMessageDto
  */
 @Getter
 @Builder
