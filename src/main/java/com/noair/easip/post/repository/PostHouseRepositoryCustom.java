@@ -11,4 +11,6 @@ public interface PostHouseRepositoryCustom {
     List<Position> findDistinctSupplyTypeByPostIdAndHouseId(String postId, String houseId);
 
     List<RentDto> findRentDtosByPostIdAndHouseId(String postId, String houseId);
+
+    int sumSupplyRoomCountByPostIdAndHouseId(String postId, String houseId);
 }

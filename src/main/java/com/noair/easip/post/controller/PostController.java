@@ -1,8 +1,6 @@
 package com.noair.easip.post.controller;
 
 import com.noair.easip.auth.controller.LoginMemberId;
-import com.noair.easip.house.controller.dto.HouseSummaryResponse;
-import com.noair.easip.house.controller.dto.RentDto;
 import com.noair.easip.post.controller.dto.ApplicationConditionDto;
 import com.noair.easip.post.controller.dto.PostDetailResponse;
 import com.noair.easip.post.controller.dto.PostElementResponse;
@@ -27,7 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.lang.reflect.Array;
+
 import java.util.List;
 import java.util.Random;
 
@@ -39,9 +37,9 @@ import java.util.Random;
 public class PostController {
     private final PostService postService;
 
-    @Operation(summary = "[MOCK] 홈 페이지 공고 조회")
+    @Operation(summary = "홈 페이지 공고 조회")
     @GetMapping("/home")
-    PaginationResponse<PostSummaryResponse> getHomePosts(
+    PaginationResponse<PostSummaryResponse> fetchHomePosts(
             @Parameter(description = "가져올 현재 페이지 (1부터 시작)", example = "1")
             @RequestParam(required = false, defaultValue = "1")
             @Min(value = 1)
@@ -62,9 +60,9 @@ public class PostController {
                 .of(fetchResult, page, size);
     }
 
-    @Operation(summary = "[MOCK] 공고 목록 조회")
+    @Operation(summary = "공고 목록 조회")
     @GetMapping("/list")
-    PaginationResponse<PostElementResponse> getPostList(
+    PaginationResponse<PostElementResponse> fetchPostList(
             @Parameter(description = "가져올 현재 페이지", example = "1")
             @RequestParam(required = false, defaultValue = "1")
             @Min(value = 1)
@@ -75,22 +73,10 @@ public class PostController {
             @Min(value = 1)
             Integer size
     ) {
-        return PaginationResponse.of(
-            PaginationDto.of(
-                    999,
-                    List.of(
-                            PostElementResponse.of(
-                                    "01HGW2N7EHJVJ4CJ999RRS2E97",
-                                    "[민간임대] 신당역 신당큐브스테이트오피스텔 추가모집공고",
-                                    "2025-05-12T09:00:00",
-                                    "2025-05-18T24:00:00",
-                                    100
-                            )
-                    )
-            ),
-            page,
-            size
-        );
+        PaginationDto<PostElementResponse> fetchResult = postService.fetchPostList(page, size);
+
+        return PaginationResponse
+            .of(fetchResult, page, size);
     }
 
     @Operation(summary = "[MOCK] 공고 상세 조회")

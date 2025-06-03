@@ -3,6 +3,7 @@ package com.noair.easip.post.repository;
 import com.noair.easip.house.controller.dto.RentDto;
 import com.noair.easip.member.domain.Position;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -46,5 +47,20 @@ public class PostHouseRepositoryCustomImpl implements PostHouseRepositoryCustom 
                 .from(postHouse)
                 .where(postHouse.post.id.eq(postId), postHouse.id.houseId.eq(houseId))
                 .fetch();
+    }
+
+    @Override
+    public int sumSupplyRoomCountByPostIdAndHouseId(String postId, String houseId) {
+        Integer sum = queryFactory
+                .select(postHouse.supplyRoomCount.sum())
+                .from(postHouse)
+                .where(postHouse.post.id.eq(postId), eqHouseId(houseId))
+                .fetchOne();
+
+        return sum != null ? sum : 0;
+    }
+
+    private BooleanExpression eqHouseId(String houseId) {
+        return houseId != null ? postHouse.id.houseId.eq(houseId) : null;
     }
 }

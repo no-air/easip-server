@@ -10,6 +10,7 @@ import com.noair.easip.member.domain.Position;
 import com.noair.easip.member.repository.PostScheduleNotificationRepository;
 import com.noair.easip.member.service.MemberService;
 import com.noair.easip.post.controller.dto.ApplicationConditionDto;
+import com.noair.easip.post.controller.dto.PostElementResponse;
 import com.noair.easip.post.controller.dto.PostSummaryResponse;
 import com.noair.easip.post.controller.dto.ScheduleDto;
 import com.noair.easip.post.domain.Post;
@@ -36,7 +37,7 @@ import static com.noair.easip.util.PriceStringConvertor.*;
 public class PostService {
     private final PostRepository postRepository;
     private final PostHouseService postHouseService;
-    private final PostScheduleRepository postScheduleRepository;
+    private final PostScheduleService postScheduleService;
     private final PostScheduleNotificationRepository postScheduleNotificationRepository;
     private final HouseService houseService;
     private final HouseImageService houseImageService;
@@ -47,14 +48,88 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
     }
 
-    public String getSubscriptionState(String postId) {
-        if (postScheduleRepository.existsByPost_IdAndStartDateTimeLessThan(postId, LocalDateTime.now())) {
-            return SUBSCRIPTION_STATE.SCHEDULED.getKorName();
-        } else if (postScheduleRepository.existsByPost_IdAndStartDateTimeGreaterThan(postId, LocalDateTime.now())) {
-            return SUBSCRIPTION_STATE.COMPLETED.getKorName();
-        } else {
-            return SUBSCRIPTION_STATE.ONGOING.getKorName();
+    public PaginationDto<PostSummaryResponse> fetchHomePosts(Integer page, Integer size, String loginMemberId) {
+        Member loginMember = memberService.getMemberById(loginMemberId);
+        Page<Post> posts = postRepository.findAll(PageRequest.of(page - 1, size));
+
+        List<PostSummaryResponse> postSummaryResponses = new ArrayList<>();
+        // 공고별 aggregation
+        for (Post post : posts) {
+            // [ 지원 조건 Dto ]
+            List<ApplicationConditionDto> applicationConditionDtos = new ArrayList<>();
+            applicationConditionDtos.addAll(makeIncomeConditionDto(post, loginMember));
+            applicationConditionDtos.addAll(makeCarPriceConditionDto(post, loginMember));
+            applicationConditionDtos.addAll(makeAssetConditionDtos(post, loginMember));
+
+
+            // 주택별 aggregation
+            List<HouseSummaryResponse> houseSummaryResponse = new ArrayList<>();
+            List<String> houseIds = postHouseService.getHouseIdsByPostId(post.getId());
+            for (String houseId : houseIds) {
+                House house = houseService.getHouseById(houseId);
+
+                applicationConditionDtos.addAll(makePositionConditionDtos(post, house, loginMember));
+
+                // [ 주택 요약 Dto ]
+                houseSummaryResponse.add(HouseSummaryResponse.of(
+                        house.getId(),
+                        houseImageService.getThumbnailUrl(houseId),
+                        house.getName(),
+                        postScheduleService.getSubscriptionStateKorName(post.getId()),
+                        applicationConditionDtos,
+                        // [ 집세 Dto ]
+                        postHouseService.getRentDtosByPostIdAndHouseId(post.getId(), houseId),
+                        house.getDistrict().getName(),
+                        house.getLatitude(),
+                        house.getLongitude()
+                ));
+            }
+
+            // [ 공고 요약 Dto ]
+            postSummaryResponses.add(
+                    PostSummaryResponse.of(
+                            post.getId(),
+                            post.getTitle(),
+                            post.getBadges().stream().map(Badge::getName).toList(),
+                            houseSummaryResponse,
+                            // [ 공급 일정 Dto ]
+                            post.getSchedules().stream()
+                                    .sorted(Comparator.comparing(PostSchedule::getOrdering))
+                                    .map(schedule -> ScheduleDto.of(
+                                            schedule.getId(),
+                                            schedule.getTitle(),
+                                            schedule.getStartDateTime() != null ? schedule.getStartDateTime().toString() : schedule.getStartNote(),
+                                            schedule.getEndDateTime() != null ? schedule.getEndDateTime().toString() : schedule.getEndNote(),
+                                            postScheduleNotificationRepository.existsByPostSchedule_IdAndMember_Id(schedule.getId(), loginMemberId)
+                                    ))
+                                    .toList()
+                    )
+            );
         }
+
+        return PaginationDto.of(
+                posts.getTotalPages(),
+                postSummaryResponses
+        );
+    }
+
+    public PaginationDto<PostElementResponse> fetchPostList(Integer page, Integer size) {
+        Page<Post> posts = postRepository.findAll(PageRequest.of(page - 1, size));
+
+        List<PostElementResponse> postElementResponses = posts.stream().map(
+                post -> PostElementResponse.of(
+                        post.getId(),
+                        post.getTitle(),
+                        postScheduleService.getApplicationStartStringByPostId(post.getId()),
+                        postScheduleService.getApplicationEndStringByPostId(post.getId()),
+                        postHouseService.getNumberOfUnitsRecruitingByPostIdAndHouseId(post.getId(), null) // 공고에 포함된 모든 주택의 공급호수
+                )
+        ).toList();
+
+        return PaginationDto.of(
+                posts.getTotalPages(),
+                postElementResponses
+        );
     }
 
     public List<ApplicationConditionDto> makeIncomeConditionDto(Post post, Member loginMember) {
@@ -113,70 +188,5 @@ public class PostService {
                 )));
 
         return dto;
-    }
-
-    public PaginationDto<PostSummaryResponse> fetchHomePosts(Integer page, Integer size, String loginMemberId) {
-        Member loginMember = memberService.getMemberById(loginMemberId);
-        Page<Post> posts = postRepository.findAll(PageRequest.of(page - 1, size));
-
-        List<PostSummaryResponse> postSummaryResponses = new ArrayList<>();
-        // 공고별 aggregation
-        for (Post post : posts) {
-            // [ 지원 조건 Dto ]
-            List<ApplicationConditionDto> applicationConditionDtos = new ArrayList<>();
-            applicationConditionDtos.addAll(makeIncomeConditionDto(post, loginMember));
-            applicationConditionDtos.addAll(makeCarPriceConditionDto(post, loginMember));
-            applicationConditionDtos.addAll(makeAssetConditionDtos(post, loginMember));
-
-
-            // 주택별 aggregation
-            List<HouseSummaryResponse> houseSummaryResponse = new ArrayList<>();
-            List<String> houseIds = postHouseService.getHouseIdsByPostId(post.getId());
-            for (String houseId : houseIds) {
-                House house = houseService.getHouseById(houseId);
-
-                applicationConditionDtos.addAll(makePositionConditionDtos(post, house, loginMember));
-
-                // [ 주택 요약 Dto ]
-                houseSummaryResponse.add(HouseSummaryResponse.of(
-                        house.getId(),
-                        houseImageService.getThumbnailUrl(houseId),
-                        house.getName(),
-                        getSubscriptionState(post.getId()),
-                        applicationConditionDtos,
-                        // [ 집세 Dto ]
-                        postHouseService.getRentDtosByPostIdAndHouseId(post.getId(), houseId),
-                        house.getDistrict().getName(),
-                        house.getLatitude(),
-                        house.getLongitude()
-                ));
-            }
-
-            // [ 공고 요약 Dto ]
-            postSummaryResponses.add(
-                    PostSummaryResponse.of(
-                            post.getId(),
-                            post.getTitle(),
-                            post.getBadges().stream().map(Badge::getName).toList(),
-                            houseSummaryResponse,
-                            // [ 공급 일정 Dto ]
-                            post.getSchedules().stream()
-                                    .sorted(Comparator.comparing(PostSchedule::getOrdering))
-                                    .map(schedule -> ScheduleDto.of(
-                                            schedule.getId(),
-                                            schedule.getTitle(),
-                                            schedule.getStartDateTime() != null ? schedule.getStartDateTime().toString() : schedule.getStartNote(),
-                                            schedule.getEndDateTime() != null ? schedule.getEndDateTime().toString() : schedule.getEndNote(),
-                                            postScheduleNotificationRepository.existsByPostSchedule_IdAndMember_Id(schedule.getId(), loginMemberId)
-                                    ))
-                                    .toList()
-                    )
-            );
-        }
-
-        return PaginationDto.of(
-                posts.getTotalPages(),
-                postSummaryResponses
-        );
     }
 }

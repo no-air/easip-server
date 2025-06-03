@@ -24,4 +24,8 @@ public class PostHouseService {
     public List<RentDto> getRentDtosByPostIdAndHouseId(String postId, String houseId) {
         return postHouseRepository.findRentDtosByPostIdAndHouseId(postId, houseId);
     }
+
+    public int getNumberOfUnitsRecruitingByPostIdAndHouseId(String postId, String houseId) {
+        return postHouseRepository.sumSupplyRoomCountByPostIdAndHouseId(postId, houseId);
+    }
 }

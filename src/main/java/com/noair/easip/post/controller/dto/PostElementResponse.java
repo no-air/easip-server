@@ -18,9 +18,9 @@ public record PostElementResponse(
     String applicationEnd,
 
     @Schema(description = "모집호수", example = "100")
-    Integer numberOfUnitsRecriting
+    Integer numberOfUnitsRecruiting
 ) {
-    public static PostElementResponse of(String postId, String title, String applicationStart, String applicationEnd, Integer numberOfUnitsRecriting) {
-        return new PostElementResponse(postId, title, applicationStart, applicationEnd, numberOfUnitsRecriting);
+    public static PostElementResponse of(String postId, String title, String applicationStart, String applicationEnd, Integer numberOfUnitsRecruiting) {
+        return new PostElementResponse(postId, title, applicationStart, applicationEnd, numberOfUnitsRecruiting);
     }
 }
