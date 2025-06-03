@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @Tag(name = "자치구 API")
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class DistrictController {
 
     @Operation(summary = "자치구 목록 조회")
     @GetMapping
-    ArrayResponse<DistrictDto> getDistricts() {
+    ArrayResponse<DistrictDto> getAllDistricts() {
         return ArrayResponse.of(districtService.getAllDistricts());
     }
 }
