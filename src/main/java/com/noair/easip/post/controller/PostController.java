@@ -52,8 +52,12 @@ public class PostController {
     }
 
     @Operation(summary = "공고 목록 조회")
-    @GetMapping("/list")
+    @GetMapping("/list/{keyword}")
     PaginationResponse<PostElementResponse> fetchPostList(
+            @Parameter(description = "검색 키워드", example = "서울")
+            @PathVariable(name = "keyword")
+            String keyword,
+
             @Parameter(description = "가져올 현재 페이지", example = "1")
             @RequestParam(required = false, defaultValue = "1")
             @Min(value = 1)
@@ -64,7 +68,7 @@ public class PostController {
             @Min(value = 1)
             Integer size
     ) {
-        PaginationDto<PostElementResponse> fetchResult = postService.fetchPostList(page, size);
+        PaginationDto<PostElementResponse> fetchResult = postService.fetchPostList(keyword, page, size);
 
         return PaginationResponse
                 .of(fetchResult, page, size);

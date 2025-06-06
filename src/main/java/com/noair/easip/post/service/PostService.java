@@ -93,12 +93,16 @@ public class PostService {
         );
     }
 
-    public PaginationDto<PostElementResponse> fetchPostList(Integer page, Integer size) {
-        Page<Post> posts = postRepository.findAll(PageRequest.of(page - 1, size));
+    public PaginationDto<PostElementResponse> fetchPostList(String keyword, Integer page, Integer size) {
+        if (keyword == null || keyword.isBlank()) {
+            keyword = "";
+        }
 
+        Page<Post> posts = postRepository.findAllByTitleContainingIgnoreCase(keyword, PageRequest.of(page - 1, size));
         List<PostElementResponse> postElementResponses = posts.stream().map(
                 post -> PostElementResponse.of(
                         post.getId(),
+                        houseService.getHouseThumbnailUrlByPostId(post.getId()),
                         post.getTitle(),
                         postScheduleService.getApplicationStartStringByPostId(post.getId()),
                         postScheduleService.getApplicationEndStringByPostId(post.getId()),

@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HouseService {
     private final HouseRepository houseRepository;
+    private final HouseImageService houseImageService;
     private final PostHouseService postHouseService;
 
     public House getHouseById(String houseId) {
@@ -25,5 +26,10 @@ public class HouseService {
                 .stream()
                 .map(this::getHouseById)
                 .toList();
+    }
+
+    public String getHouseThumbnailUrlByPostId(String postId) {
+        String thumbnailHouseId = getHousesByPostId(postId).getFirst().getId();
+        return houseImageService.getThumbnailUrl(thumbnailHouseId);
     }
 }

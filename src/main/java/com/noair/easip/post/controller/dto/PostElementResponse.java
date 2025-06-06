@@ -7,6 +7,9 @@ public record PostElementResponse(
     @Schema(description = "공고 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
     String postId,
 
+    @Schema(description = "공고 썸네일 이미지 URL", example = "https://example.com/thumbnail.jpg")
+    String thumbnailUrl,
+
     @Schema(description = "공고 제목", example = "[민간임대] 신당역 신당큐브스테이트오피스텔 추가모집공고")
     String title,
 
@@ -20,7 +23,7 @@ public record PostElementResponse(
     @Schema(description = "모집호수", example = "100")
     Integer numberOfUnitsRecruiting
 ) {
-    public static PostElementResponse of(String postId, String title, String applicationStart, String applicationEnd, Integer numberOfUnitsRecruiting) {
-        return new PostElementResponse(postId, title, applicationStart, applicationEnd, numberOfUnitsRecruiting);
+    public static PostElementResponse of(String postId, String thumbnailUrl, String title, String applicationStart, String applicationEnd, Integer numberOfUnitsRecruiting) {
+        return new PostElementResponse(postId, thumbnailUrl, title, applicationStart, applicationEnd, numberOfUnitsRecruiting);
     }
 }
