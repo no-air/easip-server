@@ -1,17 +1,12 @@
 package com.noair.easip.post.service;
 
-import com.noair.easip.member.domain.Member;
-import com.noair.easip.member.domain.PostScheduleNotification;
-import com.noair.easip.member.domain.PostScheduleNotificationId;
 import com.noair.easip.member.repository.PostScheduleNotificationRepository;
-import com.noair.easip.member.service.MemberService;
 import com.noair.easip.post.controller.dto.ScheduleDto;
 import com.noair.easip.post.domain.Post;
 import com.noair.easip.post.domain.PostSchedule;
 import com.noair.easip.post.domain.SUBSCRIPTION_STATE;
 import com.noair.easip.post.exception.PostScheduleNotFoundException;
 import com.noair.easip.post.repository.PostScheduleRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,26 +23,6 @@ import static com.noair.easip.post.domain.ScheduleType.APPLICATION;
 public class PostScheduleService {
     private final PostScheduleRepository postScheduleRepository;
     private final PostScheduleNotificationRepository postScheduleNotificationRepository;
-    private final MemberService memberService;
-
-    @Transactional
-    public void toggleScheduleNotification(String postScheduleId, String loginMemberId) {
-        boolean isSubscribed = postScheduleNotificationRepository.existsByPostSchedule_IdAndMember_Id(postScheduleId, loginMemberId);
-
-        if (isSubscribed) {
-            postScheduleNotificationRepository.deleteByPostSchedule_IdAndMember_Id(postScheduleId, loginMemberId);
-        } else {
-            PostSchedule postSchedule = getPostScheduleById(postScheduleId);
-            Member member = memberService.getMemberById(loginMemberId);
-            postScheduleNotificationRepository.save(
-                    PostScheduleNotification.builder()
-                            .id(new PostScheduleNotificationId(postSchedule.getId(), member.getId()))
-                            .postSchedule(postSchedule)
-                            .member(member)
-                            .build()
-            );
-        }
-    }
 
     public PostSchedule getPostScheduleById(String postScheduleId) {
         return postScheduleRepository.findById(postScheduleId)
@@ -126,18 +101,18 @@ public class PostScheduleService {
                         schedule.getTitle(),
                         schedule.getStartDateTime() != null ? schedule.getStartDateTime().toString() : schedule.getStartNote(),
                         schedule.getEndDateTime() != null ? schedule.getEndDateTime().toString() : schedule.getEndNote(),
-                        postScheduleNotificationRepository.existsByPostSchedule_IdAndMember_Id(schedule.getId(), loginMemberId)
+                        postScheduleNotificationRepository.existsByPostScheduleIdAndMemberId(schedule.getId(), loginMemberId)
                 ))
                 .toList();
     }
 
     public boolean isPushAlarmRegistered(String postId, String loginMemberId) {
         List<String> scheduleIds = postScheduleRepository.findAllByPostId(postId).stream().map(PostSchedule::getId).toList();
-        return postScheduleNotificationRepository.existsByPostSchedule_IdInAndMember_Id(scheduleIds, loginMemberId);
+        return postScheduleNotificationRepository.existsByPostScheduleIdInAndMemberId(scheduleIds, loginMemberId);
     }
 
     public int getPushAlarmRegisteredPostCount(String loginMemberId) {
-        return (int) postScheduleNotificationRepository.findAllByMember_Id(loginMemberId).stream()
+        return (int) postScheduleNotificationRepository.findAllByMemberId(loginMemberId).stream()
                 .flatMap(notification -> Stream.of(notification.getPostSchedule().getPost()))
                 .distinct()
                 .count();

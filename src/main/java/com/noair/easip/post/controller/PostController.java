@@ -1,8 +1,12 @@
 package com.noair.easip.post.controller;
 
 import com.noair.easip.auth.controller.LoginMemberId;
+import com.noair.easip.member.domain.Member;
+import com.noair.easip.member.service.MemberService;
+import com.noair.easip.member.service.PostScheduleNotificationService;
 import com.noair.easip.post.controller.dto.*;
 import com.noair.easip.post.domain.Post;
+import com.noair.easip.post.domain.PostSchedule;
 import com.noair.easip.post.service.PostScheduleService;
 import com.noair.easip.post.service.PostService;
 import com.noair.easip.util.ArrayResponse;
@@ -27,6 +31,8 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final PostScheduleService postScheduleService;
+    private final PostScheduleNotificationService postScheduleNotificationService;
+    private final MemberService memberService;
 
     @Operation(summary = "홈 페이지 공고 조회")
     @GetMapping("/home")
@@ -133,7 +139,10 @@ public class PostController {
             @LoginMemberId
             String loginMemberId
     ) {
-        postScheduleService.toggleScheduleNotification(scheduleId, loginMemberId);
+        PostSchedule postSchedule = postScheduleService.getPostScheduleById(scheduleId);
+        Member loginMember = memberService.getMemberById(loginMemberId);
+        postScheduleNotificationService.toggleScheduleNotification(postSchedule, loginMember);
+
         return DefaultResponse.ok();
     }
 }
