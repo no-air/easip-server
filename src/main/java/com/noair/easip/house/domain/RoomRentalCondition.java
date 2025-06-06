@@ -33,25 +33,29 @@ public class RoomRentalCondition extends BaseEntity {
     @JoinColumn(name = "HOUSE_ID", nullable = false)
     private House house;
 
-    @Column(name = "SUPPLY_TYPE", nullable = false)
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RentalType rentalType;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Position supplyType;
 
-    @Column(name = "ROOM_TYPE", nullable = false)
+    @Column(nullable = false)
     private String roomType;
 
-    @Column(name = "EXCLUSIVE_AREA", nullable = false)
+    @Column(nullable = false)
     private Double exclusiveArea;
 
-    @Column(name = "TOTAL_ROOM_COUNT", nullable = false)
+    @Column(nullable = false)
     private Integer totalRoomCount;
 
-    @Column(name = "DEPOSIT", nullable = false)
+    @Column(nullable = false)
     private Double deposit;
 
-    @Column(name = "MONTHLY_RENT", nullable = false)
+    @Column(nullable = false)
     private Double monthlyRent;
 
-    @Column(name = "MAINTENANCE_FEE", nullable = false)
+    @Column(nullable = false)
     private Double maintenanceFee;
 } 

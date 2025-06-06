@@ -52,76 +52,14 @@ public class HouseController {
         );
     }
 
-    @Operation(summary = "[MOCK] 주택 상세 조회")
+    @Operation(summary = "주택 상세 조회")
     @GetMapping("/{houseId}")
     HouseDetailResponse getHouseDetail(
         @Parameter(description = "주택 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
         @PathVariable("houseId") 
         String houseId
     ) {
-        return HouseDetailResponse.of(
-            "01HGW2N7EHJVJ4CJ999RRS2E97",
-            "신당역 신당큐브스테이트오피스텔",
-            List.of("민간임대", "청약예정", "중구"),
-            List.of(
-                "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
-                "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg"
-            ),
-            "서울특별시 중구 신당동 123-45",
-            "신당역 2호선, 3호선",
-            "더클래식동작",
-            "(주)강남건영",
-            "2025-01-01",
-            "2025-02-01",
-            100,
-            List.of(
-                RoomInfoResponse.of(
-                    "원룸",
-                    52.23,
-                    "청년",
-                    50,
-                    100000000.0,
-                    1000000.0,
-                    150000.0
-                ),
-                RoomInfoResponse.of(
-                    "투룸",
-                    72.45,
-                    "신혼부부",
-                    50,
-                    150000000.0,
-                    1500000.0,
-                    200000.0
-                )
-            ),
-            50,
-            List.of(
-                RoomInfoResponse.of(
-                    "원룸",
-                    52.23,
-                    "다자녀가구",
-                    25,
-                    100000000.0,
-                    1000000.0,
-                    150000.0
-                ),
-                RoomInfoResponse.of(
-                    "투룸",
-                    72.45,
-                    "다자녀가구",
-                    25,
-                    150000000.0,
-                    1500000.0,
-                    200000.0
-                )
-            ),
-            List.of(
-                "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
-                "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg"
-            ),
-            37.5665,
-            126.978
-        );
+        return houseService.getHouseDetail(houseId);
     }
 
     @Operation(summary = "[MOCK: 랜덤값] 북마크 여부 조회")

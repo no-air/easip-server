@@ -73,7 +73,7 @@ public class PostService {
         return houses.stream().map(house -> {
             List<ApplicationConditionDto> applicationConditionDtos = getApplicationConditionDtos(loginMember, post, house);
             List<RentDto> rentDtos = postHouseService.getRentDtosByPostIdAndHouseId(post.getId(), house.getId());
-            String thumbnailUrl = houseImageService.getThumbnailUrl(house.getId());
+            String thumbnailUrl = houseImageService.getThumbnailImageUrl(house.getId());
             String subscriptionState = postScheduleService.getSubscriptionStateKorNameByPostId(post.getId());
 
             return HouseSummaryResponse.of(
@@ -134,7 +134,7 @@ public class PostService {
             postPerHouseDetailDtos.add(PostPerHouseDetailDto.of(
                     house.getId(),
                     house.getName(),
-                    houseImageService.getThumbnailUrl(house.getId()),
+                    houseImageService.getThumbnailImageUrl(house.getId()),
                     house.getAddress(),
                     postHouseConditions.getFirst().minRatioDeposit(),
                     postHouseConditions.getFirst().minRatioMonthlyRent(),

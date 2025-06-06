@@ -45,10 +45,10 @@ public class House extends DeletableBaseEntity {
     private String moveInDate;
 
     @Column(name = "GENERAL_SUPPLY_COUNT", nullable = false)
-    private String generalSupplyCount;
+    private Integer generalSupplyCount;
 
     @Column(name = "SPECIAL_SUPPLY_COUNT", nullable = false)
-    private String specialSupplyCount;
+    private Integer specialSupplyCount;
 
     @Column(name = "LATITUDE", nullable = false)
     private Double latitude;
@@ -83,4 +83,10 @@ public class House extends DeletableBaseEntity {
     @OneToMany(mappedBy = "house")
     @Builder.Default
     private List<Bookmark> bookmarks = new ArrayList<>();
+
+    public List<String> getBadgeNames() {
+        return badges.stream()
+                .map(Badge::getName)
+                .toList();
+    }
 }
