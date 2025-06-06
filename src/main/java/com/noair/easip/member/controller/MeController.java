@@ -2,19 +2,20 @@ package com.noair.easip.member.controller;
 
 import com.noair.easip.auth.controller.LoginMemberId;
 import com.noair.easip.house.domain.District;
+import com.noair.easip.member.controller.dto.request.CreateMemberRequest;
 import com.noair.easip.member.controller.dto.response.MemberResponse;
 import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.domain.Position;
 import com.noair.easip.member.service.MemberService;
 import com.noair.easip.post.service.PostScheduleService;
+import com.noair.easip.util.DefaultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/me")
-@Valid
+@Validated
 public class MeController {
     private final MemberService memberService;
     private final PostScheduleService postScheduleService;
@@ -47,11 +48,26 @@ public class MeController {
                 member.getMyMonthlySalary().longValue(),
                 member.getFamilyMemberMonthlySalary().longValue(),
                 member.getAllFamilyMemberCount(),
-                member.getPosition().getKorName(),
+                member.getPosition(),
                 member.getHasCar(),
                 member.getCarPrice(),
                 member.getAssetPrice().longValue()
         );
+    }
+
+    @Operation(summary = "내 프로필 수정")
+    @PutMapping("/profile")
+    DefaultResponse updateMyProfile(
+            @Parameter(hidden = true)
+            @LoginMemberId
+            String loginMemberId,
+
+            @RequestBody
+            CreateMemberRequest request
+    ) {
+
+        memberService.updateMember(loginMemberId, request);
+        return DefaultResponse.ok();
     }
 
 

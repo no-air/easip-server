@@ -72,4 +72,29 @@ public class Member extends DeletableBaseEntity {
     @Builder.Default
     private Double assetPrice = 0.0;
 
+    public void updateProfile(
+            String name,
+            LocalDate dateOfBirth,
+            District livingDistrict,
+            List<District> likingDistricts,
+            Integer allFamilyMemberCount,
+            Double myMonthlySalary,
+            Double familyMemberMonthlySalary,
+            Position position,
+            Boolean hasCar,
+            Long carPrice,
+            Double assetPrice
+    ) {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.livingDistrict = livingDistrict;
+        this.likingDistricts = likingDistricts;
+        this.allFamilyMemberCount = allFamilyMemberCount;
+        this.myMonthlySalary = myMonthlySalary;
+        this.familyMemberMonthlySalary = familyMemberMonthlySalary;
+        this.position = position;
+        this.hasCar = hasCar;
+        this.carPrice = carPrice;
+        this.assetPrice = assetPrice;
+    }
 }

@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
-@Schema(description = "사용자 회원가입 요청")
+@Schema(description = "사용자 생성/수정 요청")
 public record CreateMemberRequest(
         @NotBlank
         @Size(min = 1)

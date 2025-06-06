@@ -67,4 +67,24 @@ public class MemberService {
                 .findById(key)
                 .map(SocialAuth::getMember);
     }
+
+    @Transactional
+    public void updateMember(String loginMemberId, CreateMemberRequest request) {
+        Member member = getMemberById(loginMemberId);
+        member.updateProfile(
+                request.name(),
+                request.dayOfBirth(),
+                districtService.getDistrictById(request.livingDistrictId()),
+                request.likingDistrictIds().stream()
+                        .map(districtService::getDistrictById)
+                        .toList(),
+                request.allFamilyMemberCount(),
+                request.myMonthlySalary().doubleValue(),
+                request.familyMemberMonthlySalary().doubleValue(),
+                request.position(),
+                request.hasCar(),
+                request.carPrice(),
+                request.assetPrice().doubleValue()
+        );
+    }
 }

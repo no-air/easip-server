@@ -32,8 +32,8 @@ public record MemberResponse(
         @Schema(description = "본인 포함 세대원 수", example = "4")
         Integer allFamilyMemberCount,
 
-        @Schema(description = "신분", example = "청ㄴ년")
-        String position,
+        @Schema(description = "신분", example = "YOUNG_MAN")
+        Position position,
 
         @Schema(description = "자동차 소유 여부", example = "false")
         Boolean hasCar,
@@ -53,7 +53,7 @@ public record MemberResponse(
                 Long myMonthlySalary,
                 Long familyMemberMonthlySalary,
                 Integer allFamilyMemberCount,
-                String position,
+                Position position,
                 Boolean hasCar,
                 Long carPrice,
                 Long assetPrice) {
