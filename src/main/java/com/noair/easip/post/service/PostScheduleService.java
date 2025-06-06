@@ -114,4 +114,11 @@ public class PostScheduleService {
         List<String> scheduleIds = postScheduleRepository.findAllByPostId(postId).stream().map(PostSchedule::getId).toList();
         return postScheduleNotificationRepository.existsByPostSchedule_IdInAndMember_Id(scheduleIds, loginMemberId);
     }
+
+    public int getPushAlarmRegisteredPostCount(String loginMemberId) {
+        return (int) postScheduleNotificationRepository.findAllByMember_Id(loginMemberId).stream()
+                .flatMap(notification -> Stream.of(notification.getPostSchedule().getPost()))
+                .distinct()
+                .count();
+    }
 }

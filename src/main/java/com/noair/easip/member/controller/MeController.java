@@ -1,8 +1,12 @@
 package com.noair.easip.member.controller;
 
 import com.noair.easip.auth.controller.LoginMemberId;
+import com.noair.easip.house.domain.District;
 import com.noair.easip.member.controller.dto.response.MemberResponse;
+import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.domain.Position;
+import com.noair.easip.member.service.MemberService;
+import com.noair.easip.post.service.PostScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,23 +25,34 @@ import java.util.List;
 @RequestMapping("/v1/me")
 @Valid
 public class MeController {
+    private final MemberService memberService;
+    private final PostScheduleService postScheduleService;
 
     @Operation(summary = "내 프로필 조회")
     @GetMapping("/profile")
     MemberResponse getMyProfile(
-            @Parameter(hidden = true) @LoginMemberId String loginMemberId) {
+            @Parameter(hidden = true)
+            @LoginMemberId
+            String loginMemberId
+    ) {
+        Member member = memberService.getMemberById(loginMemberId);
+        int pushAlarmRegisteredPostCount = postScheduleService.getPushAlarmRegisteredPostCount(loginMemberId);
+
         return MemberResponse.of(
-                "나나미",
-                LocalDate.of(2001, 1, 25),
-                List.of("01HGW2N7EHJVJ4CJ999RRS2E", "01HGW2N7EHJVJ4CJ999RRS2E"),
-                "01HGW2N7EHJVJ4CJ999RRS2E",
-                5000000L,
-                5000000L,
-                4,
-                Position.YOUNG_MAN,
-                false,
-                30000000L,
-                150000000L);
+                member.getName(),
+                pushAlarmRegisteredPostCount,
+                member.getDateOfBirth(),
+                member.getLikingDistricts().stream().map(District::getName).toList(),
+                member.getLivingDistrict().getName(),
+                member.getMyMonthlySalary().longValue(),
+                member.getFamilyMemberMonthlySalary().longValue(),
+                member.getAllFamilyMemberCount(),
+                member.getPosition().getKorName(),
+                member.getHasCar(),
+                member.getCarPrice(),
+                member.getAssetPrice().longValue()
+        );
     }
+
 
 }

@@ -11,13 +11,16 @@ public record MemberResponse(
         @Schema(description = "회원 이름", example = "나나미")
         String name,
 
+        @Schema(description = "관심 공고 수", example = "2")
+        Integer likingPostCount,
+
         @Schema(description = "생년월일 yyyy-MM-dd", example = "2001-01-25")
         LocalDate dayOfBirth,
 
-        @Schema(description = "선호구 ID목록", example = "[\"01HGW2N7EHJVJ4CJ999RRS2E\",\"01HGW2N7EHJVJ4CJ999RRS2E\"]")
+        @Schema(description = "선호 자치구 목록", example = "[\"강서구\",\"영등포구\"]")
         List<String> likingDistrictIds,
 
-        @Schema(description = "거주구 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E")
+        @Schema(description = "거주 자치구", example = "영등포구")
         String livingDistrictId,
 
         @Schema(description = "월소득 (KRW)", example = "5000000")
@@ -29,8 +32,8 @@ public record MemberResponse(
         @Schema(description = "본인 포함 세대원 수", example = "4")
         Integer allFamilyMemberCount,
 
-        @Schema(description = "신분", example = "YOUNG_MAN")
-        Position position,
+        @Schema(description = "신분", example = "청ㄴ년")
+        String position,
 
         @Schema(description = "자동차 소유 여부", example = "false")
         Boolean hasCar,
@@ -43,18 +46,20 @@ public record MemberResponse(
 ) {
         public static MemberResponse of(
                 String name,
+                Integer likingPostCount,
                 LocalDate dayOfBirth,
                 List<String> likingCityIds,
                 String livingCityId,
                 Long myMonthlySalary,
                 Long familyMemberMonthlySalary,
                 Integer allFamilyMemberCount,
-                Position position,
+                String position,
                 Boolean hasCar,
                 Long carPrice,
                 Long assetPrice) {
         return new MemberResponse(
                         name,
+                        likingPostCount,
                         dayOfBirth,
                         likingCityIds,
                         livingCityId,
