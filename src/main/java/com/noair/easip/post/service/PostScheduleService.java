@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.noair.easip.post.domain.ScheduleType.APPLICATION;
 
@@ -107,5 +108,10 @@ public class PostScheduleService {
                         postScheduleNotificationRepository.existsByPostSchedule_IdAndMember_Id(schedule.getId(), loginMemberId)
                 ))
                 .toList();
+    }
+
+    public boolean isPushAlarmRegistered(String postId, String loginMemberId) {
+        List<String> scheduleIds = postScheduleRepository.findAllByPostId(postId).stream().map(PostSchedule::getId).toList();
+        return postScheduleNotificationRepository.existsByPostSchedule_IdInAndMember_Id(scheduleIds, loginMemberId);
     }
 }

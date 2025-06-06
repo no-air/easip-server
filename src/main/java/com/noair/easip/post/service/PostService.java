@@ -93,7 +93,7 @@ public class PostService {
         );
     }
 
-    public PaginationDto<PostElementResponse> fetchPostList(String keyword, Integer page, Integer size) {
+    public PaginationDto<PostElementResponse> fetchPostList(String keyword, String loginMemberId, Integer page, Integer size) {
         Page<Post> posts = postRepository.findAllByTitleContainingIgnoreCase(keyword, PageRequest.of(page - 1, size));
         List<PostElementResponse> postElementResponses = posts.stream().map(
                 post -> PostElementResponse.of(
@@ -103,7 +103,8 @@ public class PostService {
                         postScheduleService.getSubscriptionStateKorName(post.getId()),
                         postScheduleService.getApplicationStartStringByPostId(post.getId()),
                         postScheduleService.getApplicationEndStringByPostId(post.getId()),
-                        postHouseService.getNumberOfUnitsRecruitingByPostIdAndHouseId(post.getId(), null) // 공고에 포함된 모든 주택의 공급호수
+                        postHouseService.getNumberOfUnitsRecruitingByPostIdAndHouseId(post.getId(), null), // 공고에 포함된 모든 주택의 공급호수
+                        postScheduleService.isPushAlarmRegistered(post.getId(), loginMemberId)
                 )
         ).toList();
 

@@ -5,6 +5,7 @@ import com.noair.easip.post.domain.ScheduleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface PostScheduleRepository extends JpaRepository<PostSchedule, String> {
@@ -13,4 +14,6 @@ public interface PostScheduleRepository extends JpaRepository<PostSchedule, Stri
     boolean existsByPost_IdAndStartDateTimeGreaterThan(String postId, LocalDateTime dateTime);
 
     Optional<PostSchedule> findByPostIdAndScheduleType(String postId, ScheduleType scheduleType);
+
+    List<PostSchedule> findAllByPostId(String postId);
 }

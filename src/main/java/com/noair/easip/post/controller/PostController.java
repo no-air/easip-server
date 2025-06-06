@@ -66,9 +66,13 @@ public class PostController {
             @Parameter(description = "페이지당 아이템 수", example = "10")
             @RequestParam(required = false, defaultValue = "10")
             @Min(value = 1)
-            Integer size
+            Integer size,
+
+            @Parameter(hidden = true)
+            @LoginMemberId
+            String loginMemberId
     ) {
-        PaginationDto<PostElementResponse> fetchResult = postService.fetchPostList(keyword, page, size);
+        PaginationDto<PostElementResponse> fetchResult = postService.fetchPostList(keyword, loginMemberId, page, size);
 
         return PaginationResponse
                 .of(fetchResult, page, size);
