@@ -1,9 +1,7 @@
 package com.noair.easip.house.controller;
 
-import com.noair.easip.house.controller.dto.HouseDetailResponse;
-import com.noair.easip.house.controller.dto.HouseSummaryResponse;
-import com.noair.easip.house.controller.dto.RentDto;
-import com.noair.easip.house.controller.dto.RoomInfoResponse;
+import com.noair.easip.house.controller.dto.*;
+import com.noair.easip.house.service.HouseService;
 import com.noair.easip.post.controller.dto.ApplicationConditionDto;
 import com.noair.easip.util.ArrayResponse;
 import com.noair.easip.util.DefaultResponse;
@@ -28,10 +26,11 @@ import java.util.Random;
 @Validated
 @RequestMapping("/v1/houses")
 public class HouseController {
+    private final HouseService houseService;
 
-    @Operation(summary = "[MOCK] 지도 기반 주택 목록 조회")
+    @Operation(summary = "지도 기반 주택 목록 조회")
     @GetMapping("/map")
-    ArrayResponse<HouseSummaryResponse> getHouseListInMap(
+    ArrayResponse<HouseElementResponse> getHouseListInMap(
         @Parameter(description = "취소 위도", example = "37.5665")
         @RequestParam
         Double minLatitude,
@@ -49,41 +48,7 @@ public class HouseController {
         Double maxLongitude
     ) {
         return ArrayResponse.of(
-            List.of(
-                HouseSummaryResponse.of(
-                    "01HGW2N7EHJVJ4CJ999RRS2E97",
-                    "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
-                    "KRX한국거래소",
-                    "청약예정",
-                    List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)),
-                    List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)),
-                    "영등포구",
-                    37.522875991257024,
-                    126.92803891060132
-                ),
-                HouseSummaryResponse.of(
-                    "01HGW2N7EHJVJ4CJ999RRS2E91",
-                    "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
-                    "코스콤 신사옥",
-                    "청약예정",
-                    List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)),
-                    List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)),
-                    "영등포구",
-                    37.52166435840751,
-                    126.92839358143895
-                ),
-                HouseSummaryResponse.of(
-                    "01HGW2N7EHJVJ4CJ999RRS2E92",
-                    "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
-                    "더현대 서울",
-                    "청약예정",
-                    List.of(new ApplicationConditionDto("청년", true), new ApplicationConditionDto("신혼부부", false), new ApplicationConditionDto("개인무주택", true), new ApplicationConditionDto("소득기준 2억원 이내(1인가구 기준)", true)),
-                    List.of(new RentDto(100000000.0, 1000000.0), new RentDto(150000000.0, 900000.0), new RentDto(200000000.0, 800000.0)),
-                    "영등포구",
-                    37.52588558605109,
-                    126.92844611120303
-                )
-            )
+                houseService.searchHouseInMap(minLatitude, minLongitude, maxLatitude, maxLongitude)
         );
     }
 

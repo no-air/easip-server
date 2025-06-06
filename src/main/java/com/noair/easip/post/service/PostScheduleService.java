@@ -54,17 +54,38 @@ public class PostScheduleService {
                 .orElseThrow(PostScheduleNotFoundException::new);
     }
 
-    public String getSubscriptionStateKorName(String postId) {
+    public String getSubscriptionStateKorNameByPostId(String postId) {
         Optional<PostSchedule> applicationStart = postScheduleRepository.findByPostIdAndScheduleType(postId, APPLICATION);
 
-        // 청약신청 타입의 일정이 있고, 현재가 일정보다 이전이라면 = "청약예정"
-        if (applicationStart.isPresent() &&
-                applicationStart.get().getStartDateTime() != null && LocalDateTime.now().isBefore(applicationStart.get().getStartDateTime())
+        // 청약신청 타입의 일정이 없거나, 시작일시가 null이거나, 현재가 신청일정보다 이전이라면 = "청약예정"
+        if (
+                applicationStart.isEmpty() || applicationStart.get().getStartDateTime() == null ||
+                        LocalDateTime.now().isBefore(applicationStart.get().getStartDateTime())
         ) {
             return SUBSCRIPTION_STATE.SCHEDULED.getKorName();
 
-            // 청약신청 타입의 일정이 없거나, 시작일시가 null이거나, 현재가 모든 일정보다 이후라면 = "청약완료"
-        } else if (applicationStart.isEmpty() || applicationStart.get().getStartDateTime() == null || !postScheduleRepository.existsByPost_IdAndStartDateTimeGreaterThan(postId, LocalDateTime.now())) {
+            // 현재가 모든 일정보다 이후라면 = "청약완료"
+        } else if (!postScheduleRepository.existsByPostIdAndDateTimeGreaterThan(postId, LocalDateTime.now())) {
+            return SUBSCRIPTION_STATE.COMPLETED.getKorName();
+
+            // 그 외에는 "청약진행중"
+        } else {
+            return SUBSCRIPTION_STATE.ONGOING.getKorName();
+        }
+    }
+
+    public String getSubscriptionStateKotNameByHouseId(String houseId) {
+        Optional<PostSchedule> applicationStart = postScheduleRepository.findRecentByHouseIdAndScheduleType(houseId, APPLICATION);
+
+        // 청약신청 타입의 일정이 없거나, 시작일시가 null이거나, 현재가 신청일정보다 이전이라면 = "청약예정"
+        if (
+                applicationStart.isEmpty() || applicationStart.get().getStartDateTime() == null ||
+                        LocalDateTime.now().isBefore(applicationStart.get().getStartDateTime())
+        ) {
+            return SUBSCRIPTION_STATE.SCHEDULED.getKorName();
+
+            // 현재가 모든 일정보다 이후라면 = "청약완료"
+        } else if (!postScheduleRepository.existsByHouseIdAndDateTimeGreaterThan(houseId, LocalDateTime.now())) {
             return SUBSCRIPTION_STATE.COMPLETED.getKorName();
 
             // 그 외에는 "청약진행중"

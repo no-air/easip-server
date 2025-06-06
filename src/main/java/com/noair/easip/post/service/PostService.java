@@ -45,35 +45,11 @@ public class PostService {
         List<PostSummaryResponse> postSummaryResponses = new ArrayList<>();
 
         Page<Post> posts = postRepository.findAll(PageRequest.of(page - 1, size));
-        for (Post post : posts) { // 공고별 aggregation
+        for (Post post : posts) {
 
-            // [ 공급 일정 Dto ]
             List<ScheduleDto> scheduleDtos = postScheduleService.getScheduleDtoByPost(post, loginMemberId);
-
-            // [ 주택 요약 Dto ]
-            List<HouseSummaryResponse> houseSummaryResponse = new ArrayList<>();
-            for (House house : houseService.getHousesByPostId(post.getId())) { // 주택별 aggregation
-
-                // [ 지원 조건 Dto ]
-                List<ApplicationConditionDto> applicationConditionDtos = getApplicationConditionDtos(loginMember, post, house);
-                // [ 집세 Dto ]
-                List<RentDto> rentDtos = postHouseService.getRentDtosByPostIdAndHouseId(post.getId(), house.getId());
-                //
-                String thumbnailUrl = houseImageService.getThumbnailUrl(house.getId());
-                String subscriptionState = postScheduleService.getSubscriptionStateKorName(post.getId());
-
-                houseSummaryResponse.add(HouseSummaryResponse.of(
-                        house.getId(),
-                        thumbnailUrl,
-                        house.getName(),
-                        subscriptionState,
-                        applicationConditionDtos,
-                        rentDtos,
-                        house.getDistrict().getName(),
-                        house.getLatitude(),
-                        house.getLongitude()
-                ));
-            }
+            List<House> houses = houseService.getHousesByPostId(post.getId());
+            List<HouseSummaryResponse> houseSummaryResponse = makeHouseSummaryResponse(post, houses, loginMember);
 
             // [ 공고 요약 Dto ]
             postSummaryResponses.add(
@@ -93,6 +69,27 @@ public class PostService {
         );
     }
 
+    public List<HouseSummaryResponse> makeHouseSummaryResponse(Post post, List<House> houses, Member loginMember) {
+        return houses.stream().map(house -> {
+            List<ApplicationConditionDto> applicationConditionDtos = getApplicationConditionDtos(loginMember, post, house);
+            List<RentDto> rentDtos = postHouseService.getRentDtosByPostIdAndHouseId(post.getId(), house.getId());
+            String thumbnailUrl = houseImageService.getThumbnailUrl(house.getId());
+            String subscriptionState = postScheduleService.getSubscriptionStateKorNameByPostId(post.getId());
+
+            return HouseSummaryResponse.of(
+                    house.getId(),
+                    thumbnailUrl,
+                    house.getName(),
+                    subscriptionState,
+                    applicationConditionDtos,
+                    rentDtos,
+                    house.getDistrict().getName(),
+                    house.getLatitude(),
+                    house.getLongitude()
+            );
+        }).toList();
+    }
+
     public PaginationDto<PostElementResponse> fetchPostList(String keyword, String loginMemberId, Integer page, Integer size) {
         Page<Post> posts = postRepository.findAllByTitleContainingIgnoreCase(keyword, PageRequest.of(page - 1, size));
         return makePostElementResponsePaginationDto(loginMemberId, posts);
@@ -109,7 +106,7 @@ public class PostService {
                         post.getId(),
                         houseService.getHouseThumbnailUrlByPostId(post.getId()),
                         post.getTitle(),
-                        postScheduleService.getSubscriptionStateKorName(post.getId()),
+                        postScheduleService.getSubscriptionStateKorNameByPostId(post.getId()),
                         postScheduleService.getApplicationStartStringByPostId(post.getId()),
                         postScheduleService.getApplicationEndStringByPostId(post.getId()),
                         postHouseService.getNumberOfUnitsRecruitingByPostIdAndHouseId(post.getId(), null), // 공고에 포함된 모든 주택의 공급호수

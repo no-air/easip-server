@@ -8,11 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface PostScheduleRepository extends JpaRepository<PostSchedule, String> {
-    boolean existsByPost_IdAndStartDateTimeLessThan(String postId, LocalDateTime dateTime);
-
-    boolean existsByPost_IdAndStartDateTimeGreaterThan(String postId, LocalDateTime dateTime);
-
+public interface PostScheduleRepository extends JpaRepository<PostSchedule, String>, PostScheduleRepositoryCustom {
     Optional<PostSchedule> findByPostIdAndScheduleType(String postId, ScheduleType scheduleType);
 
     List<PostSchedule> findAllByPostId(String postId);
