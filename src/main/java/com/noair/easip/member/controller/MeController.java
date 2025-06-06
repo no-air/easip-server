@@ -7,12 +7,18 @@ import com.noair.easip.member.controller.dto.response.MemberResponse;
 import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.domain.Position;
 import com.noair.easip.member.service.MemberService;
+import com.noair.easip.post.controller.dto.PostElementResponse;
 import com.noair.easip.post.service.PostScheduleService;
+import com.noair.easip.post.service.PostService;
+import com.noair.easip.util.ArrayResponse;
 import com.noair.easip.util.DefaultResponse;
+import com.noair.easip.util.PaginationDto;
+import com.noair.easip.util.PaginationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +34,7 @@ import java.util.List;
 public class MeController {
     private final MemberService memberService;
     private final PostScheduleService postScheduleService;
+    private final PostService postService;
 
     @Operation(summary = "내 프로필 조회")
     @GetMapping("/profile")
@@ -81,5 +88,31 @@ public class MeController {
         return DefaultResponse.ok();
     }
 
+    @Operation(summary = "관심 공고 목록 조회", description = "알림을 등록한 공고를 조회한다.")
+    @GetMapping("/like/posts")
+    PaginationResponse<PostElementResponse> fetchLikingPostList(
+            @Parameter(description = "검색 키워드", example = "서울")
+            @RequestParam(required = false, defaultValue = "")
+            String keyword,
+
+            @Parameter(description = "가져올 현재 페이지", example = "1")
+            @RequestParam(required = false, defaultValue = "1")
+            @Min(value = 1)
+            Integer page,
+
+            @Parameter(description = "페이지당 아이템 수", example = "10")
+            @RequestParam(required = false, defaultValue = "10")
+            @Min(value = 1)
+            Integer size,
+
+            @Parameter(hidden = true)
+            @LoginMemberId
+            String loginMemberId
+    ) {
+        PaginationDto<PostElementResponse> fetchResult = postService.fetchLikingPostList(keyword, loginMemberId, page, size);
+
+        return PaginationResponse
+                .of(fetchResult, page, size);
+    }
 
 }

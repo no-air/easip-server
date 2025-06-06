@@ -95,6 +95,15 @@ public class PostService {
 
     public PaginationDto<PostElementResponse> fetchPostList(String keyword, String loginMemberId, Integer page, Integer size) {
         Page<Post> posts = postRepository.findAllByTitleContainingIgnoreCase(keyword, PageRequest.of(page - 1, size));
+        return makePostElementResponsePaginationDto(loginMemberId, posts);
+    }
+
+    public PaginationDto<PostElementResponse> fetchLikingPostList(String keyword, String loginMemberId, Integer page, Integer size) {
+        Page<Post> posts = postRepository.searchLikingPosts(keyword, loginMemberId, PageRequest.of(page - 1, size));
+        return makePostElementResponsePaginationDto(loginMemberId, posts);
+    }
+
+    public PaginationDto<PostElementResponse> makePostElementResponsePaginationDto(String loginMemberId, Page<Post> posts) {
         List<PostElementResponse> postElementResponses = posts.stream().map(
                 post -> PostElementResponse.of(
                         post.getId(),
