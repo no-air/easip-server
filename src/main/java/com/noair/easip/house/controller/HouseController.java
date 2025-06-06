@@ -1,8 +1,14 @@
 package com.noair.easip.house.controller;
 
+import com.noair.easip.auth.controller.LoginMemberId;
 import com.noair.easip.house.controller.dto.*;
+import com.noair.easip.house.domain.House;
+import com.noair.easip.house.service.BookmarkService;
 import com.noair.easip.house.service.HouseService;
+import com.noair.easip.member.domain.Member;
+import com.noair.easip.member.service.MemberService;
 import com.noair.easip.post.controller.dto.ApplicationConditionDto;
+import com.noair.easip.post.service.PostService;
 import com.noair.easip.util.ArrayResponse;
 import com.noair.easip.util.DefaultResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +33,9 @@ import java.util.Random;
 @RequestMapping("/v1/houses")
 public class HouseController {
     private final HouseService houseService;
+    private final BookmarkService bookmarkService;
+    private final PostService postService;
+    private final MemberService memberService;
 
     @Operation(summary = "지도 기반 주택 목록 조회")
     @GetMapping("/map")
@@ -62,24 +71,39 @@ public class HouseController {
         return houseService.getHouseDetail(houseId);
     }
 
-    @Operation(summary = "[MOCK: 랜덤값] 북마크 여부 조회")
+    @Operation(summary = "북마크 여부 조회")
     @GetMapping("/{houseId}/bookmark")
     Boolean getHouseBookmark(
         @Parameter(description = "주택 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
         @PathVariable
-        String houseId
+        String houseId,
+
+        @Parameter(hidden = true)
+        @LoginMemberId
+        String loginMemberId
     ) {
-        return new Random().nextBoolean();
+        return bookmarkService.isBookmarked(
+            loginMemberId,
+            houseId
+        );
     }
 
-    @Operation(summary = "[MOCK: 랜덤값] 북마크 토글")
+    @Operation(summary = "북마크 토글")
     @PutMapping("/{houseId}/bookmark")
     DefaultResponse toggleHouseBookmark(
         @Parameter(description = "주택 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
         @PathVariable
-        String houseId
+        String houseId,
+
+        @Parameter(hidden = true)
+        @LoginMemberId
+        String loginMemberId
     ) {
-        return new Random().nextBoolean() ? DefaultResponse.ok() : DefaultResponse.fail();
+        House house = houseService.getHouseById(houseId);
+        Member member = memberService.getMemberById(loginMemberId);
+        bookmarkService.toggleBookmark(member, house);
+
+        return DefaultResponse.ok();
     }
 
 }
