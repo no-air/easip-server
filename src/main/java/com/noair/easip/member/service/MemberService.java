@@ -87,4 +87,10 @@ public class MemberService {
                 request.assetPrice().doubleValue()
         );
     }
+
+    @Transactional
+    public void deleteMemberSoft(String loginMemberId) {
+        Member member = getMemberById(loginMemberId);
+        member.deleteSoft();
+    }
 }

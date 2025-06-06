@@ -70,5 +70,16 @@ public class MeController {
         return DefaultResponse.ok();
     }
 
+    @Operation(summary = "회원 탈퇴")
+    @DeleteMapping
+    DefaultResponse deleteMyProfile(
+            @Parameter(hidden = true)
+            @LoginMemberId
+            String loginMemberId
+    ) {
+        memberService.deleteMemberSoft(loginMemberId);
+        return DefaultResponse.ok();
+    }
+
 
 }

@@ -97,4 +97,8 @@ public class Member extends DeletableBaseEntity {
         this.carPrice = carPrice;
         this.assetPrice = assetPrice;
     }
+
+    public void deleteSoft() {
+        super.delete();
+    }
 }
