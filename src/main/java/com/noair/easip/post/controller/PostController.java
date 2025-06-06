@@ -52,10 +52,10 @@ public class PostController {
     }
 
     @Operation(summary = "공고 목록 조회")
-    @GetMapping("/list/{keyword}")
+    @GetMapping("/list")
     PaginationResponse<PostElementResponse> fetchPostList(
             @Parameter(description = "검색 키워드", example = "서울")
-            @PathVariable(name = "keyword")
+            @RequestParam(required = false)
             String keyword,
 
             @Parameter(description = "가져올 현재 페이지", example = "1")
