@@ -1,6 +1,7 @@
 package com.noair.easip.post.service;
 
 import com.noair.easip.house.controller.dto.HouseSummaryResponse;
+import com.noair.easip.house.controller.dto.RentDto;
 import com.noair.easip.house.domain.Badge;
 import com.noair.easip.house.domain.House;
 import com.noair.easip.house.service.HouseImageService;
@@ -9,26 +10,21 @@ import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.domain.Position;
 import com.noair.easip.member.repository.PostScheduleNotificationRepository;
 import com.noair.easip.member.service.MemberService;
-import com.noair.easip.post.controller.dto.ApplicationConditionDto;
-import com.noair.easip.post.controller.dto.PostElementResponse;
-import com.noair.easip.post.controller.dto.PostSummaryResponse;
-import com.noair.easip.post.controller.dto.ScheduleDto;
+import com.noair.easip.post.controller.dto.*;
 import com.noair.easip.post.domain.Post;
 import com.noair.easip.post.domain.PostSchedule;
-import com.noair.easip.post.domain.SUBSCRIPTION_STATE;
 import com.noair.easip.post.exception.PostNotFoundException;
 import com.noair.easip.post.repository.PostRepository;
-import com.noair.easip.post.repository.PostScheduleRepository;
 import com.noair.easip.util.PaginationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.noair.easip.util.PriceStringConvertor.*;
 
@@ -50,35 +46,33 @@ public class PostService {
 
     public PaginationDto<PostSummaryResponse> fetchHomePosts(Integer page, Integer size, String loginMemberId) {
         Member loginMember = memberService.getMemberById(loginMemberId);
-        Page<Post> posts = postRepository.findAll(PageRequest.of(page - 1, size));
-
         List<PostSummaryResponse> postSummaryResponses = new ArrayList<>();
-        // 공고별 aggregation
-        for (Post post : posts) {
-            // [ 지원 조건 Dto ]
-            List<ApplicationConditionDto> applicationConditionDtos = new ArrayList<>();
-            applicationConditionDtos.addAll(makeIncomeConditionDto(post, loginMember));
-            applicationConditionDtos.addAll(makeCarPriceConditionDto(post, loginMember));
-            applicationConditionDtos.addAll(makeAssetConditionDtos(post, loginMember));
 
+        Page<Post> posts = postRepository.findAll(PageRequest.of(page - 1, size));
+        for (Post post : posts) { // 공고별 aggregation
 
-            // 주택별 aggregation
+            // [ 공급 일정 Dto ]
+            List<ScheduleDto> scheduleDtos = getScheduleDtoByPost(post, loginMemberId);
+
+            // [ 주택 요약 Dto ]
             List<HouseSummaryResponse> houseSummaryResponse = new ArrayList<>();
-            List<String> houseIds = postHouseService.getHouseIdsByPostId(post.getId());
-            for (String houseId : houseIds) {
-                House house = houseService.getHouseById(houseId);
+            for (House house : houseService.getHousesByPostId(post.getId())) { // 주택별 aggregation
 
-                applicationConditionDtos.addAll(makePositionConditionDtos(post, house, loginMember));
+                // [ 지원 조건 Dto ]
+                List<ApplicationConditionDto> applicationConditionDtos = getApplicationConditionDtos(loginMember, post, house);
+                // [ 집세 Dto ]
+                List<RentDto> rentDtos = postHouseService.getRentDtosByPostIdAndHouseId(post.getId(), house.getId());
+                //
+                String thumbnailUrl = houseImageService.getThumbnailUrl(house.getId());
+                String subscriptionState = postScheduleService.getSubscriptionStateKorName(post.getId());
 
-                // [ 주택 요약 Dto ]
                 houseSummaryResponse.add(HouseSummaryResponse.of(
                         house.getId(),
-                        houseImageService.getThumbnailUrl(houseId),
+                        thumbnailUrl,
                         house.getName(),
-                        postScheduleService.getSubscriptionStateKorName(post.getId()),
+                        subscriptionState,
                         applicationConditionDtos,
-                        // [ 집세 Dto ]
-                        postHouseService.getRentDtosByPostIdAndHouseId(post.getId(), houseId),
+                        rentDtos,
                         house.getDistrict().getName(),
                         house.getLatitude(),
                         house.getLongitude()
@@ -92,17 +86,7 @@ public class PostService {
                             post.getTitle(),
                             post.getBadges().stream().map(Badge::getName).toList(),
                             houseSummaryResponse,
-                            // [ 공급 일정 Dto ]
-                            post.getSchedules().stream()
-                                    .sorted(Comparator.comparing(PostSchedule::getOrdering))
-                                    .map(schedule -> ScheduleDto.of(
-                                            schedule.getId(),
-                                            schedule.getTitle(),
-                                            schedule.getStartDateTime() != null ? schedule.getStartDateTime().toString() : schedule.getStartNote(),
-                                            schedule.getEndDateTime() != null ? schedule.getEndDateTime().toString() : schedule.getEndNote(),
-                                            postScheduleNotificationRepository.existsByPostSchedule_IdAndMember_Id(schedule.getId(), loginMemberId)
-                                    ))
-                                    .toList()
+                            scheduleDtos
                     )
             );
         }
@@ -130,6 +114,44 @@ public class PostService {
                 posts.getTotalPages(),
                 postElementResponses
         );
+    }
+
+    public List<PostPerHouseDetailDto> getPostPerHouseDetails(String postId, String loginMemberId) {
+        List<PostPerHouseDetailDto> postPerHouseDetailDtos = new ArrayList<>();
+        Member loginMember = memberService.getMemberById(loginMemberId);
+        Post post = getPostById(postId);
+        List<House> houses = houseService.getHousesByPostId(postId);
+
+        List<ScheduleDto> scheduleDtos = getScheduleDtoByPost(post, loginMemberId);
+        for (House house : houses) {
+            List<ApplicationConditionDto> applicationConditionDtos = getApplicationConditionDtos(loginMember, post, house);
+            List<PostHouseConditionDto> postHouseConditions = postHouseService.getPostHouseConditionDtos(postId, house.getId());
+
+            postPerHouseDetailDtos.add(PostPerHouseDetailDto.of(
+                    house.getId(),
+                    house.getName(),
+                    houseImageService.getThumbnailUrl(house.getId()),
+                    house.getAddress(),
+                    postHouseConditions.getFirst().minRatioDeposit(),
+                    postHouseConditions.getFirst().minRatioMonthlyRent(),
+                    postHouseService.getNumberOfUnitsRecruitingByPostIdAndHouseId(postId, house.getId()),
+                    applicationConditionDtos,
+                    scheduleDtos,
+                    postHouseConditions,
+                    house.getPageUrl()
+            ));
+        }
+
+        return postPerHouseDetailDtos;
+    }
+
+    public List<ApplicationConditionDto> getApplicationConditionDtos(Member loginMember, Post post, House house) {
+        return Stream.of(
+                makeIncomeConditionDto(post, loginMember),
+                makeCarPriceConditionDto(post, loginMember),
+                makeAssetConditionDtos(post, loginMember),
+                makePositionConditionDtos(post, house, loginMember)
+        ).flatMap(List::stream).toList();
     }
 
     public List<ApplicationConditionDto> makeIncomeConditionDto(Post post, Member loginMember) {
@@ -188,5 +210,18 @@ public class PostService {
                 )));
 
         return dto;
+    }
+
+    public List<ScheduleDto> getScheduleDtoByPost(Post post, String loginMemberId) {
+        return post.getSchedules().stream()
+                .sorted(Comparator.comparing(PostSchedule::getOrdering))
+                .map(schedule -> ScheduleDto.of(
+                        schedule.getId(),
+                        schedule.getTitle(),
+                        schedule.getStartDateTime() != null ? schedule.getStartDateTime().toString() : schedule.getStartNote(),
+                        schedule.getEndDateTime() != null ? schedule.getEndDateTime().toString() : schedule.getEndNote(),
+                        postScheduleNotificationRepository.existsByPostSchedule_IdAndMember_Id(schedule.getId(), loginMemberId)
+                ))
+                .toList();
     }
 }

@@ -80,4 +80,10 @@ public class Post extends DeletableBaseEntity {
             default -> throw new IncomeLimitPersonExceedException();
         };
     }
+
+    public List<String> getBadgeNames() {
+        return badges.stream()
+            .map(Badge::getName)
+            .toList();
+    }
 } 

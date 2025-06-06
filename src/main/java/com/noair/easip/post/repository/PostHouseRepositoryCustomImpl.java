@@ -2,6 +2,8 @@ package com.noair.easip.post.repository;
 
 import com.noair.easip.house.controller.dto.RentDto;
 import com.noair.easip.member.domain.Position;
+import com.noair.easip.post.controller.dto.PostHouseConditionDto;
+import com.noair.easip.post.domain.PostHouse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;

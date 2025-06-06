@@ -1,13 +1,13 @@
 package com.noair.easip.post.controller;
 
 import com.noair.easip.auth.controller.LoginMemberId;
-import com.noair.easip.post.controller.dto.ApplicationConditionDto;
+import com.noair.easip.house.domain.Badge;
 import com.noair.easip.post.controller.dto.PostDetailResponse;
 import com.noair.easip.post.controller.dto.PostElementResponse;
-import com.noair.easip.post.controller.dto.PostPerHouseDetailResponse;
+import com.noair.easip.post.controller.dto.PostPerHouseDetailDto;
 import com.noair.easip.post.controller.dto.PostSummaryResponse;
-import com.noair.easip.post.controller.dto.RoomRentalConditionResponse;
 import com.noair.easip.post.controller.dto.ScheduleDto;
+import com.noair.easip.post.domain.Post;
 import com.noair.easip.post.service.PostService;
 import com.noair.easip.util.ArrayResponse;
 import com.noair.easip.util.DefaultResponse;
@@ -76,182 +76,56 @@ public class PostController {
         PaginationDto<PostElementResponse> fetchResult = postService.fetchPostList(page, size);
 
         return PaginationResponse
-            .of(fetchResult, page, size);
+                .of(fetchResult, page, size);
     }
 
-    @Operation(summary = "[MOCK] 공고 상세 조회")
+    @Operation(summary = "공고 상세 조회")
     @GetMapping("/{postId}")
     PostDetailResponse getPostDetail(
-        @Parameter(description = "공고 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
-        @PathVariable("postId") 
-        String postId
+            @Parameter(description = "공고 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
+            @PathVariable("postId")
+            String postId,
+
+            @Parameter(hidden = true)
+            @LoginMemberId
+            String loginMemberId
     ) {
+        Post post = postService.getPostById(postId);
+        List<PostPerHouseDetailDto> postPerHouseDetailDtos = postService.getPostPerHouseDetails(postId, loginMemberId);
+
         return PostDetailResponse.of(
-            "01HGW2N7EHJVJ4CJ999RRS2E97",
-            "[민간임대] 신당역 신당큐브스테이트오피스텔 추가모집공고",
-            List.of("민간임대", "청약예정", "중구"),
-            List.of(
-                PostPerHouseDetailResponse.of(
-                    "01HGW2N7EHJVJ4CJ999RRS2E96",
-                    "신당역 신당큐브스테이트오피스텔",
-                    "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
-                    "서울특별시 중구 신당동 123-45",
-                    100000000.0,
-                    1000000.0,
-                    150000.0,
-                    "원룸",
-                    52.23,
-                    150,
-                    List.of(
-                        ApplicationConditionDto.of("청년", true),
-                        ApplicationConditionDto.of("신혼부부", false),
-                        ApplicationConditionDto.of("개인무주택", true),
-                        ApplicationConditionDto.of("소득기준 2억원 이내(1인가구 기준)", true)
-                    ),
-                    List.of(
-                        ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E97", "모집공고", "2025-05-07", null, false),
-                        ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E98", "청약신청", "2025-05-12T09:00:00", "2025-05-18T24:00:00", false),
-                        ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E99", "예비번호 발표", "2025-05-19T17:00:00", null, false),
-                        ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E10", "계약체결", "공실 발생시 순차적으로 연락", null, false)
-                    ),
-                    List.of(
-                        RoomRentalConditionResponse.of(
-                            "청년",
-                            "A타입 일반공급",
-                            52.23,
-                            50,
-                            100000000.0,
-                            1000000.0,
-                            150000000.0,
-                            1500000.0
-                        ),
-                        RoomRentalConditionResponse.of(
-                            "청년",
-                            "B타입 일반공급",
-                            72.45,
-                            50,
-                            150000000.0,
-                            1500000.0,
-                            200000000.0,
-                            2000000.0
-                        ),
-                        RoomRentalConditionResponse.of(
-                            "청년,신혼부부",
-                            "A타입 특별공급",
-                            52.23,
-                            25,
-                            100000000.0,
-                            1000000.0,
-                            150000000.0,
-                            1500000.0
-                        ),
-                        RoomRentalConditionResponse.of(
-                            "청년,신혼부부",
-                            "B타입 특별공급",
-                            72.45,
-                            25,
-                            150000000.0,
-                            1500000.0,
-                            200000000.0,
-                            2000000.0
-                        )
-                    ),
-                    "https://www.google.com"
-                ),
-                PostPerHouseDetailResponse.of(
-                    "01HGW2N7EHJVJ4CJ999RRS2E91",
-                    "영등포역 영등포큐브스테이트오피스텔",
-                    "https://travel.rakuten.co.jp/mytrip/sites/mytrip/files/migration_article_images/ranking/spot-fukuoka-fukuoka_02.jpg",
-                    "서울특별시 영등포구 여의도동 123-45",
-                    10000000.0,
-                    100000.0,
-                    15000.0,
-                    "원룸",
-                    54.23,
-                    15,
-                    List.of(
-                        ApplicationConditionDto.of("청년", true),
-                        ApplicationConditionDto.of("소득기준 2억원 이내(1인가구 기준)", true)
-                    ),
-                    List.of(
-                        ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E97", "모집공고", "2025-06-07", null, false),
-                        ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E98", "청약신청", "2025-06-12T09:00:00", "2025-06-18T24:00:00", false),
-                        ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E99", "예비번호 발표", "2025-06-19T17:00:00", null, false),
-                        ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E10", "계약체결", "2025-06-20T17:00:00", null, false)
-                    ),
-                    List.of(
-                        RoomRentalConditionResponse.of(
-                            "청년",
-                            "A타입 일반공급",
-                            54.23,
-                            50,
-                            10000000.0,
-                            100000.0,
-                            15000000.0,
-                            150000.0
-                        ),
-                        RoomRentalConditionResponse.of(
-                            "청년",
-                            "B타입 일반공급",
-                            74.45,
-                            50,
-                            15000000.0,
-                            150000.0,
-                            20000000.0,
-                            200000.0
-                        ),
-                        RoomRentalConditionResponse.of(
-                            "청년,신혼부부",
-                            "A타입 특별공급",
-                            54.23,
-                            25,
-                            10000000.0,
-                            100000.0,
-                            15000000.0,
-                            150000.0
-                        ),
-                        RoomRentalConditionResponse.of(
-                            "청년,신혼부부",
-                            "B타입 특별공급",
-                            74.45,
-                            25,
-                            15000000.0,
-                            150000.0,
-                            200000000.0,
-                            2000000.0
-                        )
-                    ),
-                    "https://www.google.com"
-                )
-            )
+                post.getId(),
+                post.getTitle(),
+                post.getBadgeNames(),
+                postPerHouseDetailDtos
         );
     }
 
     @Operation(summary = "[MOCK: 랜덤값] 공고일정별 푸시알림 목록 조회")
     @GetMapping("/{postId}/push/schedules")
     ArrayResponse<ScheduleDto> getPostSchedulePushAlarms(
-        @Parameter(description = "공고 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
-        @PathVariable
-        String postId
+            @Parameter(description = "공고 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
+            @PathVariable
+            String postId
     ) {
         return ArrayResponse.of(List.of(
-            ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E97", "모집공고", "2025-05-07", null, false),
-            ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E98", "청약신청", "2025-05-12T09:00:00", "2025-05-18T24:00:00", false),
-            ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E99", "예비번호 발표", "2025-05-19T17:00:00", null, false),
-            ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E10", "계약체결", "공실 발생시 순차적으로 연락", null, false)  
+                ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E97", "모집공고", "2025-05-07", null, false),
+                ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E98", "청약신청", "2025-05-12T09:00:00", "2025-05-18T24:00:00", false),
+                ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E99", "예비번호 발표", "2025-05-19T17:00:00", null, false),
+                ScheduleDto.of("01HGW2N7EHJVJ4CJ999RRS2E10", "계약체결", "공실 발생시 순차적으로 연락", null, false)
         ));
     }
 
     @Operation(summary = "[MOCK: 랜덤값] 공고일정별 푸시알림 등록 토글")
     @PutMapping("/{postId}/push/schedules/{scheduleId}")
     DefaultResponse togglePostSchedulePushAlarm(
-        @Parameter(description = "공고 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
-        @PathVariable
-        String postId,
+            @Parameter(description = "공고 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
+            @PathVariable
+            String postId,
 
-        @Parameter(description = "일정 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
-        @PathVariable
-        String scheduleId
+            @Parameter(description = "일정 ID", example = "01HGW2N7EHJVJ4CJ999RRS2E97")
+            @PathVariable
+            String scheduleId
     ) {
         return new Random().nextBoolean() ? DefaultResponse.ok() : DefaultResponse.fail();
     }

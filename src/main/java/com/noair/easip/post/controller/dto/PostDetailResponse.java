@@ -15,19 +15,19 @@ public record PostDetailResponse(
     List<String> tags,
 
     @Schema(description = "주택별 공고 상세 정보")
-    List<PostPerHouseDetailResponse> postPerHouseDetailResponses
+    List<PostPerHouseDetailDto> postPerHouseDetailRespons
 ) {
     public static PostDetailResponse of(
         String postId,
         String postTitle,
         List<String> tags,
-        List<PostPerHouseDetailResponse> postPerHouseDetailResponses
+        List<PostPerHouseDetailDto> postPerHouseDetailRespons
     ) {
         return new PostDetailResponse(
             postId,
             postTitle,
             tags,
-            postPerHouseDetailResponses
+                postPerHouseDetailRespons
         );
     }
 }
