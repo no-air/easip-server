@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostScheduleNotificationRepository extends JpaRepository<PostScheduleNotification, PostScheduleNotificationId> {
     boolean existsByPostSchedule_IdAndMember_Id(String postScheduleId, String memberId);
+
+    void deleteByPostSchedule_IdAndMember_Id(String postScheduleId, String memberId);
 }

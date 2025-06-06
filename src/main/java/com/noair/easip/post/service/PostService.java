@@ -8,11 +8,9 @@ import com.noair.easip.house.service.HouseImageService;
 import com.noair.easip.house.service.HouseService;
 import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.domain.Position;
-import com.noair.easip.member.repository.PostScheduleNotificationRepository;
 import com.noair.easip.member.service.MemberService;
 import com.noair.easip.post.controller.dto.*;
 import com.noair.easip.post.domain.Post;
-import com.noair.easip.post.domain.PostSchedule;
 import com.noair.easip.post.exception.PostNotFoundException;
 import com.noair.easip.post.repository.PostRepository;
 import com.noair.easip.util.PaginationDto;
@@ -22,11 +20,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.noair.easip.util.PriceStringConvertor.*;
+import static com.noair.easip.util.PriceStringConvertor.toKoreanPriceString;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +31,6 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostHouseService postHouseService;
     private final PostScheduleService postScheduleService;
-    private final PostScheduleNotificationRepository postScheduleNotificationRepository;
     private final HouseService houseService;
     private final HouseImageService houseImageService;
     private final MemberService memberService;
@@ -52,7 +48,7 @@ public class PostService {
         for (Post post : posts) { // 공고별 aggregation
 
             // [ 공급 일정 Dto ]
-            List<ScheduleDto> scheduleDtos = getScheduleDtoByPost(post, loginMemberId);
+            List<ScheduleDto> scheduleDtos = postScheduleService.getScheduleDtoByPost(post, loginMemberId);
 
             // [ 주택 요약 Dto ]
             List<HouseSummaryResponse> houseSummaryResponse = new ArrayList<>();
@@ -122,7 +118,7 @@ public class PostService {
         Post post = getPostById(postId);
         List<House> houses = houseService.getHousesByPostId(postId);
 
-        List<ScheduleDto> scheduleDtos = getScheduleDtoByPost(post, loginMemberId);
+        List<ScheduleDto> scheduleDtos = postScheduleService.getScheduleDtoByPost(post, loginMemberId);
         for (House house : houses) {
             List<ApplicationConditionDto> applicationConditionDtos = getApplicationConditionDtos(loginMember, post, house);
             List<PostHouseConditionDto> postHouseConditions = postHouseService.getPostHouseConditionDtos(postId, house.getId());
@@ -210,18 +206,5 @@ public class PostService {
                 )));
 
         return dto;
-    }
-
-    public List<ScheduleDto> getScheduleDtoByPost(Post post, String loginMemberId) {
-        return post.getSchedules().stream()
-                .sorted(Comparator.comparing(PostSchedule::getOrdering))
-                .map(schedule -> ScheduleDto.of(
-                        schedule.getId(),
-                        schedule.getTitle(),
-                        schedule.getStartDateTime() != null ? schedule.getStartDateTime().toString() : schedule.getStartNote(),
-                        schedule.getEndDateTime() != null ? schedule.getEndDateTime().toString() : schedule.getEndNote(),
-                        postScheduleNotificationRepository.existsByPostSchedule_IdAndMember_Id(schedule.getId(), loginMemberId)
-                ))
-                .toList();
     }
 }
