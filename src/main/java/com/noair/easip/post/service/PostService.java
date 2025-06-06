@@ -104,6 +104,7 @@ public class PostService {
                         post.getId(),
                         houseService.getHouseThumbnailUrlByPostId(post.getId()),
                         post.getTitle(),
+                        postScheduleService.getSubscriptionStateKorName(post.getId()),
                         postScheduleService.getApplicationStartStringByPostId(post.getId()),
                         postScheduleService.getApplicationEndStringByPostId(post.getId()),
                         postHouseService.getNumberOfUnitsRecruitingByPostIdAndHouseId(post.getId(), null) // 공고에 포함된 모든 주택의 공급호수
