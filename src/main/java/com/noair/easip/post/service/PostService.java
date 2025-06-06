@@ -94,10 +94,6 @@ public class PostService {
     }
 
     public PaginationDto<PostElementResponse> fetchPostList(String keyword, Integer page, Integer size) {
-        if (keyword == null || keyword.isBlank()) {
-            keyword = "";
-        }
-
         Page<Post> posts = postRepository.findAllByTitleContainingIgnoreCase(keyword, PageRequest.of(page - 1, size));
         List<PostElementResponse> postElementResponses = posts.stream().map(
                 post -> PostElementResponse.of(

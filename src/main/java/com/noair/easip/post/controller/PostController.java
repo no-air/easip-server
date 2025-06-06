@@ -55,7 +55,7 @@ public class PostController {
     @GetMapping("/list")
     PaginationResponse<PostElementResponse> fetchPostList(
             @Parameter(description = "검색 키워드", example = "서울")
-            @RequestParam(required = false)
+            @RequestParam(required = false, defaultValue = "")
             String keyword,
 
             @Parameter(description = "가져올 현재 페이지", example = "1")
