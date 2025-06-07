@@ -35,6 +35,10 @@ public class HouseService {
                 .toList();
     }
 
+    public House getHouseByCompactAddress(String compactAddress) {
+        return houseRepository.findByCompactAddress(compactAddress);
+    }
+
     public List<House> getHousesByLocation(Double minLatitude, Double minLongitude, Double maxLatitude, Double maxLongitude) {
         return houseRepository.searchByLocation(minLatitude, minLongitude, maxLatitude, maxLongitude);
     }

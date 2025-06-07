@@ -22,4 +22,14 @@ public class HouseRepositoryCustomImpl implements HouseRepositoryCustom {
                 )
                 .fetch();
     }
+
+    @Override
+    public House findByCompactAddress(String compactAddress) {
+        return queryFactory
+                .selectFrom(house)
+                .where(
+                        house.address.contains(compactAddress)
+                )
+                .fetchOne();
+    }
 }

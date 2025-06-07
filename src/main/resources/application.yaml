@@ -20,6 +20,8 @@ spring:
         web-allow-others: true
 
 app:
+  gpt:
+    api-key: ${GPT_API_KEY}
   oauth:
     googleClientIds:
       - ${GOOGLE_CLIENT_ID}

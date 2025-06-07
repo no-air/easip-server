@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.noair.easip.util.PriceStringConvertor.toKoreanPriceString;
+import static com.noair.easip.util.KoreanStringConvertor.toPriceString;
 
 @Service
 @RequiredArgsConstructor
@@ -162,7 +162,7 @@ public class PostService {
         List<ApplicationConditionDto> dto = new ArrayList<>();
 
         if (Boolean.TRUE.equals(post.getIsIncomeLimited())) {
-            String content = String.format("소득기준 %s원 이내(1인가구 기준)", toKoreanPriceString(post.getIncomeLimit1Person()));
+            String content = String.format("소득기준 %s원 이내(1인가구 기준)", toPriceString(post.getIncomeLimit1Person()));
             boolean applicable = loginMember.getMyMonthlySalary() + loginMember.getFamilyMemberMonthlySalary() <= post.getIncomeLimit(loginMember.getAllFamilyMemberCount());
             dto.add(ApplicationConditionDto.of(content, applicable));
 
@@ -177,7 +177,7 @@ public class PostService {
         List<ApplicationConditionDto> dto = new ArrayList<>();
 
         if (Boolean.TRUE.equals(post.getIsCarPriceLimited())) {
-            String carPriceContent = String.format("자동차가액 %s원 이내", toKoreanPriceString(post.getCarPriceLimit()));
+            String carPriceContent = String.format("자동차가액 %s원 이내", toPriceString(post.getCarPriceLimit()));
             boolean carPriceApplicable = loginMember.getCarPrice() <= post.getCarPriceLimit();
             dto.add(ApplicationConditionDto.of(carPriceContent, carPriceApplicable));
         }
@@ -190,12 +190,12 @@ public class PostService {
 
         if (Boolean.TRUE.equals(post.getIsAssetLimited())) {
             if (post.getYoungManAssetLimit() != null) {
-                String assetContent = String.format("청년 자산기준 %s원 이내", toKoreanPriceString(post.getYoungManAssetLimit()));
+                String assetContent = String.format("청년 자산기준 %s원 이내", toPriceString(post.getYoungManAssetLimit()));
                 boolean assetApplicable = loginMember.getPosition().equals(Position.YOUNG_MAN) && loginMember.getAssetPrice() <= post.getYoungManAssetLimit();
                 dto.add(ApplicationConditionDto.of(assetContent, assetApplicable));
             }
             if (post.getNewlyMarriedCoupleAssetLimit() != null) {
-                String assetContent = String.format("신혼부부 자산기준 %s원 이내", toKoreanPriceString(post.getNewlyMarriedCoupleAssetLimit()));
+                String assetContent = String.format("신혼부부 자산기준 %s원 이내", toPriceString(post.getNewlyMarriedCoupleAssetLimit()));
                 boolean assetApplicable = loginMember.getPosition().equals(Position.NEWLY_MARRIED_COUPLE) && loginMember.getAssetPrice() <= post.getNewlyMarriedCoupleAssetLimit();
                 dto.add(ApplicationConditionDto.of(assetContent, assetApplicable));
             }

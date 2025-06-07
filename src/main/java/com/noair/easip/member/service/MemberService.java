@@ -10,7 +10,7 @@ import com.noair.easip.member.domain.SocialAuthId;
 import com.noair.easip.member.exception.MemberNotFoundException;
 import com.noair.easip.member.repository.MemberRepository;
 import com.noair.easip.member.repository.SocialAuthRepository;
-import com.noair.easip.util.StringGenerator;
+import com.noair.easip.util.IdGenerator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class MemberService {
 
         //사용자 생성
         Member member = Member.builder()
-                .id(StringGenerator.generateUlid())
+                .id(IdGenerator.generateUlid())
                 .name(request.name())
                 .dateOfBirth(request.dayOfBirth())
                 .livingDistrict(livingDistrict)

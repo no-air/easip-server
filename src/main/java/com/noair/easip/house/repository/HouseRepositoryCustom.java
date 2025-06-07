@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface HouseRepositoryCustom {
     List<House> searchByLocation(Double minLatitude, Double minLongitude, Double maxLatitude, Double maxLongitude);
+
+    House findByCompactAddress(String compactAddress);
 }

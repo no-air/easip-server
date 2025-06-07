@@ -1,6 +1,6 @@
 package com.noair.easip.web.config;
 
-import com.noair.easip.util.StringGenerator;
+import com.noair.easip.util.IdGenerator;
 import com.noair.easip.web.config.properties.WebProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +25,7 @@ public class WebRequestInterceptor implements HandlerInterceptor {
     public boolean preHandle(
             HttpServletRequest request, HttpServletResponse response, Object handler
     ) throws Exception {
-        MDC.put("requestId", StringGenerator.generateAlphanumericString(8));
+        MDC.put("requestId", IdGenerator.generateAlphanumericString(8));
         long startTime = System.currentTimeMillis();
         request.setAttribute(START_TIME_ATTR_NAME, startTime);
         return true;

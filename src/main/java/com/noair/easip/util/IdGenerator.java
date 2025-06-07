@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import java.util.concurrent.ThreadLocalRandom;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public class StringGenerator {
+public class IdGenerator {
     public static String generateAlphanumericString(int length) {
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'
