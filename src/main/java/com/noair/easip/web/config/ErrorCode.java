@@ -35,6 +35,7 @@ public enum ErrorCode {
      */
     MEMBER_NOT_FOUND("MB0001", "존재하지 않는 회원입니다."),
     MEMBER_ALREADY_EXISTS("MB0002", "이미 존재하는 회원입니다."),
+    MEMBER_DEVICE_NOT_FOUND("MB0003", "존재하지 않는 회원 기기입니다."),
 
     /**
      * House Related Errors

@@ -12,6 +12,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
@@ -26,4 +28,14 @@ public class MemberDevice extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
+
+    @Column(nullable = false)
+    private Integer fcmTransmissionFailCnt = 0;
+
+    private LocalDateTime fcmTransmissionFailDateTime;
+
+    public void recordFcmTransmissionFail() {
+        this.fcmTransmissionFailCnt++;
+        this.fcmTransmissionFailDateTime = LocalDateTime.now();
+    }
 }

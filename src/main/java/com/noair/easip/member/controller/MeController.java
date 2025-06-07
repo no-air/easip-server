@@ -6,6 +6,7 @@ import com.noair.easip.member.controller.dto.request.CreateMemberRequest;
 import com.noair.easip.member.controller.dto.response.MemberResponse;
 import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.domain.Position;
+import com.noair.easip.member.service.MemberDeviceService;
 import com.noair.easip.member.service.MemberService;
 import com.noair.easip.post.controller.dto.PostElementResponse;
 import com.noair.easip.post.service.PostScheduleService;
@@ -35,6 +36,7 @@ public class MeController {
     private final MemberService memberService;
     private final PostScheduleService postScheduleService;
     private final PostService postService;
+    private final MemberDeviceService memberDeviceService;
 
     @Operation(summary = "내 프로필 조회")
     @GetMapping("/profile")
@@ -115,4 +117,19 @@ public class MeController {
                 .of(fetchResult, page, size);
     }
 
+    @Operation(summary = "FCM 토큰 등록 및 갱신")
+    @PostMapping("/fcm-token")
+    DefaultResponse registerFcmToken(
+            @RequestParam
+            String fcmToken,
+
+            @Parameter(hidden = true)
+            @LoginMemberId
+            String loginMemberId
+    ) {
+        Member member = memberService.getMemberById(loginMemberId);
+        memberDeviceService.registerFcmToken(fcmToken, member);
+
+        return DefaultResponse.ok();
+    }
 }
