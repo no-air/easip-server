@@ -72,12 +72,13 @@ public class Post extends DeletableBaseEntity {
 
     public double getIncomeLimit(int familyMemberCount) {
         return switch (familyMemberCount) {
+            case 0 -> incomeLimit1Person; // 0명은 1인 기준으로 처리
             case 1 -> incomeLimit1Person;
             case 2 -> incomeLimit2Person;
             case 3 -> incomeLimit3Person;
             case 4 -> incomeLimit4Person;
             case 5 -> incomeLimit5Person;
-            default -> throw new IncomeLimitPersonExceedException();
+            default -> incomeLimit5Person; // 6명 이상은 5인 기준으로 처리
         };
     }
 
