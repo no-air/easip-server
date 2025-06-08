@@ -7,8 +7,8 @@ public record RoomInfoResponse(
     @Schema(description = "방 타입", example = "원룸")
     String type,
 
-    @Schema(description = "전용면적", example = "52.23")
-    Double exclusiveArea,
+    @Schema(description = "공급유형", example = "17A")
+    String exclusiveArea,
 
     @Schema(description = "신청자격", example = "청년")
     String applicationEligibility,
@@ -27,7 +27,7 @@ public record RoomInfoResponse(
 ) {
     public static RoomInfoResponse of(
         String type,
-        Double exclusiveArea,
+        String exclusiveArea,
         String applicationEligibility,
         Integer totalRoomCount,
         Double deposit,

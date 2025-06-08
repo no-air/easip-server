@@ -45,7 +45,7 @@ public class RoomRentalCondition extends BaseEntity {
     private String roomType;
 
     @Column(nullable = false)
-    private Double exclusiveArea;
+    private String exclusiveArea;
 
     @Column(nullable = false)
     private Integer totalRoomCount;
