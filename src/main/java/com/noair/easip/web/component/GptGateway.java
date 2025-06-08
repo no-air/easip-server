@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.noair.easip.batch.crawler.GptAnswerDeserializationException;
 import com.noair.easip.post.controller.dto.PostFlatDto;
 import com.noair.easip.post.controller.dto.PostHouseFlatDto;
 import com.noair.easip.post.controller.dto.PostScheduleFlatDto;
@@ -22,11 +23,12 @@ import static com.noair.easip.util.GptPromptGenerator.*;
 @Component
 @Slf4j
 public class GptGateway {
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
     private final GptAgentProperties gptAgentProperties;
     private final WebClient webClient;
 
-    public GptGateway(GptAgentProperties gptAgentProperties) {
+    public GptGateway(GptAgentProperties gptAgentProperties, ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
         this.gptAgentProperties = gptAgentProperties;
         this.webClient = WebClient.builder()
                 .baseUrl("https://api.openai.com/v1/")
@@ -80,50 +82,68 @@ public class GptGateway {
                 .block();
     }
 
-    public List<PostHouseFlatDto> askPostHouses(String pdfName, String pdfBase64) throws JsonProcessingException {
+    public List<PostHouseFlatDto> askPostHouses(String pdfName, String pdfBase64) {
         String response = askWithPdf(POST_HOUSE_DEVELOPER_MSG, POST_HOUSE_USER_MSG, pdfName, pdfBase64);
-        JsonNode jsonNode = objectMapper.readTree(response);
-        String answer = jsonNode
-                .get("output").get(0)
-                .get("content").get(0)
-                .get("text").asText()
-                .replaceAll("(?s)```json\\s*|```", "").trim(); // text에서 ```json ... ``` 감싸진 코드 블럭 제거
 
-        return objectMapper.readValue(
-                answer,
-                new TypeReference<>() {
-                }
-        );
+        try {
+            JsonNode jsonNode = objectMapper.readTree(response);
+            String answer = jsonNode
+                    .get("output").get(0)
+                    .get("content").get(0)
+                    .get("text").asText()
+                    .replaceAll("(?s)```json\\s*|```", "").trim(); // text에서 ```json ... ``` 감싸진 코드 블럭 제거
+
+            return objectMapper.readValue(
+                    answer,
+                    new TypeReference<>() {
+                    }
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new GptAnswerDeserializationException();
+        }
     }
 
-    public PostFlatDto askPost(String pdfName, String pdfBase64) throws JsonProcessingException {
+    public PostFlatDto askPost(String pdfName, String pdfBase64) {
         String response = askWithPdf(POST_DEVELOPER_MSG, POST_USER_MSG, pdfName, pdfBase64);
-        JsonNode jsonNode = objectMapper.readTree(response);
-        String answer = jsonNode
-                .get("output").get(0)
-                .get("content").get(0)
-                .get("text").asText()
-                .replaceAll("(?s)```json\\s*|```", "").trim(); // text에서 ```json ... ``` 감싸진 코드 블럭 제거
 
-        return objectMapper.readValue(
-                answer,
-                PostFlatDto.class
-        );
+        try {
+            JsonNode jsonNode = objectMapper.readTree(response);
+            String answer = jsonNode
+                    .get("output").get(0)
+                    .get("content").get(0)
+                    .get("text").asText()
+                    .replaceAll("(?s)```json\\s*|```", "").trim(); // text에서 ```json ... ``` 감싸진 코드 블럭 제거
+
+            return objectMapper.readValue(
+                    answer,
+                    PostFlatDto.class
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new GptAnswerDeserializationException();
+        }
     }
 
-    public List<PostScheduleFlatDto> askPostSchedules(String pdfName, String pdfBase64) throws JsonProcessingException {
+    public List<PostScheduleFlatDto> askPostSchedules(String pdfName, String pdfBase64) {
         String response = askWithPdf(POST_SCHEDULE_DEVELOPER_MSG, POST_SCHEDULE_USER_MSG, pdfName, pdfBase64);
-        JsonNode jsonNode = objectMapper.readTree(response);
-        String answer = jsonNode
-                .get("output").get(0)
-                .get("content").get(0)
-                .get("text").asText()
-                .replaceAll("(?s)```json\\s*|```", "").trim(); // text에서 ```json ... ``` 감싸진 코드 블럭 제거
 
-        return objectMapper.readValue(
-                answer,
-                new TypeReference<>() {
-                }
-        );
+        try {
+            JsonNode jsonNode = objectMapper.readTree(response);
+            String answer = jsonNode
+                    .get("output").get(0)
+                    .get("content").get(0)
+                    .get("text").asText()
+                    .replaceAll("(?s)```json\\s*|```", "").trim(); // text에서 ```json ... ``` 감싸진 코드 블럭 제거
+
+            return objectMapper.readValue(
+                    answer,
+                    new TypeReference<>() {
+                    }
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new GptAnswerDeserializationException();
+        }
     }
 }

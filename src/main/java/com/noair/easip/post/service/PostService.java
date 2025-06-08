@@ -35,6 +35,10 @@ public class PostService {
     private final HouseImageService houseImageService;
     private final MemberService memberService;
 
+    public Post create(Post post) {
+        return postRepository.save(post);
+    }
+
     public Post getPostById(String postId) {
         return postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);

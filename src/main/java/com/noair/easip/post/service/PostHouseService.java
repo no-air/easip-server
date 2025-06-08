@@ -17,6 +17,10 @@ import java.util.stream.Collectors;
 public class PostHouseService {
     private final PostHouseRepository postHouseRepository;
 
+    public PostHouse create(PostHouse postHouse) {
+        return postHouseRepository.save(postHouse);
+    }
+
     public List<String> getHouseIdsByPostId(String postId) {
         return postHouseRepository.findDistinctHouseIdByPostId(postId);
     }

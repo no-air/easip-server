@@ -32,7 +32,7 @@ public class HouseImage extends DeletableBaseEntity {
     @JoinColumn(name = "HOUSE_ID", nullable = false)
     private House house;
 
-    @Column(name = "URL", nullable = false)
+    @Column(name = "URL", nullable = false, columnDefinition = "VARCHAR(2083)")
     private String url;
 
     @Column(name = "HOUSE_IMAGE_TYPE", nullable = false, columnDefinition = "VARCHAR(20)")

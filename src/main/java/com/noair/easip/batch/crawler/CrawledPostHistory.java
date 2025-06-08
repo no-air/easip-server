@@ -18,9 +18,6 @@ public class CrawledPostHistory {
     @Column(nullable = false)
     private String title;
 
-    @Column(columnDefinition = "VARCHAR(2083)")
-    private String postFileUrl;
-
     private String postFileName;
 
     @Column(nullable = false, columnDefinition = "CHAR(26)")

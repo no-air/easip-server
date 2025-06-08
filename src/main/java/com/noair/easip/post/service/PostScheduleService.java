@@ -24,6 +24,10 @@ public class PostScheduleService {
     private final PostScheduleRepository postScheduleRepository;
     private final PostScheduleNotificationRepository postScheduleNotificationRepository;
 
+    public PostSchedule create(PostSchedule postSchedule) {
+        return postScheduleRepository.save(postSchedule);
+    }
+
     public PostSchedule getPostScheduleById(String postScheduleId) {
         return postScheduleRepository.findById(postScheduleId)
                 .orElseThrow(PostScheduleNotFoundException::new);

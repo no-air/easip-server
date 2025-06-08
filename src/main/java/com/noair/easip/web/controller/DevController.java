@@ -50,12 +50,7 @@ public class DevController {
             @PathVariable
             String boardId
     ) {
-        try {
-            crawlService.insertNewPost(boardId, LocalDateTime.now());
-            return DefaultResponse.ok();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return DefaultResponse.fail();
-        }
+        crawlService.insertNewPost(boardId, LocalDateTime.now());
+        return DefaultResponse.ok();
     }
 }

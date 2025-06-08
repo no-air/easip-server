@@ -54,6 +54,13 @@ public enum ErrorCode {
     POST_NOT_FOUND("PT0001", "존재하지 않는 공고입니다."),
     POST_INCOME_LIMIT_PERSON_EXCEEDED("PT0002", "공고에 등록된 소득기준 인원 수가 초과되었습니다."),
     POST_SCHEDULE_NOT_FOUND("PT0003", "존재하지 않는 공고 일정입니다."),
+    POST_CRAWLING_PARSING_ERROR("PT0004", "공고 크롤링 파싱 중 오류가 발생했습니다."),
+    POST_CRAWLING_UNHANDLED_EXCEPTION("PT0005", "공고 크롤링 중 예기치 않은 오류가 발생했습니다."),
+
+    /**
+     * Crawler Related Errors
+     */
+    GPT_ANSWER_DESERIALIZATION_ERROR("CR0001", "GPT 답변 역직렬화 오류"),
     ;
 
 
