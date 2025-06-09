@@ -11,6 +11,7 @@ import java.util.List;
 
 import static com.noair.easip.member.domain.QPostScheduleNotification.postScheduleNotification;
 import static com.noair.easip.post.domain.QPost.post;
+import static com.noair.easip.post.domain.QPostSchedule.postSchedule;
 
 @RequiredArgsConstructor
 public class PostRepositoryCustomImpl implements PostRepositoryCustom {
@@ -44,6 +45,27 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                                         .where(postScheduleNotification.id.memberId.eq(loginMemberId))
                                         .fetch()
                         ))
+                .fetchOne();
+
+        return new PageImpl<>(posts, pageable, total != null ? total : 0L);
+    }
+
+    @Override
+    public Page<Post> searchHomePosts(Pageable pageable) {
+        List<Post> posts = queryFactory
+                .selectFrom(post)
+                .leftJoin(post.schedules, postSchedule)
+                .on(postSchedule.ordering.eq(1))
+                .orderBy(postSchedule.startDateTime.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long total = queryFactory
+                .select(post.count())
+                .from(post)
+                .leftJoin(post.schedules, postSchedule)
+                .on(postSchedule.ordering.eq(1))
                 .fetchOne();
 
         return new PageImpl<>(posts, pageable, total != null ? total : 0L);

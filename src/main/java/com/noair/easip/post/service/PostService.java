@@ -48,7 +48,7 @@ public class PostService {
         Member loginMember = memberService.getMemberById(loginMemberId);
         List<PostSummaryResponse> postSummaryResponses = new ArrayList<>();
 
-        Page<Post> posts = postRepository.findAll(PageRequest.of(page - 1, size));
+        Page<Post> posts = postRepository.searchHomePosts(PageRequest.of(page - 1, size));
         for (Post post : posts) {
 
             List<ScheduleDto> scheduleDtos = postScheduleService.getScheduleDtoByPost(post, loginMemberId);

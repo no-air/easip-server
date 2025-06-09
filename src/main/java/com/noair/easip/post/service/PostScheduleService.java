@@ -4,7 +4,7 @@ import com.noair.easip.member.repository.PostScheduleNotificationRepository;
 import com.noair.easip.post.controller.dto.ScheduleDto;
 import com.noair.easip.post.domain.Post;
 import com.noair.easip.post.domain.PostSchedule;
-import com.noair.easip.post.domain.SUBSCRIPTION_STATE;
+import com.noair.easip.post.domain.SubscriptionState;
 import com.noair.easip.post.exception.PostScheduleNotFoundException;
 import com.noair.easip.post.repository.PostScheduleRepository;
 import jakarta.transaction.Transactional;
@@ -34,24 +34,28 @@ public class PostScheduleService {
                 .orElseThrow(PostScheduleNotFoundException::new);
     }
 
-    public String getSubscriptionStateKorNameByPostId(String postId) {
+    public SubscriptionState getSubscriptionStateByPostId(String postId) {
         Optional<PostSchedule> applicationStart = postScheduleRepository.findByPostIdAndScheduleType(postId, APPLICATION);
 
-        // 청약신청 타입의 일정이 없거나, 시작일시가 null이거나, 현재가 신청일정보다 이전이라면 = "청약예정"
+        // 청약신청 타입의 일정이 없거나, 시작일시가 null이거나, 현재가 신청일정보다 이전이라면 = SCHEDULED
         if (
                 applicationStart.isEmpty() || applicationStart.get().getStartDateTime() == null ||
                         LocalDateTime.now().isBefore(applicationStart.get().getStartDateTime())
         ) {
-            return SUBSCRIPTION_STATE.SCHEDULED.getKorName();
+            return SubscriptionState.SCHEDULED;
 
-            // 현재가 모든 일정보다 이후라면 = "청약완료"
+            // 현재가 모든 일정보다 이후라면 = COMPLETED
         } else if (!postScheduleRepository.existsByPostIdAndDateTimeGreaterThan(postId, LocalDateTime.now())) {
-            return SUBSCRIPTION_STATE.COMPLETED.getKorName();
+            return SubscriptionState.COMPLETED;
 
-            // 그 외에는 "청약진행중"
+            // 그 외에는 ONGOING
         } else {
-            return SUBSCRIPTION_STATE.ONGOING.getKorName();
+            return SubscriptionState.ONGOING;
         }
+    }
+
+    public String getSubscriptionStateKorNameByPostId(String postId) {
+        return getSubscriptionStateByPostId(postId).getKorName();
     }
 
     public String getSubscriptionStateKotNameByHouseId(String houseId) {
@@ -62,15 +66,15 @@ public class PostScheduleService {
                 applicationStart.isEmpty() || applicationStart.get().getStartDateTime() == null ||
                         LocalDateTime.now().isBefore(applicationStart.get().getStartDateTime())
         ) {
-            return SUBSCRIPTION_STATE.SCHEDULED.getKorName();
+            return SubscriptionState.SCHEDULED.getKorName();
 
             // 현재가 모든 일정보다 이후라면 = "청약완료"
         } else if (!postScheduleRepository.existsByHouseIdAndDateTimeGreaterThan(houseId, LocalDateTime.now())) {
-            return SUBSCRIPTION_STATE.COMPLETED.getKorName();
+            return SubscriptionState.COMPLETED.getKorName();
 
             // 그 외에는 "청약진행중"
         } else {
-            return SUBSCRIPTION_STATE.ONGOING.getKorName();
+            return SubscriptionState.ONGOING.getKorName();
         }
     }
 

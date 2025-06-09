@@ -10,4 +10,6 @@ public interface PostRepositoryCustom {
             String loginMemberId,
             Pageable pageable
     );
+
+    Page<Post> searchHomePosts(Pageable pageable);
 }
