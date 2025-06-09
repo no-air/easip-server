@@ -24,8 +24,9 @@ app:
     api-key: ${GPT_API_KEY}
   oauth:
     googleClientIds:
-      - ${GOOGLE_CLIENT_ID}
-      - ${APPLE_CLIENT_ID}
+      - ${GOOGLE_ANDROID_CLIENT_ID}
+      - ${GOOGLE_IOS_CLIENT_ID}
+      - ${GOOGLE_WEB_CLIENT_ID}
   external-urls:
     dev-alert-discord-webhook: https://www.naver.com # Must Be Replaced
     prod-alert-discord-webhook: https://www.naver.com # Must Be Replaced

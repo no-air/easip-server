@@ -55,6 +55,7 @@ public enum ErrorCode {
     POST_INCOME_LIMIT_PERSON_EXCEEDED("PT0002", "공고에 등록된 소득기준 인원 수가 초과되었습니다."),
     POST_SCHEDULE_NOT_FOUND("PT0003", "존재하지 않는 공고 일정입니다."),
     POST_CRAWLING_PARSING_ERROR("PT0004", "공고 크롤링 파싱 중 오류가 발생했습니다."),
+    POST_CRAWLING_DUPLICATED_BOARD_ID("PT0005", "이미 등록된 공고 ID입니다. 중복된 공고를 크롤링할 수 없습니다."),
     POST_CRAWLING_UNHANDLED_EXCEPTION("PT0005", "공고 크롤링 중 예기치 않은 오류가 발생했습니다."),
 
     /**

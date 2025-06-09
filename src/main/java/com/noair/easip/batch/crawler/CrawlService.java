@@ -69,25 +69,24 @@ public class CrawlService {
         int page = 1;
         // TODO: debug용 page 범위 풀고 배포하기
         while (hasNextPost && page < 2) { // 무한루프 방지, 최대 1000페이지까지 크롤링
+            // POST 파라미터 구성
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("bbsId", "BMSR00015");
+            params.add("pageIndex", String.valueOf(page));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+
+            // POST 요청 및 JSON 파싱
+            ResponseEntity<String> response = restTemplate.postForEntity(POST_LIST_API_URL, request, String.class);
             try {
-                // POST 파라미터 구성
-                MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-                params.add("bbsId", "BMSR00015");
-                params.add("pageIndex", String.valueOf(page));
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-                HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-
-                // POST 요청 및 JSON 파싱
-                ResponseEntity<String> response = restTemplate.postForEntity(POST_LIST_API_URL, request, String.class);
                 JsonNode rootNode = objectMapper.readTree(response.getBody());
                 JsonNode posts = rootNode.get("resultList");
 
                 if (!posts.isArray()) {
-                    postCrawlingHistory.failedCrawl("게시글 크롤링 중 문제가 발생했거나 결과가 비어있습니다.");
-                    break;
+                    throw new PostCrawlingParsingException();
                 }
 
                 // 마지막 페이지 도달
@@ -95,57 +94,49 @@ public class CrawlService {
                     break;
                 }
 
-                try {
-                    for (JsonNode post : posts) {
-                        postCrawlingHistory.incrementReadPostCnt();
-                        String boardId = post.get("asd").asText();
-                        String title = post.get("nttSj").asText();
+                for (JsonNode post : posts) {
+                    postCrawlingHistory.incrementReadPostCnt();
+                    String boardId = post.get("asd").asText();
+                    String title = post.get("nttSj").asText();
 
-                        // boardId가 동일한 데이터 이력이 있을경우
-                        if (crawledPostHistoryRepository.existsByBoardId(boardId)) {
-                            CrawledPostHistory oldHistory = crawledPostHistoryRepository.findByBoardId(boardId);
+                    // boardId가 동일한 데이터 이력이 있을경우
+                    if (crawledPostHistoryRepository.existsByBoardId(boardId)) {
+                        CrawledPostHistory oldHistory = crawledPostHistoryRepository.findByBoardId(boardId);
 
-                            if (title.contains(oldHistory.getTitle()) && title.contains("수정")) { // 제목이 과거 이력의 제목을 포함하고 "수정"이라고 기재된 경우, 공고 수정 진행
-                                updatePost(boardId, now);
-                                postCrawlingHistory.incrementUpdatePostCnt();
+                        if (title.contains(oldHistory.getTitle()) && title.contains("수정")) { // 제목이 과거 이력의 제목을 포함하고 "수정"이라고 기재된 경우, 공고 수정 진행
+                            updatePost(boardId, now);
+                            postCrawlingHistory.incrementUpdatePostCnt();
 
-                            } else if (title.equals(oldHistory.getTitle())) { // 제목이 과거 이력의 제목과 동일한 경우, 신규 데이터가 없으므로 크롤링 중단
-                                hasNextPost = false;
-                                break;
+                        } else if (title.equals(oldHistory.getTitle())) { // 제목이 과거 이력의 제목과 동일한 경우, 신규 데이터가 없으므로 크롤링 중단
+                            hasNextPost = false;
+                            break;
 
-                            } else { // 그 외의 경우에는 정합성 문제 발생이므로, 실패 기록
-                                postCrawlingHistory.failedCrawl("중복된 boardId가 발견되었습니다: " + boardId);
-                            }
-
-                            // boardId가 동일한 데이터 이력이 없는 경우, 신규 공고 등록 진행
-                        } else {
-                            try {
-                                insertNewPost(boardId, now);
-                            } catch (HouseNotFoundException e) {
-                                e.printStackTrace();
-                                postCrawlingHistory.failedCrawl("게시글 상세 크롤링 중 주택 주소를 찾을 수 없습니다: " + e.getMessage());
-                                break;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                postCrawlingHistory.failedCrawl("게시글 상세 크롤링 중 알 수 없는 예외 발생: " + e.getMessage());
-                                break;
-                            }
-                            postCrawlingHistory.incrementAddPostCnt();
+                        } else { // 그 외의 경우에는 정합성 문제 발생이므로, 실패 기록
+                            postCrawlingHistory.failedCrawl("중복된 boardId가 발견되었습니다: " + boardId);
                         }
+
+                        // boardId가 동일한 데이터 이력이 없는 경우, 신규 공고 등록 진행
+                    } else {
+                        try {
+                            insertNewPost(boardId, now);
+                        } catch (HouseNotFoundException e) {
+                            e.printStackTrace();
+                            postCrawlingHistory.failedCrawl("게시글 상세 크롤링 중 주택 주소를 찾을 수 없습니다: " + e.getMessage());
+                            break;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            postCrawlingHistory.failedCrawl("게시글 상세 크롤링 중 알 수 없는 예외 발생: " + e.getMessage());
+                            break;
+                        }
+                        postCrawlingHistory.incrementAddPostCnt();
                     }
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                    postCrawlingHistory.failedCrawl("게시글의 HTML 파싱 중 NullPointerException 발생: " + e.getMessage());
-                    break;
                 }
-
-                page++;
-
             } catch (IOException e) {
                 e.printStackTrace();
-                postCrawlingHistory.failedCrawl("게시글 파싱 중 IOException 발생: " + e.getMessage());
-                break;
+                throw new PostCrawlingParsingException();
             }
+
+            page++;
         }
 
         savePostCrawlingHistory(postCrawlingHistory);
