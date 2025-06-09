@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 public class CrawlScheduler {
     private final CrawlService crawlService;
 
-    @Scheduled(cron = "0 0 21 * * *") // Every day at 21:00
+    // TODO: disable batch temporarily
+//    @Scheduled(cron = "0 0 21 * * *") // Every day at 21:00
     public void schedulePostCrawlJob() {
         crawlService.crawlPostList();
     }
