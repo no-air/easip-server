@@ -2,6 +2,7 @@ package com.noair.easip.house.repository;
 
 import com.noair.easip.house.domain.House;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -29,9 +30,37 @@ public class HouseRepositoryCustomImpl implements HouseRepositoryCustom {
         return queryFactory
                 .selectFrom(house)
                 .where(
-                        Expressions.stringTemplate( // address에서 공백을 제거한 후 contains 비교 시행
+                        Expressions.stringTemplate(
                                 "replace({0}, ' ', '')", house.roadAddress
-                        ).contains(compactAddress)
+                        ).contains(compactAddress).or(
+                                Expressions.stringTemplate(
+                                        "replace({0}, ' ', '')", house.jibunAddress
+                                ).contains(compactAddress)
+                        )
+                )
+                .fetchOne();
+    }
+
+    @Override
+    public House findByCompactHouseName(String compactHouseName) {
+        return queryFactory
+                .selectFrom(house)
+                .where(
+                        Expressions.stringTemplate(
+                                "replace({0}, ' ', '')", house.name
+                        ).contains(compactHouseName)
+                )
+                .fetchOne();
+    }
+
+    @Override
+    public House findByCompactPageUrl(String compactPageUrl) {
+        return queryFactory
+                .selectFrom(house)
+                .where(
+                        Expressions.stringTemplate(
+                                "replace({0}, ' ', '')", house.pageUrl
+                        ).contains(compactPageUrl)
                 )
                 .fetchOne();
     }

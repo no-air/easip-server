@@ -5,6 +5,8 @@ public record CrawlPostDetailDto(
         String title,
         String address,
         String compactAddress,
+        String compactHouseName,
+        String compactPageUrl,
         String postFileBase64,
         String postFileName
 ) {
@@ -13,6 +15,8 @@ public record CrawlPostDetailDto(
             String title,
             String address,
             String compactAddress,
+            String compactHouseName,
+            String compactPageUrl,
             String postFileBase64,
             String postFileName
     ) {
@@ -21,6 +25,8 @@ public record CrawlPostDetailDto(
                 title,
                 address,
                 compactAddress,
+                compactHouseName,
+                compactPageUrl,
                 postFileBase64,
                 postFileName
         );

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.noair.easip.house.domain.RentalType.*;
 
@@ -35,8 +36,12 @@ public class HouseService {
                 .toList();
     }
 
-    public House getHouseByCompactAddress(String compactAddress) {
-        return houseRepository.findByCompactAddress(compactAddress);
+    public House getHouseByCompact(String compactAddress, String compactHouseName, String compactPageUrl) {
+        return
+                Optional.ofNullable(houseRepository.findByCompactAddress(compactAddress))
+                        .or(() -> Optional.ofNullable(houseRepository.findByCompactHouseName(compactHouseName)))
+                        .or(() -> Optional.ofNullable(houseRepository.findByCompactPageUrl(compactPageUrl)))
+                        .orElseThrow(HouseNotFoundException::new);
     }
 
     public List<House> getHousesByLocation(Double minLatitude, Double minLongitude, Double maxLatitude, Double maxLongitude) {
