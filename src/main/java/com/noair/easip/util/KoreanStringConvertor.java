@@ -37,6 +37,9 @@ public class KoreanStringConvertor {
     }
 
     public static String toCompactAddress(String address) {
+        // 공백 전부 제거
+        address = address.replace(" ", "");
+
         // 주소에서 서울 관련 부분 제거
         String compactAddress = address.replace("서울특별시", "").replace("서울시", "").replace("서울", "").trim();
 

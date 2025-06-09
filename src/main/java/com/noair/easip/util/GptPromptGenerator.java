@@ -13,7 +13,13 @@ public class GptPromptGenerator {
             
             Change the following Korean values to the specified English values:
             - "청년": "YOUNG_MAN"
-            - "신혼부부": "NEWLY_MARRIED_COUPLE"
+            - "청년(남)": "MALE_YOUNG_MAN"
+            - "청년(여)": "FEMALE_YOUNG_MAN"
+            - "청년(쉐어)": "SHARE_YOUNG_MAN"
+            - "신혼부부", "(예비)신혼부부": "NEWLY_MARRIED_COUPLE"
+            - "청년및신혼부부": "BOTH"
+            - "전체": "ALL"
+            
             
             Change the following Korean keys to the specified English keys:
             - "공급유형": "supplyType"
@@ -26,10 +32,10 @@ public class GptPromptGenerator {
             """;
 
     public static final String POST_HOUSE_USER_MSG = """
-            해당 공고문에서 공급유형과 주거유형, 보증금, 임대료별로 각각 공급호수를 리스트로 나열해라. 공급호수가 0이라면 제외해도 된다.
+            해당 공고문에서 공급유형과 주거유형, 보증금, 임대료별로 각각 공급호수를 리스트로 나열해라. 공급호수가 0이라면 제외해도 된다. 만약 공급유형이 "청년(남)", "청년(여)", "청년(쉐어)", "청년", "(예비)신혼부부", "청년및신혼부부" 중에 없다면 "전체"로 분류한다.
             
             답변의 예시는 다음과 같다.
-            [   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 특별공급",     "deposit": 60000000,     "monthlyRent": 260000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 특별공급",     "deposit": 70000000,     "monthlyRent": 160000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 특별공급",     "deposit": 80000000,     "monthlyRent": 60000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 일반공급",     "deposit": 70000000,     "monthlyRent": 320000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 일반공급",     "deposit": 80000000,     "monthlyRent": 220000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 일반공급",     "deposit": 90000000,     "monthlyRent": 120000,     "supplyRoomCount": 1   },   {     "supplyType": "NEWLY_MARRIED_COUPLE",     "livingType": "17.46m²(B) 일반공급",     "deposit": 70000000,     "monthlyRent": 340000,     "supplyRoomCount": 1   },   {     "supplyType": "NEWLY_MARRIED_COUPLE",     "livingType": "17.46m²(B) 일반공급",     "deposit": 80000000,     "monthlyRent": 240000,     "supplyRoomCount": 1   },   {     "supplyType": "NEWLY_MARRIED_COUPLE",     "livingType": "17.46m²(B) 일반공급",     "deposit": 90000000,     "monthlyRent": 140000,     "supplyRoomCount": 1   } ]\s
+            [   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 특별공급",     "deposit": 60000000,     "monthlyRent": 260000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 특별공급",     "deposit": 70000000,     "monthlyRent": 160000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 특별공급",     "deposit": 80000000,     "monthlyRent": 60000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 일반공급",     "deposit": 70000000,     "monthlyRent": 320000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 일반공급",     "deposit": 80000000,     "monthlyRent": 220000,     "supplyRoomCount": 1   },   {     "supplyType": "YOUNG_MAN",     "livingType": "17.05m²(A) 일반공급",     "deposit": 90000000,     "monthlyRent": 120000,     "supplyRoomCount": 1   },   {     "supplyType": "NEWLY_MARRIED_COUPLE",     "livingType": "17.46m²(B) 일반공급",     "deposit": 70000000,     "monthlyRent": 340000,     "supplyRoomCount": 1   },   {     "supplyType": "NEWLY_MARRIED_COUPLE",     "livingType": "17.46m²(B) 일반공급",     "deposit": 80000000,     "monthlyRent": 240000,     "supplyRoomCount": 1   },   {     "supplyType": "NEWLY_MARRIED_COUPLE",     "livingType": "17.46m²(B) 일반공급",     "deposit": 90000000,     "monthlyRent": 140000,     "supplyRoomCount": 1   } ]
             """;
 
     public static final String POST_DEVELOPER_MSG = """

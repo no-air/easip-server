@@ -20,43 +20,41 @@ import lombok.NoArgsConstructor;
 @Getter
 public class House extends DeletableBaseEntity {
     @Id
-    @Column(name = "HOUSE_ID", columnDefinition = "CHAR(26)")
+    @Column(name = "house_id", columnDefinition = "CHAR(26)")
     private String id;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "ADDRESS", nullable = false)
-    private String address;
+    @Column(nullable = false)
+    private String roadAddress;
 
-    @Column(name = "NEAR_STATION")
+    @Column(nullable = false)
+    private String jibunAddress;
+
     private String nearStation;
 
-    @Column(name = "DEVELOPER_NAME")
     private String developerName;
 
-    @Column(name = "CONSTRUCTOR_NAME")
     private String constructorName;
 
-    @Column(name = "FIRST_RECRUITMENT_DATE")
     private String firstRecruitmentDate;
 
-    @Column(name = "MOVE_IN_DATE")
     private String moveInDate;
 
-    @Column(name = "GENERAL_SUPPLY_COUNT", nullable = false)
+    @Column(nullable = false)
     private Integer generalSupplyCount;
 
-    @Column(name = "SPECIAL_SUPPLY_COUNT", nullable = false)
+    @Column(nullable = false)
     private Integer specialSupplyCount;
 
-    @Column(name = "LATITUDE", nullable = false)
+    @Column(nullable = false)
     private Double latitude;
 
-    @Column(name = "LONGITUDE", nullable = false)
+    @Column(nullable = false)
     private Double longitude;
 
-    @Column(name = "PAGE_URL", columnDefinition = "VARCHAR(2083)")
+    @Column(columnDefinition = "VARCHAR(2083)")
     private String pageUrl;
 
     @OneToMany(mappedBy = "house")

@@ -139,7 +139,7 @@ public class PostService {
                     house.getId(),
                     house.getName(),
                     houseImageService.getThumbnailImageUrl(house.getId()),
-                    house.getAddress(),
+                    house.getRoadAddress(),
                     postHouseConditions.getFirst().minRatioDeposit(),
                     postHouseConditions.getFirst().minRatioMonthlyRent(),
                     postHouseService.getNumberOfUnitsRecruitingByPostIdAndHouseId(postId, house.getId()),

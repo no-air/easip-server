@@ -9,7 +9,8 @@ public enum Position {
     SHARE_YOUNG_MAN("청년(쉐어)"),
     YOUNG_MAN("청년"),
     NEWLY_MARRIED_COUPLE("(예비)신혼부부"),
-    BOTH("청년 및 신혼부부")
+    BOTH("청년 및 신혼부부"),
+    ALL("전체")
     ;
 
     private final String korName;

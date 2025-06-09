@@ -34,7 +34,8 @@ public class PostCrawlingHistory {
     private Integer deletePostCnt = 0;
 
     @Column(nullable = false)
-    private Boolean isSuccess;
+    @Builder.Default
+    private Boolean isSuccess = true;
 
     @Column(columnDefinition = "VARCHAR(2083)")
     private String comment;

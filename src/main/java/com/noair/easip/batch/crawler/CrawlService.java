@@ -59,12 +59,13 @@ public class CrawlService {
     private final PostScheduleService postScheduleService;
     private final PostHouseService postHouseService;
 
-    // 초기 대량 데이터 크롤링 외에는 과정 전체를 하나의 트랜잭션으로 제한
-//    @Transactional
+    @Transactional
     public boolean crawlPostList() {
         LocalDateTime now = LocalDateTime.now();
         boolean hasNextPost = true;
-        PostCrawlingHistory postCrawlingHistory = new PostCrawlingHistory();
+        PostCrawlingHistory postCrawlingHistory = PostCrawlingHistory.builder()
+                .crawlingDateTime(LocalDateTime.now())
+                .build();
 
         int page = 1;
         // TODO: debug용 page 범위 풀고 배포하기
@@ -96,11 +97,10 @@ public class CrawlService {
 
                 for (JsonNode post : posts) {
                     postCrawlingHistory.incrementReadPostCnt();
-                    String boardId = post.get("asd").asText();
+                    String boardId = post.get("boardId").asText();
                     String title = post.get("nttSj").asText();
 
-                    // boardId가 동일한 데이터 이력이 있을경우
-                    if (crawledPostHistoryRepository.existsByBoardId(boardId)) {
+                    if (crawledPostHistoryRepository.existsByBoardId(boardId)) { // boardId가 동일한 데이터 이력이 있을경우
                         CrawledPostHistory oldHistory = crawledPostHistoryRepository.findByBoardId(boardId);
 
                         if (title.contains(oldHistory.getTitle()) && title.contains("수정")) { // 제목이 과거 이력의 제목을 포함하고 "수정"이라고 기재된 경우, 공고 수정 진행
@@ -112,22 +112,11 @@ public class CrawlService {
                             break;
 
                         } else { // 그 외의 경우에는 정합성 문제 발생이므로, 실패 기록
-                            postCrawlingHistory.failedCrawl("중복된 boardId가 발견되었습니다: " + boardId);
+                            throw new PostCrawlingDuplicatedBoardIdException();
                         }
 
-                        // boardId가 동일한 데이터 이력이 없는 경우, 신규 공고 등록 진행
-                    } else {
-                        try {
-                            insertNewPost(boardId, now);
-                        } catch (HouseNotFoundException e) {
-                            e.printStackTrace();
-                            postCrawlingHistory.failedCrawl("게시글 상세 크롤링 중 주택 주소를 찾을 수 없습니다: " + e.getMessage());
-                            break;
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            postCrawlingHistory.failedCrawl("게시글 상세 크롤링 중 알 수 없는 예외 발생: " + e.getMessage());
-                            break;
-                        }
+                    } else { // boardId가 동일한 데이터 이력이 없는 경우, 신규 공고 등록 진행
+                        insertNewPost(boardId, now);
                         postCrawlingHistory.incrementAddPostCnt();
                     }
                 }
@@ -191,10 +180,12 @@ public class CrawlService {
     @Transactional
     public void insertNewPost(String boardId, LocalDateTime crawlingDateTime) {
         CrawlPostDetailDto crawlPostDetailDto = crawlPostDetail(boardId);
+        System.out.println("crawlPostDetailDto: " + crawlPostDetailDto.title());
 
         House house = houseService.getHouseByCompactAddress(crawlPostDetailDto.compactAddress());
 
         PostFlatDto postFlatDto = gptGateway.askPost(crawlPostDetailDto.postFileName(), crawlPostDetailDto.postFileBase64());
+        System.out.println("PostFlatDto: " + postFlatDto.isIncomeLimited() + ", " + postFlatDto.incomeLimit1Person() + ", " + postFlatDto.incomeLimit2Person() + ", " + postFlatDto.incomeLimit3Person() + ", " + postFlatDto.incomeLimit4Person() + ", " + postFlatDto.incomeLimit5Person() + ", " + postFlatDto.isCarPriceLimited() + ", " + postFlatDto.carPriceLimit() + ", " + postFlatDto.isAssetLimited() + ", " + postFlatDto.youngManAssetLimit() + ", " + postFlatDto.newlyMarriedCoupleAssetLimit());
         Post post = postService.create(
                 Post.builder()
                         .id(generateUlid())
@@ -258,7 +249,7 @@ public class CrawlService {
         );
 
 
-        crawledPostHistoryRepository.save(
+        saveCrawledPostHistory(
                 CrawledPostHistory.builder()
                         .boardId(crawlPostDetailDto.boardId())
                         .title(crawlPostDetailDto.title())

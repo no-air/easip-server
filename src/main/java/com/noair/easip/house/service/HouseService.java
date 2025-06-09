@@ -55,7 +55,7 @@ public class HouseService {
                 house.getName(),
                 house.getBadgeNames(),
                 houseImageService.getThumbnailImageUrls(house.getId()),
-                house.getAddress(),
+                house.getRoadAddress(),
                 house.getNearStation(),
                 house.getDeveloperName(),
                 house.getConstructorName(),

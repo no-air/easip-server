@@ -30,7 +30,7 @@ public class HouseRepositoryCustomImpl implements HouseRepositoryCustom {
                 .selectFrom(house)
                 .where(
                         Expressions.stringTemplate( // address에서 공백을 제거한 후 contains 비교 시행
-                                "replace({0}, ' ', '')", house.address
+                                "replace({0}, ' ', '')", house.roadAddress
                         ).contains(compactAddress)
                 )
                 .fetchOne();
