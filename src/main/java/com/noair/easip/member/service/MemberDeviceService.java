@@ -8,7 +8,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -42,5 +41,10 @@ public class MemberDeviceService {
     public void recordFcmTransmissionFail(String fcmToken) {
         MemberDevice memberDevice = getMemberDevice(fcmToken);
         memberDevice.recordFcmTransmissionFail();
+    }
+
+    @Transactional
+    public void deleteAllByMemberId(String memberId) {
+        memberDeviceRepository.deleteAllByMemberId(memberId);
     }
 }

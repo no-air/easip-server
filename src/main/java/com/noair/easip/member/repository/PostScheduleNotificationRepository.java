@@ -14,4 +14,6 @@ public interface PostScheduleNotificationRepository extends JpaRepository<PostSc
     void deleteByPostScheduleIdAndMemberId(String postScheduleId, String memberId);
 
     List<PostScheduleNotification> findAllByMemberId(String loginMemberId);
+
+    void deleteAllByMemberId(String memberId);
 }

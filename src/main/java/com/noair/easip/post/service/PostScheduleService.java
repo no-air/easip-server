@@ -7,6 +7,7 @@ import com.noair.easip.post.domain.PostSchedule;
 import com.noair.easip.post.domain.SUBSCRIPTION_STATE;
 import com.noair.easip.post.exception.PostScheduleNotFoundException;
 import com.noair.easip.post.repository.PostScheduleRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -120,5 +121,10 @@ public class PostScheduleService {
                 .flatMap(notification -> Stream.of(notification.getPostSchedule().getPost()))
                 .distinct()
                 .count();
+    }
+
+    @Transactional
+    public void deleteAllByMemberId(String memberId) {
+        postScheduleNotificationRepository.deleteAllByMemberId(memberId);
     }
 }

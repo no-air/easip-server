@@ -2,6 +2,7 @@ package com.noair.easip.member.service;
 
 import com.noair.easip.auth.config.properties.SocialLoginProvider;
 import com.noair.easip.house.domain.District;
+import com.noair.easip.house.service.BookmarkService;
 import com.noair.easip.house.service.DistrictService;
 import com.noair.easip.member.controller.dto.request.CreateMemberRequest;
 import com.noair.easip.member.domain.Member;
@@ -10,6 +11,7 @@ import com.noair.easip.member.domain.SocialAuthId;
 import com.noair.easip.member.exception.MemberNotFoundException;
 import com.noair.easip.member.repository.MemberRepository;
 import com.noair.easip.member.repository.SocialAuthRepository;
+import com.noair.easip.post.service.PostScheduleService;
 import com.noair.easip.util.IdGenerator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,9 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final SocialAuthRepository socialAuthRepository;
+    private final MemberDeviceService memberDeviceService;
+    private final BookmarkService bookmarkService;
+    private final PostScheduleService postScheduleService;
     private final DistrictService districtService;
 
     @Transactional
@@ -89,8 +94,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteMemberSoft(String loginMemberId) {
+    public void deleteHardly(String loginMemberId) {
+        socialAuthRepository.deleteAllByMemberId(loginMemberId);
+        memberDeviceService.deleteAllByMemberId(loginMemberId);
+        postScheduleService.deleteAllByMemberId(loginMemberId);
+        bookmarkService.deleteAllByMemberId(loginMemberId);
+
         Member member = getMemberById(loginMemberId);
-        member.deleteSoft();
+        member.delete();
+        memberRepository.delete(member);
     }
 }

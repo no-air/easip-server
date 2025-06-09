@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MemberDeviceRepository extends JpaRepository<MemberDevice, String> {
     List<MemberDevice> findAllByMemberId(String memberId);
+
+    void deleteAllByMemberId(String memberId);
 }

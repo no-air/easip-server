@@ -5,6 +5,7 @@ import com.noair.easip.member.domain.Bookmark;
 import com.noair.easip.member.domain.BookmarkId;
 import com.noair.easip.member.domain.Member;
 import com.noair.easip.member.repository.BookmarkRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,10 @@ public class BookmarkService {
                             .build()
             );
         }
+    }
+
+    @Transactional
+    public void deleteAllByMemberId(String memberId) {
+        bookmarkRepository.deleteAllByMemberId(memberId);
     }
 }

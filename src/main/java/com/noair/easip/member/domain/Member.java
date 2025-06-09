@@ -98,7 +98,8 @@ public class Member extends DeletableBaseEntity {
         this.assetPrice = assetPrice;
     }
 
-    public void deleteSoft() {
+    public void delete() {
         super.delete();
+        this.likingDistricts.clear();
     }
 }

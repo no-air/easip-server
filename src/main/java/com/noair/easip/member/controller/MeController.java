@@ -5,27 +5,21 @@ import com.noair.easip.house.domain.District;
 import com.noair.easip.member.controller.dto.request.CreateMemberRequest;
 import com.noair.easip.member.controller.dto.response.MemberResponse;
 import com.noair.easip.member.domain.Member;
-import com.noair.easip.member.domain.Position;
 import com.noair.easip.member.service.MemberDeviceService;
 import com.noair.easip.member.service.MemberService;
 import com.noair.easip.post.controller.dto.PostElementResponse;
 import com.noair.easip.post.service.PostScheduleService;
 import com.noair.easip.post.service.PostService;
-import com.noair.easip.util.ArrayResponse;
 import com.noair.easip.util.DefaultResponse;
 import com.noair.easip.util.PaginationDto;
 import com.noair.easip.util.PaginationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Tag(name = "개인 정보 API")
 @RestController
@@ -79,14 +73,14 @@ public class MeController {
         return DefaultResponse.ok();
     }
 
-    @Operation(summary = "회원 탈퇴")
+    @Operation(summary = "회원 탈퇴 (관련 데이터 즉시 삭제)")
     @DeleteMapping
     DefaultResponse deleteMyProfile(
             @Parameter(hidden = true)
             @LoginMemberId
             String loginMemberId
     ) {
-        memberService.deleteMemberSoft(loginMemberId);
+        memberService.deleteHardly(loginMemberId);
         return DefaultResponse.ok();
     }
 
